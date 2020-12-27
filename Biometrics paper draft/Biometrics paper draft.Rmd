@@ -2,18 +2,23 @@
 title: Addressing Confounding and Exposure Measurement Error Using Conditional Score Functions
 
 author: 
-- name: Bryan Blette
-  affiliation: Department of Biostatistics, University of XXX
+- name: Bryan S. Blette
+  affiliation: Department of Biostatistics, University of North Carolina at Chapel Hill, Chapel Hill, North Carolina, 27599, U.S.A.
   email: blette@live.unc.edu
   
-- name: Author 2
-  affiliation: Department of ZZZ, University of WWW
-  email: djf@wef
+- name: Peter B. Gilbert
+  affiliation: Department of Biostatistics, University of Washington and Fred Hutchinson Cancer Research Center, Seattle, Washington 98109, U.S.A.
+  
+- name: Michael G. Hudgens
+  affiliation: Department of Biostatistics, University of North Carolina at Chapel Hill
 
 keywords:
-- key
-- dictionary
-- word
+- Causal inference
+- Confounding
+- G-formula
+- HIV/AIDS
+- Marginal structual models
+- Measurement error
 
 abstract: |
   The text of your summary.  Should not exceed 225 words.
