@@ -13,8 +13,7 @@ author:
   affiliation: Department of Biostatistics, University of North Carolina at Chapel Hill
 
 keywords:
-- Causal inference
-- Confounding
+- Causal inference, Confounding
 - G-formula
 - HIV/AIDS
 - Marginal structual models
