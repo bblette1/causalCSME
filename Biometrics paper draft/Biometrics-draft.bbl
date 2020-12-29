@@ -1,0 +1,271 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Bang and Robins}{Bang and
+  Robins}{2005}]{bang2005}
+Bang, H. and Robins, J.~M. (2005).
+\newblock Doubly robust estimation in missing data and causal inference models.
+\newblock {\em Biometrics} {\bf 61,} 962--973.
+
+\bibitem[\protect\citeauthoryear{Braun, Gorfine, Parmigiani, Arvold, Dominici,
+  and Zigler}{Braun et~al.}{2017}]{braun2017}
+Braun, D., Gorfine, M., Parmigiani, G., Arvold, N.~D., Dominici, F., and
+  Zigler, C. (2017).
+\newblock Propensity scores with misclassified treatment assignment: a
+  likelihood-based adjustment.
+\newblock {\em Biostatistics} {\bf 18,} 695--710.
+
+\bibitem[\protect\citeauthoryear{Carroll, Ruppert, Stefanski, and
+  Crainiceanu}{Carroll et~al.}{2006}]{carroll2006}
+Carroll, R.~J., Ruppert, D., Stefanski, L.~A., and Crainiceanu, C.~M. (2006).
+\newblock {\em Measurement error in nonlinear models: a modern perspective}.
+\newblock CRC press.
+
+\bibitem[\protect\citeauthoryear{Cole, Jacobson, Tien, Kingsley, Chmiel, and
+  Anastos}{Cole et~al.}{2010}]{cole2010}
+Cole, S.~R., Jacobson, L.~P., Tien, P.~C., Kingsley, L., Chmiel, J.~S., and
+  Anastos, K. (2010).
+\newblock Using marginal structural measurement-error models to estimate the
+  long-term effect of antiretroviral therapy on incident aids or death.
+\newblock {\em American Journal of Epidemiology} {\bf 171,} 113--122.
+
+\bibitem[\protect\citeauthoryear{Dagalp}{Dagalp}{2001}]{dagalp2001}
+Dagalp, R.~E. (2001).
+\newblock Estimators for generalized linear measurement error models with
+  interaction terms.
+\newblock {\em Doctoral Dissertation, North Carolina State University} .
+
+\bibitem[\protect\citeauthoryear{Decamp, Rolland, Edlefsen, Sanders-Buell,
+  Hall, Magaret, Fiore-Gartland, Juraska, Carpp, Karuna, et~al\mbox{.}}{Decamp
+  et~al.}{2017}]{decamp2017}
+Decamp, A.~C., Rolland, M., Edlefsen, P.~T., Sanders-Buell, E., Hall, B.,
+  Magaret, C.~A., Fiore-Gartland, A.~J., Juraska, M., Carpp, L.~N., Karuna,
+  S.~T., et~al. (2017).
+\newblock Sieve analysis of breakthrough hiv-1 sequences in hvtn 505 identifies
+  vaccine pressure targeting the cd4 binding site of env-gp120.
+\newblock {\em PloS One} {\bf 12,} e0185959.
+
+\bibitem[\protect\citeauthoryear{Edwards, Cole, Westreich, Crane, Eron,
+  Mathews, Moore, Boswell, Lesko, Mugavero, et~al\mbox{.}}{Edwards
+  et~al.}{2015}]{edwards2015multiple}
+Edwards, J.~K., Cole, S.~R., Westreich, D., Crane, H., Eron, J.~J., Mathews,
+  W.~C., Moore, R., Boswell, S.~L., Lesko, C.~R., Mugavero, M.~J., et~al.
+  (2015).
+\newblock Multiple imputation to account for measurement error in marginal
+  structural models.
+\newblock {\em Epidemiology (Cambridge, Mass.)} {\bf 26,} 645--652.
+
+\bibitem[\protect\citeauthoryear{Fong, Shen, Ashley, Deal, Seaton, Yu, Grant,
+  Ferrari, deCamp, Bailer, et~al\mbox{.}}{Fong et~al.}{2018}]{fong2018}
+Fong, Y., Shen, X., Ashley, V.~C., Deal, A., Seaton, K.~E., Yu, C., Grant,
+  S.~P., Ferrari, G., deCamp, A.~C., Bailer, R.~T., et~al. (2018).
+\newblock Modification of the association between t-cell immune responses and
+  human immunodeficiency virus type 1 infection risk by vaccine-induced
+  antibody responses in the hvtn 505 trial.
+\newblock {\em The Journal of Infectious Diseases} {\bf 217,} 1280--1288.
+
+\bibitem[\protect\citeauthoryear{Hammer, Sobieszczyk, Janes, Karuna, Mulligan,
+  Grove, Koblin, Buchbinder, Keefer, Tomaras, et~al\mbox{.}}{Hammer
+  et~al.}{2013}]{hammer2013}
+Hammer, S.~M., Sobieszczyk, M.~E., Janes, H., Karuna, S.~T., Mulligan, M.~J.,
+  Grove, D., Koblin, B.~A., Buchbinder, S.~P., Keefer, M.~C., Tomaras, G.~D.,
+  et~al. (2013).
+\newblock Efficacy trial of a dna/rad5 hiv-1 preventive vaccine.
+\newblock {\em New England Journal of Medicine} {\bf 369,} 2083--2092.
+
+\bibitem[\protect\citeauthoryear{Hern{\'a}n, Brumback, and Robins}{Hern{\'a}n
+  et~al.}{2001}]{hernan2001}
+Hern{\'a}n, M.~A., Brumback, B., and Robins, J.~M. (2001).
+\newblock Marginal structural models to estimate the joint causal effect of
+  nonrandomized treatments.
+\newblock {\em Journal of the American Statistical Association} {\bf 96,}
+  440--448.
+
+\bibitem[\protect\citeauthoryear{Hirano and Imbens}{Hirano and
+  Imbens}{2001}]{hirano2001}
+Hirano, K. and Imbens, G.~W. (2001).
+\newblock Estimation of causal effects using propensity score weighting: An
+  application to data on right heart catheterization.
+\newblock {\em Health Services and Outcomes Research Methodology} {\bf 2,}
+  259--278.
+
+\bibitem[\protect\citeauthoryear{Hirano and Imbens}{Hirano and
+  Imbens}{2004}]{hirano2004}
+Hirano, K. and Imbens, G.~W. (2004).
+\newblock The propensity score with continuous treatments.
+\newblock In Gelman, A. and li~Meng, X., editors, {\em Applied Bayesian
+  Modeling and Causal Inference from Incomplete-Data Perspectives: An Essential
+  Journey with Donald Rubin's Statistical Family}, chapter~7, pages 73--84.
+  Wiley Blackwell.
+
+\bibitem[\protect\citeauthoryear{Hong, Rudolph, and Stuart}{Hong
+  et~al.}{2017}]{hong2017}
+Hong, H., Rudolph, K.~E., and Stuart, E.~A. (2017).
+\newblock Bayesian approach for addressing differential covariate measurement
+  error in propensity score methods.
+\newblock {\em Psychometrika} {\bf 82,} 1078--1096.
+
+\bibitem[\protect\citeauthoryear{Janes, Cohen, Frahm, De~Rosa, Sanchez, Hural,
+  Magaret, Karuna, Bentley, Gottardo, et~al\mbox{.}}{Janes
+  et~al.}{2017}]{janes2017}
+Janes, H.~E., Cohen, K.~W., Frahm, N., De~Rosa, S.~C., Sanchez, B., Hural, J.,
+  Magaret, C.~A., Karuna, S., Bentley, C., Gottardo, R., et~al. (2017).
+\newblock Higher t-cell responses induced by dna/rad5 hiv-1 preventive vaccine
+  are associated with lower hiv-1 infection risk in an efficacy trial.
+\newblock {\em The Journal of Infectious Diseases} {\bf 215,} 1376--1385.
+
+\bibitem[\protect\citeauthoryear{Kendall}{Kendall}{2015}]{kendall2015}
+Kendall, B.~E. (2015).
+\newblock A statistical symphony: instrumental variables reveal causality and
+  control measurement error.
+\newblock In G.A.~Fox, S. N.-Y. and Sosa, V., editors, {\em Ecological
+  Statistics: Contemporary Theory and Application}, chapter~7. Oxford
+  University Press.
+
+\bibitem[\protect\citeauthoryear{Kuroki and Pearl}{Kuroki and
+  Pearl}{2014}]{kuroki2014}
+Kuroki, M. and Pearl, J. (2014).
+\newblock Measurement bias and effect restoration in causal inference.
+\newblock {\em Biometrika} {\bf 101,} 423--437.
+
+\bibitem[\protect\citeauthoryear{Kyle, Moodie, Klein, and Abrahamowicz}{Kyle
+  et~al.}{2016}]{kyle2016}
+Kyle, R.~P., Moodie, E.~E., Klein, M.~B., and Abrahamowicz, M. (2016).
+\newblock Correcting for measurement error in time-varying covariates in
+  marginal structural models.
+\newblock {\em American Journal of Epidemiology} {\bf 184,} 249--258.
+
+\bibitem[\protect\citeauthoryear{Liu, Ma, Zhu, and Carroll}{Liu
+  et~al.}{2017}]{liu2017}
+Liu, J., Ma, Y., Zhu, L., and Carroll, R.~J. (2017).
+\newblock Estimation and inference of error-prone covariate effect in the
+  presence of confounding variables.
+\newblock {\em Electronic Journal of Statistics} {\bf 11,} 480--501.
+
+\bibitem[\protect\citeauthoryear{Lockwood and McCaffrey}{Lockwood and
+  McCaffrey}{2015}]{lockwood2015}
+Lockwood, J. and McCaffrey, D.~F. (2015).
+\newblock Simulation-extrapolation for estimating means and causal effects with
+  mismeasured covariates.
+\newblock {\em Observational Studies} {\bf 1,} 241--290.
+
+\bibitem[\protect\citeauthoryear{Lunceford and Davidian}{Lunceford and
+  Davidian}{2004}]{lunceford2004}
+Lunceford, J.~K. and Davidian, M. (2004).
+\newblock Stratification and weighting via the propensity score in estimation
+  of causal treatment effects: a comparative study.
+\newblock {\em Statistics in Medicine} {\bf 23,} 2937--2960.
+
+\bibitem[\protect\citeauthoryear{McCaffrey, Lockwood, and Setodji}{McCaffrey
+  et~al.}{2013}]{mccaffrey2013}
+McCaffrey, D.~F., Lockwood, J., and Setodji, C.~M. (2013).
+\newblock Inverse probability weighting with error-prone covariates.
+\newblock {\em Biometrika} {\bf 100,} 671--680.
+
+\bibitem[\protect\citeauthoryear{McCullagh and Nelder}{McCullagh and
+  Nelder}{2018}]{mccullagh2018}
+McCullagh, P. and Nelder, J.~A. (2018).
+\newblock {\em Generalized linear models}.
+\newblock Routledge.
+
+\bibitem[\protect\citeauthoryear{Naimi, Moodie, Auger, and Kaufman}{Naimi
+  et~al.}{2014}]{naimi2014}
+Naimi, A.~I., Moodie, E.~E., Auger, N., and Kaufman, J.~S. (2014).
+\newblock Constructing inverse probability weights for continuous exposures: a
+  comparison of methods.
+\newblock {\em Epidemiology} {\bf 25,} 292--299.
+
+\bibitem[\protect\citeauthoryear{Nakamura}{Nakamura}{1990}]{nakamura1990}
+Nakamura, T. (1990).
+\newblock Corrected score function for errors-in-variables models: Methodology
+  and application to generalized linear models.
+\newblock {\em Biometrika} {\bf 77,} 127--137.
+
+\bibitem[\protect\citeauthoryear{Neidich, Fong, Li, Geraghty, Williamson,
+  Young, Goodman, Seaton, Shen, Sawant, et~al\mbox{.}}{Neidich
+  et~al.}{2019}]{neidich2019}
+Neidich, S.~D., Fong, Y., Li, S.~S., Geraghty, D.~E., Williamson, B.~D., Young,
+  W.~C., Goodman, D., Seaton, K.~E., Shen, X., Sawant, S., et~al. (2019).
+\newblock Antibody fc effector functions and igg3 associate with decreased
+  hiv-1 risk.
+\newblock {\em Journal of Clinical Investigation} {\bf 129,} 4838--4849.
+
+\bibitem[\protect\citeauthoryear{Neugebauer and van~der Laan}{Neugebauer and
+  van~der Laan}{2005}]{neugebauer2005}
+Neugebauer, R. and van~der Laan, M. (2005).
+\newblock Why prefer double robust estimators in causal inference?
+\newblock {\em Journal of Statistical Planning and Inference} {\bf 129,}
+  405--426.
+
+\bibitem[\protect\citeauthoryear{Robins}{Robins}{2000}]{robins2000b}
+Robins, J.~M. (2000).
+\newblock Marginal structural models versus structural nested models as tools
+  for causal inference.
+\newblock In Halloran, M. and Berry, D., editors, {\em Statistical Models in
+  Epidemiology, the Environment, and Clinical Trials. The IMA Volumes in
+  Mathematics and its Applications, vol 116.}, pages 95--133. Springer, New
+  York, NY.
+
+\bibitem[\protect\citeauthoryear{Robins, Rotnitzky, and Zhao}{Robins
+  et~al.}{1994}]{robins1994}
+Robins, J.~M., Rotnitzky, A., and Zhao, L.~P. (1994).
+\newblock Estimation of regression coefficients when some regressors are not
+  always observed.
+\newblock {\em Journal of the American statistical Association} {\bf 89,}
+  846--866.
+
+\bibitem[\protect\citeauthoryear{Saul and Hudgens}{Saul and
+  Hudgens}{2020}]{saul2017}
+Saul, B. and Hudgens, M. (2020).
+\newblock The calculus of m-estimation in r with geex.
+\newblock {\em Journal of Statistical Software, Articles} {\bf 92,} 1--15.
+
+\bibitem[\protect\citeauthoryear{Shu and Yi}{Shu and Yi}{2019}]{shu2019}
+Shu, D. and Yi, G.~Y. (2019).
+\newblock Inverse-probability-of-treatment weighted estimation of causal
+  parameters in the presence of error-contaminated and time-dependent
+  confounders.
+\newblock {\em Biometrical Journal} {\bf 61,} 1507--1525.
+
+\bibitem[\protect\citeauthoryear{Stefanski and Boos}{Stefanski and
+  Boos}{2002}]{stefanski2002}
+Stefanski, L.~A. and Boos, D.~D. (2002).
+\newblock The calculus of m-estimation.
+\newblock {\em The American Statistician} {\bf 56,} 29--38.
+
+\bibitem[\protect\citeauthoryear{Stefanski and Carroll}{Stefanski and
+  Carroll}{1987}]{stefanski1987}
+Stefanski, L.~A. and Carroll, R.~J. (1987).
+\newblock Conditional scores and optimal scores for generalized linear
+  measurement-error models.
+\newblock {\em Biometrika} {\bf 74,} 703--716.
+
+\bibitem[\protect\citeauthoryear{Tsiatis and Ma}{Tsiatis and
+  Ma}{2004}]{tsiatis2004}
+Tsiatis, A.~A. and Ma, Y. (2004).
+\newblock Locally efficient semiparametric estimators for functional
+  measurement error models.
+\newblock {\em Biometrika} {\bf 91,} 835--848.
+
+\bibitem[\protect\citeauthoryear{Vansteelandt, Babanezhad, and
+  Goetghebeur}{Vansteelandt et~al.}{2009}]{vansteelandt2009}
+Vansteelandt, S., Babanezhad, M., and Goetghebeur, E. (2009).
+\newblock Correcting instrumental variables estimators for systematic
+  measurement error.
+\newblock {\em Statistica Sinica} {\bf 19,} 1223--1246.
+
+\bibitem[\protect\citeauthoryear{Wang, Scharfstein, Tan, and MacKenzie}{Wang
+  et~al.}{2009}]{wang2009}
+Wang, W., Scharfstein, D., Tan, Z., and MacKenzie, E.~J. (2009).
+\newblock Causal inference in outcome-dependent two-phase sampling designs.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)} {\bf 71,} 947--969.
+
+\bibitem[\protect\citeauthoryear{Wu, Braun, Kioumourtzoglou, Choirat, Di, and
+  Dominici}{Wu et~al.}{2019}]{wu2019}
+Wu, X., Braun, D., Kioumourtzoglou, M.-A., Choirat, C., Di, Q., and Dominici,
+  F. (2019).
+\newblock Causal inference in the context of an error prone exposure: air
+  pollution and mortality.
+\newblock {\em The Annals of Applied Statistics} {\bf 13,} 520--547.
+
+\end{thebibliography}
