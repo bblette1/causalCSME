@@ -257,6 +257,7 @@ Consider the marginal structural model (MSM)
 where $g$ is a link function for an exponential family density, e.g., $g(\cdot) = \text{logit}(\cdot)$. The MSM parameter $\gamma = (\gamma_{0}, ..., \gamma_{m})$ is a row vector of length $m+1$ which quantifies the effects of the exposures on the outcome. The parameter $\gamma_{0}$ describes the mean outcome when all exposures are set to 0, which may or may not be of interest depending on the exposures being studied. The linear structure of the MSM is key to matching the conditional score framework described in the next section; more complicated specifications are considered in Web Appendix D.
 
 \begin{figure}
+\centering
 \includegraphics[width=6in]{Paper1_Fig1.png}
 \caption{Directed Acyclic Graphs (DAGs) corresponding to the problem setup, with variables defined in section 2 and $U$ corresponding to measurement error. (a) A general DAG where $\bm{A}$ is a vector of exposures, some of which may be mismeasured (indicated by the arrow to $\bm{A}^{*}$) and some of which may be subject to confounding bias (indicated by the arrow from $\bm{L}$). (b) A DAG for a specific exposure vector with four different types of exposures: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed modeling framework.}
 \label{fig:one}
