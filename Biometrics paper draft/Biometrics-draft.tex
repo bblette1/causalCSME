@@ -339,7 +339,7 @@ Since the CSME approach is defined using estimating equations, it's relatively s
 SW_{i} = \frac{f(A_{i1}, A_{i2}, ..., A_{in})}{f(A_{i1}, A_{i2}, ..., A_{in}) | \bm{L}_{i})} = \frac{f(A_{i1})f(A_{i2} | A_{i1}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1})}{f(A_{i,1} | \bm{L}_{i})f(A_{i2} | A_{i1}, \bm{L}_{i}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1}, \bm{L}_{i})}
 \end{equation*}
 
-Rather than the Markov factorization given above, most MSM with multiple treatments use weights of the form $SW_{i} = \prod_{j=1}^{m} f(A_{ij}) / f(A_{ij} | \bm{L}_{i})$ as originally described by \citet{hernan2001}, which assumes that the treatments are independent conditional on $\bm{L}$. For the simulations and application of this paper, this assumption will be made, but note that such a simplification may be dubious in various applications and will not hold if there are direct arrows between treatments in the DAG. For examples of estimating the joint propensity of various dependent exposures, see tchetgen, perez, liu. In the remainder of this paper, weights for continuous treatments will be estimated using a ratio of normal densities, but other methods~\citep{hirano2004} and more flexible choices for weight models~\citep{naimi2014} can also be used in general.
+Rather than the Markov factorization given above, most MSM with multiple treatments use weights of the form $SW_{i} = \prod_{j=1}^{m} f(A_{ij}) / f(A_{ij} | \bm{L}_{i})$ as originally described by \citet{hernan2001}, which assumes that the treatments are independent conditional on $\bm{L}$. For the simulations and application of this paper, this assumption will be made, but note that such a simplification may be dubious in various applications and will not hold if there are direct arrows between treatments in the DAG. For examples of estimating the joint propensity of various dependent exposures, see \citet{tchetgen2012}, \citet{perez2014}, \citet*{liu2016}. In the remainder of this paper, weights for continuous treatments will be estimated using a ratio of normal densities, but other methods~\citep{hirano2004} and more flexible choices for weight models~\citep{naimi2014} can also be used in general.
 
 Note that since the weighting eliminates confounding, the estimating equations of (4) are actually simpler than (2), since covariates $\bm{L}$ do not need to be included in the outcome model. The new forms of the conditional expectation and variance follow from setting $\eta_{*} = \beta_{0} + \bm{\delta}\beta_{a}$ in the equations in Section 3.1. Solving (4) yields estimates of the parameters of the MSM (1) with an additional dispersion parameter estimate.
 
@@ -390,7 +390,7 @@ Six methods were compared in performance estimating $\psi_{1}$, $\psi_{2}$, and 
     \footnotesize
     \caption{Results from the first simulation study. Bias reflects 100 times the average bias across simulated data sets for each method. ASE is 100 times the average of estimated standard errors. ESE is 100 times the standard deviation of parameter estimates. Cov is the empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer.}
     \begin{center}
-    \begin{tabular}{lllllllllllll}
+    \begin{tabular}{lrrrrrrrrrrrr}
     \hline
         & \multicolumn{4}{c}{$\gamma_{1}$} & \multicolumn{4}{c}{$\gamma_{2}$} & \multicolumn{4}{c}{$\gamma_{3}$} \\
         Estimator & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov \\
@@ -415,7 +415,7 @@ The second simulation study compared the proposed g-formula and IPW CSME approac
     \centering
     %\footnotesize
     \caption{Results from the second simulation study. Bias, ASE, ESE, and Coverage reflect the same quantities described in Table 1.}
-    \begin{tabular}{llllll}
+    \begin{tabular}{lcrrrr}
     \hline
          Estimator & Correct Specifications & Bias & ASE & ESE & Coverage \\
          \hline

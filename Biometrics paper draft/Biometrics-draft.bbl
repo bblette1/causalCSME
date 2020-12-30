@@ -141,6 +141,13 @@ Liu, J., Ma, Y., Zhu, L., and Carroll, R.~J. (2017).
   presence of confounding variables.
 \newblock {\em Electronic Journal of Statistics} {\bf 11,} 480--501.
 
+\bibitem[\protect\citeauthoryear{Liu, Hudgens, and Becker-Dreps}{Liu
+  et~al.}{2016}]{liu2016}
+Liu, L., Hudgens, M.~G., and Becker-Dreps, S. (2016).
+\newblock On inverse probability-weighted estimators in the presence of
+  interference.
+\newblock {\em Biometrika} {\bf 103,} 829--842.
+
 \bibitem[\protect\citeauthoryear{Lockwood and McCaffrey}{Lockwood and
   McCaffrey}{2015}]{lockwood2015}
 Lockwood, J. and McCaffrey, D.~F. (2015).
@@ -196,6 +203,14 @@ Neugebauer, R. and van~der Laan, M. (2005).
 \newblock {\em Journal of Statistical Planning and Inference} {\bf 129,}
   405--426.
 
+\bibitem[\protect\citeauthoryear{Perez-Heydrich, Hudgens, Halloran, Clemens,
+  Ali, and Emch}{Perez-Heydrich et~al.}{2014}]{perez2014}
+Perez-Heydrich, C., Hudgens, M.~G., Halloran, M.~E., Clemens, J.~D., Ali, M.,
+  and Emch, M.~E. (2014).
+\newblock Assessing effects of cholera vaccination in the presence of
+  interference.
+\newblock {\em Biometrics} {\bf 70,} 731--741.
+
 \bibitem[\protect\citeauthoryear{Robins}{Robins}{2000}]{robins2000b}
 Robins, J.~M. (2000).
 \newblock Marginal structural models versus structural nested models as tools
@@ -238,6 +253,12 @@ Stefanski, L.~A. and Carroll, R.~J. (1987).
 \newblock Conditional scores and optimal scores for generalized linear
   measurement-error models.
 \newblock {\em Biometrika} {\bf 74,} 703--716.
+
+\bibitem[\protect\citeauthoryear{Tchetgen and VanderWeele}{Tchetgen and
+  VanderWeele}{2012}]{tchetgen2012}
+Tchetgen, E. J.~T. and VanderWeele, T.~J. (2012).
+\newblock On causal inference in the presence of interference.
+\newblock {\em Statistical methods in medical research} {\bf 21,} 55--75.
 
 \bibitem[\protect\citeauthoryear{Tsiatis and Ma}{Tsiatis and
   Ma}{2004}]{tsiatis2004}
