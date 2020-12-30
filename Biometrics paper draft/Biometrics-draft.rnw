@@ -152,8 +152,6 @@ $^{2}$Department of Biostatistics, University of Washington and Fred Hutchinson 
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
-%\SweaveOpts{concordance=TRUE}
-%\SweaveOpts{concordance=TRUE}
 
 %  This will produce the submission and review information that appears
 %  right after the reference section.  Of course, it will be unknown when
@@ -248,7 +246,7 @@ This paper proceeds as follows. In Section 2, notation and the estimand are defi
 \section{Notation and Estimand}
 \label{s:notation}
 
-Suppose there are $m$ exposures/treatments of interest which may or may not be measured correctly. Let $\bm{A}_{i} = (A_{i1}, A_{i2}, ..., A_{im})$ be a row vector denoting the true exposures for individual $i$ and $\bm{A}^{*}_{i} =  (A^{*}_{i1}, A^{*}_{i2}, ..., A^{*}_{im})$ be the corresponding set of measured exposures. Suppose only the first $j$ exposures are measured with error, such that $A_{ik} = A^{*}_{ik}$ for $k > j$ for all individuals. For example, in the HVTN 505 trial, a biomarker of interest $A$ is antibody-dependent cellular phagocytosis activity. This biomarker was not observed exactly, but an imperfect phagocytic score $A^{*}$ was measured using flow cytometry analysis. Exposures subject to measurement error are assumed to be continuous random variables, while exposures known to be correctly measured may be continuous or discrete. Let $Y_{i}$ be the outcome of interest. Define $Y_{i}(\bm{a})$ to be the potential outcome under treatments $\bm{A} = \bm{a} = (a_{1}, a_{2}, ..., a_{m})$. Since there is at least one continuous exposure, each individual has infinite potential outcomes. Let $\bm{L}_{i} =  (L_{i1}, L_{i2}, ..., L_{ip})$ represent a vector of baseline covariates measured prior to the exposures. Assume that we observe $n$ i.i.d. copies of the random variables $(\bm{L}, \bm{A}^{*}, Y)$.
+Suppose there are $m$ exposures/treatments of interest which may or may not be measured correctly. Let $\bm{A}_{i} = (A_{i1}, A_{i2}, ..., A_{im})$ be a row vector denoting the true exposures for individual $i$ and $\bm{A}^{*}_{i} =  (A^{*}_{i1}, A^{*}_{i2}, ..., A^{*}_{im})$ be the corresponding set of measured exposures. Suppose only the first $j$ exposures are measured with error, such that $A_{ik} = A^{*}_{ik}$ for $k > j$ for all individuals. For example, in the HVTN 505 trial, a biomarker of interest $A$ is antibody-dependent cellular phagocytosis activity. This biomarker was not observed exactly, but an imperfect phagocytic score $A^{*}$ was measured using flow cytometry analysis. Exposures subject to measurement error are assumed to be continuous random variables, while exposures known to be correctly measured may be continuous or discrete. Let $Y_{i}$ be the outcome of interest. Define $Y_{i}(\bm{a})$ to be the potential outcome under treatments $\bm{A} = \bm{a} = (a_{1}, a_{2}, ..., a_{m})$. Since there is at least one continuous exposure, each individual has infinite potential outcomes. Let $\bm{L}_{i} =  (L_{i1}, L_{i2}, ..., L_{ip})$ represent a vector of baseline covariates measured prior to the exposures. Assume that $n$ i.i.d. copies of the random variables $(\bm{L}, \bm{A}^{*}, Y)$ are observed.
 
 Consider the marginal structural model (MSM)
 \begin{equation}
@@ -325,7 +323,7 @@ where the outcome predictions are from a fit CSME model with relevant interactio
 
 \subsection{IPW CSME Estimator}
 
-Since the CSME approach is defined using estimating equations, it's relatively straightforward to define an IPW extension. In particular, we propose estimating the parameters of interest by solving $\sum_{i=1}^{n} \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) = 0$ where:
+Since the CSME approach is defined using estimating equations, it's relatively straightforward to define an IPW extension. In particular, consider an estimator of the parameters of interest that solves $\sum_{i=1}^{n} \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) = 0$ where:
 
 \begin{equation}
     \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
@@ -342,7 +340,7 @@ Rather than the Markov factorization given above, most MSM with multiple treatme
 
 Note that since the weighting eliminates confounding, the estimating equations of (4) are actually simpler than (2), since covariates $\bm{L}$ do not need to be included in the outcome model. The new forms of the conditional expectation and variance follow from setting $\eta_{*} = \beta_{0} + \bm{\delta}\beta_{a}$ in the equations in Section 3.1. Solving (4) yields estimates of the parameters of the MSM (1) with an additional dispersion parameter estimate.
 
-Estimating the weights provides an additional challenge in that we must first fit the propensity model(s) where the exposures are the outcomes. Fortunately, measurement error is usually less serious for a model outcome than for model covariates~\citep{carroll2006}. Thus, we propose to use the mismeasured exposures in the propensity models without correction; in Web Appendix A, we show that under certain assumptions this does not affect the consistency of the proposed estimator and give further rationale for this choice.
+Estimating the weights provides an additional challenge in that the exposure measurement error has another opportunity to introduce bias. Fortunately, the exposures are now the propensity model(s) outcomes, and measurement error is usually much less serious for a model outcome than for model covariates~\citep{carroll2006}. In Web Appendix A, the proposed IPW CSME estimator is shown to be consistent even when the propensity models are fit using the mismeasured exposures without correction, under certain assumptions.
 
 \subsection{Doubly-Robust CSME Estimator}
 
