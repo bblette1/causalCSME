@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  29 DEC 2020 22:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  31 DEC 2020 16:40
 entering extended mode
 **./Web-appendix.tex
 (Web-appendix.tex
@@ -351,25 +351,25 @@ File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )))) (Web-appendix.aux)
 \openout1 = `Web-appendix.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 75.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 75.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 76.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 76.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    ... okay on input line 76.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -463,60 +463,422 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-(Web-appendix-concordance.tex)
-Overfull \hbox (19.8705pt too wide) in paragraph at lines 90--91
-\T1/aer/m/n/12 tion (EE). So we can write the g-formula CSME es-ti-ma-tor as $[
-][] \OML/cmm/m/it/12  []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Y[]; [][]; [][]; \OT1
-/cmr/m/n/12 \OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 ) =
- []
+(Web-appendix-concordance.tex) [1
 
-[1
+{C:/Users/bblette1/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.133 ...{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}
+                                                  _{i}, \Theta) = \sum_{i=1}...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
 
-{C:/Users/bblette1/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Overfull \hbox (6.09674pt too wide) in paragraph at lines 106--108
-\T1/aer/m/n/12 where no-ta-tion for the co-ef-fi-cients from the CSME method ar
-e ex-panded as $\OML/cmm/m/it/12 [] \OT1/cmr/m/n/12 = (\OML/cmm/m/it/12 []; :
-::; []\OT1/cmr/m/n/12 )[]$
- []
+! Missing $ inserted.
+<inserted text> 
+                $
+l.133 ...i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}_
+                                                  {i}, \Theta) = \sum_{i=1}^...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
 
-[2] [3] [4] [5] [6] [7] [8]
-Overfull \hbox (11.81375pt too wide) in paragraph at lines 264--265
+! Missing $ inserted.
+<inserted text> 
+                $
+l.133 ...{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}
+                                                  _{i}, \Theta)$ is equal to...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.133 ...i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}_
+                                                  {i}, \Theta)$ is equal to ...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[3] [4]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.153 ...^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}
+                                                  _{i}, \Theta) = 0$ where:
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.153 ...{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_
+                                                  {i}, \Theta) = 0$ where:
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Display math should end with $$.
+<to be read again> 
+                   ^
+l.156     \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}
+                                              _{i}, \Theta) =
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.156     \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}
+                                              _{i}, \Theta) =
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.156     \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_
+                                               {i}, \Theta) =
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.158        SW_{i}(Y_{i} - E[Y_{i} | \bm{A$^{*}$}
+                                                  _{i}])
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.158 ...   SW_{i}(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_
+                                                  {i}])
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.161           \bm{A$^{*}$}
+                            _{i}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.161           \bm{A$^{*}$}_
+                             {i}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \right. inserted.
+<inserted text> 
+                \right .
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I'm guessing that you meant to end an alignment here.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \right. inserted.
+<inserted text> 
+                \right .
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\frac  #1#2->{\begingroup #1\endgroup \@@over #2}
+                                                 
+l.163 ...2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi}
+                                                   \right )
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra \right.
+l.163 ..._{i} | \bm{A$^{*}$}_{i}] / \phi} \right )
+                                                  
+I'm ignoring a \right that had no matching \left.
+
+! Misplaced \crcr.
+\endarray ->\crcr 
+                  \egroup \egroup 
+l.164     \end{bmatrix}
+                       
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Extra }, or forgotten $.
+\endarray ->\crcr \egroup 
+                          \egroup 
+l.164     \end{bmatrix}
+                       
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\endarray ->\crcr \egroup \egroup 
+                                  
+l.164     \end{bmatrix}
+                       
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra \right.
+\endbmatrix ->\endmatrix \right ]
+                                 
+l.164     \end{bmatrix}
+                       
+I'm ignoring a \right that had no matching \left.
+
+
+! LaTeX Error: \begin{equation} on input line 155 ended by \end{bmatrix}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.164     \end{bmatrix}
+                       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.164     \end{bmatrix}
+                       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.165 \end{equation}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! You can't use `\eqno' in horizontal mode.
+\endmathdisplay@a ...\df@tag \@empty \else \veqno 
+                                                  \alt@tag \df@tag \fi \ifx ...
+l.165 \end{equation}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+! LaTeX Error: \begin{document} ended by \end{equation}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.165 \end{equation}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.165 \end{equation}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.165 \end{equation}
+                    
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.165 \end{equation}
+                    
+Things are pretty mixed up, but I think the worst is over.
+
+[5] [6] [7] [8]
+Overfull \hbox (11.81375pt too wide) in paragraph at lines 255--256
  [][] 
  []
 
 [9]
-Overfull \hbox (11.81375pt too wide) in paragraph at lines 290--291
+Overfull \hbox (11.81375pt too wide) in paragraph at lines 281--282
  [][] 
  []
 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [10] (Web-appendix.bbl [11]) [12] (Web-appendix.aux) ) 
 Here is how much of TeX's memory you used:
- 4330 strings out of 492902
- 58907 string characters out of 3133541
+ 4326 strings out of 492902
+ 58878 string characters out of 3133541
  136734 words of memory out of 3000000
  8107 multiletter control sequences out of 15000+200000
- 46653 words of font info for 101 fonts, out of 3000000 for 9000
+ 45323 words of font info for 97 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,18n,32p,1407b,230s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,19n,32p,1407b,230s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmbx8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
-msy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Web-appendix.pdf (12 pages, 229900 bytes).
+2.9/fonts/type1/public/amsfonts/cmextra/cmbsy8.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
+lic/amsfonts/cmextra/cmex8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
+/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
+sy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on Web-appendix.pdf (12 pages, 231707 bytes).
 PDF statistics:
- 110 PDF objects out of 1000 (max. 8388607)
+ 114 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  5 words of extra memory for PDF output out of 10000 (max. 10000000)
 
