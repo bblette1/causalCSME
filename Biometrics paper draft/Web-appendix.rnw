@@ -2,6 +2,7 @@
 \title{Web Appendix for ``Addressing concurrent confounding and exposure measurement error using a conditional score approach''}
 \author{Bryan S. Blette, Peter B. Gilbert, Michael G. Hudgens}
 \date{}
+
 \usepackage{amsmath}
 \usepackage{bm}
 \usepackage[margin=1in]{geometry}
@@ -86,46 +87,39 @@ Note-Should be no bold in beta subscripts - fix later.
 
 \subsubsection{Large sample properties}
 
-Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. In particular, we begin by rewriting the estimator into the form of an M-estimator. Note that the CSME estimator is an M-estimator and that the g-formula can be written in the form of an unbiased estimating equation (EE). So we can write the g-formula CSME estimator as $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Sigma, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \phi, \psi_{1}, ..., \psi_{m})$ and:
-
-\begin{equation}
-    \psi_{GF-CSME}(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Sigma, \Theta) =
+Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSME estimator is an M-estimator and the g-formula can be written in the form of an unbiased estimating equation (EE). Thus, the proposed g-formula CSME estimator can be written as $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Sigma, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \phi, \psi_{1}, ..., \psi_{m})$ and:
+\begin{equation*}
+    \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
     \begin{bmatrix}
-       (Y_{i} - E[Y_{i} | \textbf{L}_{i}, \Delta_{i}])
-       \begin{pmatrix}
-          1 \\
-          \textbf{L}_{i} \\
-          \Delta_{i}
-       \end{pmatrix} \\
-        \phi - \frac{(Y_{i} - E[Y_{i} | \textbf{L}_{i}, \Delta_{i}]))^{2}}{Var[Y_{i} | \textbf{L}_{i}, \Delta_{i}] / \phi} \\
-        \beta_{a_{1}\textbf{l}}\textbf{l}_{i} + \beta_{a_{1}} - \psi_{1} \\
+       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \Delta_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
+        \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
+        \beta_{a_{1}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
         \vdots \\
-        \beta_{a_{m}\textbf{l}}\textbf{l}_{i} + \beta_{a_{m}} - \psi_{m} \\
+        \beta_{a_{m}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{m}} - \gamma_{m} \\
     \end{bmatrix}
-\end{equation}
-where notation for the coefficients from the CSME method are expanded as $\beta_{\textbf{a}} = (\beta_{a_{1}},...,\beta_{a_{m}})^{T}$ and $\beta_{\textbf{al}} = (\beta_{a_{1}\textbf{l}}, ..., \beta_{a_{m}\textbf{l}})^{T}$, where $\beta_{a_{j}\textbf{l}}$ is the vector of all interactions between $a_{j}$ and elements of $\textbf{L}$ for $j = 1,...,m$ (with zeroes for interactions not included in the outcome model).
+\end{equation*}
 
-Each of the final $m$ estimating equations in the stack is an algebraic simplification of the g-formula in this context, and the EE for an arbitrary parameter $\psi_{k}$ can be shown to have expectation 0 as follows. First note that under the three identification assumptions of causal consistency, conditional exchangeability, and positivity, $E[Y(\textbf{a})] = \frac{1}{n}\sum_{i} \hat{E}[Y | \textbf{A} = \textbf{a}, \textbf{L}_{i}]$ and under the CSME statistical assumptions and notation, $\hat{E}[Y | \textbf{A} = \textbf{a}, \textbf{L}_{i}] = \beta_{0} + \beta_{a}^{T}\textbf{a} + \beta_{\textbf{l}}^{T}\textbf{l}_{i} + \beta_{\textbf{al}}^{T}(a \otimes \textbf{l}_{i})$. Then the estimating function for $\psi_{k}$ is unbiased, since
+Each of the final $m$ EEs in the stack is an algebraic simplification of the g-formula in this context, and the EE for an arbitrary parameter $\psi_{k}$ can be shown to have expectation 0 as follows. First note that under the three identification assumptions of causal consistency, conditional exchangeability, and positivity, $E[Y(\bm{a})] = \frac{1}{n}\sum_{i} E[Y | \bm{A} = \bm{a}, \bm{L}_{i}]$ and under the CSME statistical assumptions and notation, $\hat{E}[Y | \bm{A} = \bm{a}, \bm{L}_{i}] = \beta_{0} + \bm{a}\beta_{a} + \bm{l}_{i}\beta_{l} + \bm{a}\beta_{al}\bm{l}_{i}^{T}$. Then the estimating function for $\psi_{k}$ is unbiased, since
 
 \begin{align*}
-E_{0}[\beta_{a_{k}\textbf{l}}\textbf{L} + \beta_{a_{k}} - \psi_{k}] &= E[\beta_{a_{k}\textbf{l}}\textbf{L} + \beta_{a_{k}} - (E[Y(a_{k}, \textbf{a}_{(-k)})] - E[Y(a_{k} - 1, \textbf{a}_{(-k)})])] \\
-&=E_{0}[\beta_{a_{k}\textbf{l}}\textbf{L} + \beta_{a_{k}} - \bigg \{ \frac{1}{n} \sum_{i} (\beta_{0} + \beta_{a}^{T}\textbf{a} + \beta_{\textbf{l}}^{T}\textbf{l}_{i} + \beta_{\textbf{al}}^{T}(a \otimes \textbf{l}_{i})) \\
-&- \frac{1}{n} \sum_{i} (\beta_{0} + \beta_{a}^{T}\textbf{a} - \beta_{a_{k}} + \beta_{\textbf{l}}^{T}\textbf{l}_{i} + \beta_{\textbf{al}}^{T}(a \otimes \textbf{l}_{i})) - \beta_{a_{k}l}l_{i} \bigg \}] \\
-&=E_{0}[\beta_{a_{k}\textbf{l}}\textbf{L} + \beta_{a_{k}} - \frac{1}{n}\sum_{i} (\beta_{a_{k}} + \beta_{a_{k}\textbf{l}}\textbf{l}_{i})] \\
-&=E_{0}[\beta_{a_{k}\textbf{l}}\textbf{L} - \frac{1}{n}\sum_{i}\beta_{a_{k}\textbf{l}}\textbf{l}_{i}] \\
-&=\beta_{a_{k}\textbf{l}}E[\textbf{L}] - \beta_{a_{k}\textbf{l}}E[\textbf{L}] \\
+E_{0}[\beta_{a_{k}\bm{l}}\bm{L} + \beta_{a_{k}} - \psi_{k}] &= E[\beta_{a_{k}\bm{l}}\bm{L} + \beta_{a_{k}} - (E[Y(a_{k}, \bm{a}_{(-k)})] - E[Y(a_{k} - 1, \bm{a}_{(-k)})])] \\
+&=E_{0}[\beta_{a_{k}\bm{l}}\bm{L} + \beta_{a_{k}} - \bigg \{ \frac{1}{n} \sum_{i} (\beta_{0} + \beta_{a}^{T}\bm{a} + \beta_{\bm{l}}^{T}\bm{l}_{i} + \beta_{\bm{al}}^{T}(a \otimes \bm{l}_{i})) \\
+&- \frac{1}{n} \sum_{i} (\beta_{0} + \beta_{a}^{T}\bm{a} - \beta_{a_{k}} + \beta_{\bm{l}}^{T}\bm{l}_{i} + \beta_{\bm{al}}^{T}(a \otimes \bm{l}_{i})) - \beta_{a_{k}l}l_{i} \bigg \}] \\
+&=E_{0}[\beta_{a_{k}\bm{l}}\bm{L} + \beta_{a_{k}} - \frac{1}{n}\sum_{i} (\beta_{a_{k}} + \beta_{a_{k}\bm{l}}\bm{l}_{i})] \\
+&=E_{0}[\beta_{a_{k}\bm{l}}\bm{L} - \frac{1}{n}\sum_{i}\beta_{a_{k}\bm{l}}\bm{l}_{i}] \\
+&=\beta_{a_{k}\bm{l}}E[\bm{L}] - \beta_{a_{k}\bm{l}}E[\bm{L}] \\
 &=0
 \end{align*}
-where $\textbf{a} = (a_{k}, \textbf{a}_{(-k)})$ are arbitrary values in the support of the exposure space and $E_{0}$ refers to taking the expectation under the true parameter value.
+where $\bm{a} = (a_{k}, \bm{a}_{(-k)})$ are arbitrary values in the support of the exposure space and $E_{0}$ refers to taking the expectation under the true parameter value.
 
-Denote $\hat{\Theta}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Sigma, \hat{\Theta}) = 0$. Then by the proof above $\sqrt{n}(\hat{\Theta} - \Theta) \sim N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
+Denote $\hat{\Theta}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Sigma, \hat{\Theta}) = 0$. Then by the proof above $\sqrt{n}(\hat{\Theta} - \Theta) \sim N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
 
 \begin{equation*}
-\hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta^{T}} \psi_{GF-CSME}(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Sigma, \hat{\Theta})
+\hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta^{T}} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Sigma, \hat{\Theta})
 \end{equation*}
 
 \begin{equation*}
-\hat{B} = \frac{1}{n} \sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Sigma, \hat{\Theta}) \psi^{T}_{GF-CSME}(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Sigma, \hat{\Theta})
+\hat{B} = \frac{1}{n} \sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Sigma, \hat{\Theta}) \psi^{T}_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Sigma, \hat{\Theta})
 \end{equation*}
 
 In the R code implementing the methods, this sandwich variance estimation is accomplished using the R package geex~\citep{saul2017}.
@@ -138,7 +132,7 @@ It has been noted (see \citet{carroll2006}) that the CSME estimating equations r
 
 \subsubsection{Large sample properties}
 
-We prove consistency and asymptotic normality as above, using M-estimator theory. Note that the partial M-estimator~\citep{stefanski2002} corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \textbf{Z}_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Theta) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \Delta_{i}])\Delta_{i} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y_{i}, \textbf{Z}_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Theta)$ is equal to 0. Although $\Delta_{i}$ is a vector with length $m$ for each individual $i$, the estimator form is the same for each component and without loss of generality, we prove that the estimating function is unbiased for scalar $\Delta_{i}$.
+We prove consistency and asymptotic normality as above, using M-estimator theory. Note that the partial M-estimator~\citep{stefanski2002} corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \Delta_{i}])\Delta_{i} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta)$ is equal to 0. Although $\Delta_{i}$ is a vector with length $m$ for each individual $i$, the estimator form is the same for each component and without loss of generality, we prove that the estimating function is unbiased for scalar $\Delta_{i}$.
 
 We begin by proving a slightly different estimator is consistent and asymptotically normal, namely the estimator weighted by the unknown true propensity weights. Let $SW = \frac{h(A)}{f(A | L)}$ such that the numerator is any function of $A$ and the denominator is a conditional density of exposures given confounders. Furthermore, suppose that the denominator density equals the true conditional density, denoted $f(A | L) = f_{0}(A | L)$. Let $E_{0}$ notation refer to taking the expectation under the true causal parameter vector $\psi_{0}$ (which is nested within $E[Y | \Delta]$).
 
@@ -158,17 +152,17 @@ From here there are two jumps to our proposed estimator. The first is that even 
 
 \subsubsection{Relationship to classical causal estimators}
 
-Note that when the measurement error covariance matrix $\Sigma = \textbf{0}$, the sufficient statistic $\Delta$ reduces to the observed treatment vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Theta) = 0$ where:
+Note that when the measurement error covariance matrix $\Sigma = \textbf{0}$, the sufficient statistic $\Delta$ reduces to the observed treatment vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) = 0$ where:
 
 \begin{equation}
-    \psi(Y_{i}, \textbf{L}_{i}, \textbf{A$^{*}$}_{i}, \Theta) =
+    \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) =
     \begin{bmatrix}
-       SW_{i}(Y_{i} - E[Y_{i} | \textbf{A$^{*}$}_{i}])
+       SW_{i}(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_{i}])
        \begin{pmatrix}
           1 \\
-          \textbf{A$^{*}$}_{i}
+          \bm{A$^{*}$}_{i}
        \end{pmatrix} \\
-       SW_{i} \left ( \phi - \frac{(Y_{i} - E[Y_{i} | \textbf{A$^{*}$}_{i}]))^{2}}{Var[Y_{i} | \textbf{A$^{*}$}_{i}] / \phi} \right )
+       SW_{i} \left ( \phi - \frac{(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_{i}]))^{2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi} \right )
     \end{bmatrix}
 \end{equation}
 
@@ -188,7 +182,7 @@ We once again prove consistency and asymptotic normality of the proposed estimat
 
 where $f(A|L)$ and $h(A)$ are defined as before and $Q(A, L)$ is a function of $A$ and $L$ that often represents the outcome regression. We must show that the expected value of the estimating function at the true parameter value $\psi_{0}$ is equal to 0 if either the propensity model or outcome regression model is correctly specified.
 
-First, suppose that the outcome regression model is correctly specified, denoted $Q(A, L) = Q_{0}(A, L) = E[Y | A, L] - \psi_{0}^{T}(1, \textbf{a})^{T}$. Let $E_{0}$ denote taking the expectation under true parameter $\psi_{0}$, then
+First, suppose that the outcome regression model is correctly specified, denoted $Q(A, L) = Q_{0}(A, L) = E[Y | A, L] - \psi_{0}^{T}(1, \bm{a})^{T}$. Let $E_{0}$ denote taking the expectation under true parameter $\psi_{0}$, then
 
 \begin{align*}
 &E \bigg[\frac{h(A)}{f(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] + \int_{a} h(a)Q_{0}(A = a, L)d\mu (a) \bigg] \\
