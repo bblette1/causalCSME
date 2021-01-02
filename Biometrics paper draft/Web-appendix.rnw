@@ -212,9 +212,9 @@ E \bigg[\frac{h(A, V)}{g_{0}(A | L)}Q(A, L) \bigg] &= E \left \{ E \bigg[\frac{h
 
 Insert description, under no measurement error it reduces to the DR estimator from \citet{neugebauer2005}.
 
-\subsection{Additional considerations}
+\subsection{Uniqueness of EE solutions}
 
-Might want to add a short discussion on (i) using additional variables in the numerator model and (ii) accounting for estimation of $\Sigma$ or treatment weights or sampling weights when calculating the sandwich variance estimator. These are all covered in previous work so don't need to provide much detail, maybe can just mention briefly and provide references?
+Each of the proofs above relies on there being a unique solution to each set of estimating equations. It has been noted in prior work (cite) that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice. In the various simulations of this paper, multiple solutions were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should watch for rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
 
 \section{Web Appendix B: Accounting for Two-Phase Sampling}
 
