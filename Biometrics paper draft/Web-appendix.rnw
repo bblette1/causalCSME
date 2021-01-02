@@ -81,7 +81,7 @@
 
 In Web Appendix A, the large sample properties of the proposed estimators discussed in section 3.6 of the paper are proven.
 
-\subsection{G-formula estimator}
+\subsection{G-formula CSME estimator}
 
 \subsubsection{Large sample properties}
 
@@ -89,7 +89,7 @@ Consistency and asymptotic normality of the g-formula estimator are proven using
 \begin{equation*}
     \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
     \begin{bmatrix}
-       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \Delta_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
+       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
         \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
         \beta_{a_{1}l}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
         \vdots \\
@@ -124,27 +124,27 @@ In the R code implementing the methods, this sandwich variance estimation is acc
 
 It has been noted (see \citet{carroll2006}) that the CSME estimating equations reduce to the score equations for a GLM when the measurement error covariance matrix $\Sigma = 0_{m \times m}$. Thus under no measurement error, the procedure described above reduces to a stack of estimating equations corresponding to the common practice of performing the g-formula while specifying a GLM for the outcome regression, making it a special case of the proposed estimator.
 
-\subsection{IPW estimator}
+\subsection{IPW CSME estimator}
 
 \subsubsection{Large sample properties}
 
-We prove consistency and asymptotic normality as above, using M-estimator theory. Note that the partial M-estimator~\citep{stefanski2002} corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \Delta_{i}])\Delta_{i} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta)$ is equal to 0. Although $\Delta_{i}$ is a vector with length $m$ for each individual $i$, the estimator form is the same for each component and without loss of generality, we prove that the estimating function is unbiased for scalar $\Delta_{i}$.
+Consistency and asymptotic normality of the IPW CSME estimator are proven as above, using M-estimator theory. The partial M-estimator~\citep{stefanski2002} corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \bm{\Delta}_{i}])\bm{\Delta}_{i}^{T} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta)$ is equal to 0. Although $\bm{\Delta}_{i} = (\Delta_{i1}, ..., \Delta_{im})$ is a vector with length $m$ for each individual $i$, the estimator form is the same for each row of the EE stack and without loss of generality, the estimating function is proven to be unbiased for $SW_{i}(Y_{i} - E[Y_{i} | \bm{\Delta}_{i}])\Delta_{ik}$ for an arbitrary $1 \leq k \leq m$.
 
-We begin by proving a slightly different estimator is consistent and asymptotically normal, namely the estimator weighted by the unknown true propensity weights. Let $SW = \frac{h(A)}{f(A | L)}$ such that the numerator is any function of $A$ and the denominator is a conditional density of exposures given confounders. Furthermore, suppose that the denominator density equals the true conditional density, denoted $f(A | L) = f_{0}(A | L)$. Let $E_{0}$ notation refer to taking the expectation under the true causal parameter vector $\psi_{0}$ (which is nested within $E[Y | \Delta]$).
+First consider a slightly different estimator, namely the estimator weighted by the unknown true propensity weights. Let $SW = \frac{h(\bm{A})}{f(\bm{A} | \bm{L})}$ such that the numerator is any function of $\bm{A}$ and the denominator is a conditional density of exposures given confounders. Furthermore, suppose that the denominator density equals the true conditional density, denoted $f(\bm{A} | \bm{L}) = f_{0}(\bm{A} | \bm{L})$. Let $E_{0}$ notation refer to taking the expectation under the true causal parameter vector from the MSM, which is nested within $E(Y | \bm{\Delta})$. In a slight abuse of notation, let $\Delta_{k}$ be the random variable corresponding to the $k^{th}$ element of the random vector $\bm{\Delta}$, rather than the vector $\bm{\Delta}$ for individual $k$ which is instead notated as bold $\bm{\Delta}_{k}$ in the manuscript.
 
 \begin{align*}
-E_{0} \bigg[\frac{h(A)}{f_{0}(A | L)}(Y - E[Y | \Delta])\Delta \bigg] &= E_{0} \left \{ E \bigg[\frac{h(A)}{f_{0}(A | L)}(Y^{A} - E[Y^{A} | \Delta])\Delta | L \bigg] \right \} \\
-&= E_{0} \left \{ \int_{a} \frac{h(a)}{f_{0}(a | L)}(Y^{a} - E[Y^{a} | \Delta])\Delta f_{0}(a | L) d\mu (a) \right \} \\
-&= E_{0} \left \{ \int_{a} h(a)(Y^{a} - E[Y^{a} | \Delta])\Delta d\mu (a) \right \} \\
-&= \int_{a} E_{0} \left \{ h(a)(Y^{a} - E[Y^{a} | \Delta])\Delta \right \} d\mu (a) \\
-&= \int_{a} E_{0} \left \{ E \bigg[ h(a)(Y^{a} - E[Y^{a} | \Delta])\Delta | \Delta \bigg] \right \} d\mu (a) \\
-&= \int_{a} E_{0} \left \{ h(a)\Delta E \bigg[ (Y^{a} - E[Y^{a} | \Delta]) | \Delta \bigg] \right \} d\mu (a) \\
-&= \int_{a} E_{0} \left \{ h(a)\Delta ( E[Y^{a} | \Delta] - E[Y^{a} | \Delta] ) \right \} d\mu (a) \\
+E_{0} \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\} \Delta_{k} \bigg] &= E_{0} \left( E \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y^{\bm{A}} - E(Y^{\bm{A}} | \bm{\Delta}) \} \Delta_{k} | \bm{L} \bigg] \right) \\
+&= E_{0} \left [ \int_{\bm{a}} \frac{h(\bm{a})}{f_{0}(\bm{a} | \bm{L})}\{ Y^{\bm{a}} - E(Y^{\bm{a}} | \bm{\Delta}) \} \Delta_{k} f_{0}(\bm{a} | \bm{L}) d\mu (\bm{a}) \right ] \\
+&= E_{0} \left \{ \int_{\bm{a}} h(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} d\mu (\bm{a}) \right \} \\
+&= \int_{\bm{a}} E_{0} \left \{ h(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} \right \} d\mu (\bm{a}) \\
+&= \int_{\bm{a}} E_{0} \left \{ E \bigg[ h(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} | \bm{\Delta} \bigg] \right \} d\mu (\bm{a}) \\
+&= \int_{\bm{a}} E_{0} \left \{ h(\bm{a})\Delta_{k} E \bigg[ (Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}]) | \bm{\Delta} \bigg] \right \} d\mu (\bm{a}) \\
+&= \int_{\bm{a}} E_{0} \left \{ h(\bm{a})\Delta_{k} ( E[Y^{\bm{a}} | \bm{\Delta}] - E[Y^{\bm{a}} | \bm{\Delta}] ) \right \} d\mu (\bm{a}) \\
 &= 0
 \end{align*}
-where $d\mu (a)$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
+where $d\mu (\bm{a})$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
 
-From here there are two jumps to our proposed estimator. The first is that even if no treatments were mismeasured, we'd still need to estimate the treatment weights from some kind of model. This substitution is well known to result in an unbiased estimator as long as the propensity score model is correctly specified. The second jump was described in Section 3.3.3 of the paper, that the proposed estimator uses weights estimated from a propensity model that is fitting using the mismeasured treatments. Under the assumptions described in that section, the estimated weights are consistent when the propensity model is correctly specified and thus the proof above holds for the proposed estimator as well.
+From here there are two jumps to the proposed estimator. The first is that even if no treatments were mismeasured, one would still need to estimate the treatment weights from some kind of model. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified. The second jump was alluded to in Section 3.3 of the paper, that the proposed estimator uses weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure $A$ has a linear relationship with the confounders, i.e., $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but the measurement error will likely only introduce mild issues~\citep{carroll2006}.
 
 \subsubsection{Relationship to classical causal estimators}
 
