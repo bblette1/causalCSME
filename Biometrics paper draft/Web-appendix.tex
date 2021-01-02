@@ -145,25 +145,21 @@ E_{0} \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\}
 \end{align*}
 where $d\mu (\bm{a})$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
 
-From here there are two jumps to the proposed estimator. The first is that even if no treatments were mismeasured, one would still need to estimate the treatment weights from some kind of model. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified. The second jump was alluded to in Section 3.3 of the paper, that the proposed estimator uses weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure $A$ has a linear relationship with the confounders, i.e., $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but the measurement error will likely only introduce mild issues~\citep{carroll2006}
+From here there are two jumps to the proposed estimator. The first is that even if no treatments were mismeasured, one would still need to estimate the treatment weights from some kind of model. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified. The second jump was alluded to in Section 3.3 of the paper, that the proposed estimator uses weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure $A$ has a linear relationship with the confounders, i.e., $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but the measurement error will likely only introduce mild issues~\citep{carroll2006}.
 
 \subsubsection{Relationship to classical causal estimators}
 
-Note that when the measurement error covariance matrix $\Sigma = \textbf{0}$, the sufficient statistic $\Delta$ reduces to the observed treatment vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) = 0$ where:
+Note that when the measurement error covariance matrix $\Sigma = \textbf{0}_{m \times m}$, the sufficient statistic $\bm{\Delta}$ reduces to the observed exposure vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
 
 \begin{equation}
-    \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) =
+    \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
     \begin{bmatrix}
-       SW_{i}(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_{i}])
-       \begin{pmatrix}
-          1 \\
-          \bm{A$^{*}$}_{i}
-       \end{pmatrix} \\
-       SW_{i} \left ( \phi - \frac{(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_{i}]))^{2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi} \right )
+       SW_{i}\{ Y_{i} - E(Y_{i} | \bm{A}^{*}_{i}) \} (1, \bm{A}^{*}_{i})^{T} \\
+       SW_{i} \left [ \phi - \frac{ \{Y_{i} - E(Y_{i} | \bm{A}^{*}_{i}) \}^{2}}{Var(Y_{i} | \bm{A}^{*}_{i}) / \phi} \right ]
     \end{bmatrix}
 \end{equation}
 
-This is exactly the score function vector for a GLM weighted by $SW$. Thus, the IPW estimator fit using a weighted GLM for outcome $Y$ is a special case of our proposed estimator where there is no measurement error. Our estimator can be thought of as an extension of the traditional IPW estimator which allows for measurement error, but restricted to the GLM setting.
+This is exactly the score function vector for a GLM weighted by $SW$. Thus, an IPW estimator fit using a weighted GLM for outcome $Y$ is a special case of the proposed IPW CSME estimator where there is no measurement error present.
 
 \subsection{Doubly Robust Estimator}
 

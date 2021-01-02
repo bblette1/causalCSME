@@ -148,21 +148,16 @@ From here there are two jumps to the proposed estimator. The first is that even 
 
 \subsubsection{Relationship to classical causal estimators}
 
-Note that when the measurement error covariance matrix $\Sigma = \textbf{0}$, the sufficient statistic $\Delta$ reduces to the observed treatment vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) = 0$ where:
+Note that when the measurement error covariance matrix $\Sigma = \textbf{0}_{m \times m}$, the sufficient statistic $\bm{\Delta}$ reduces to the observed exposure vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
 
 \begin{equation}
-    \psi(Y_{i}, \bm{L}_{i}, \bm{A$^{*}$}_{i}, \Theta) =
+    \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
     \begin{bmatrix}
-       SW_{i}(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_{i}])
-       \begin{pmatrix}
-          1 \\
-          \bm{A$^{*}$}_{i}
-       \end{pmatrix} \\
-       SW_{i} \left ( \phi - \frac{(Y_{i} - E[Y_{i} | \bm{A$^{*}$}_{i}]))^{2}}{Var[Y_{i} | \bm{A$^{*}$}_{i}] / \phi} \right )
+       SW_{i}\{ Y_{i} - E(Y_{i} | \bm{A}^{*}_{i}) \} (1, \bm{A}^{*}_{i})^{T} \\
+       SW_{i} \left [ \phi - \frac{ \{Y_{i} - E(Y_{i} | \bm{A}^{*}_{i}) \}^{2}}{Var(Y_{i} | \bm{A}^{*}_{i}) / \phi} \right ]
     \end{bmatrix}
 \end{equation}
-
-This is exactly the score function vector for a GLM weighted by $SW$. Thus, the IPW estimator fit using a weighted GLM for outcome $Y$ is a special case of our proposed estimator where there is no measurement error. Our estimator can be thought of as an extension of the traditional IPW estimator which allows for measurement error, but restricted to the GLM setting.
+This is exactly the score function vector for a GLM weighted by $SW$. Thus, an IPW estimator fit using a weighted GLM for outcome $Y$ is a special case of the proposed IPW CSME estimator where there is no measurement error present.
 
 \subsection{Doubly Robust Estimator}
 
