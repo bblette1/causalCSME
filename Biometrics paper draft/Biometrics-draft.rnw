@@ -313,13 +313,14 @@ where the outcome predictions are from a fit CSME model with relevant interactio
 \begin{equation}
     \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
     \begin{bmatrix}
-       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \Delta_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
+       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
         \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
-        \beta_{a_{1}\bm{l}}\bm{l}_{i} + \beta_{a_{1}} - \gamma_{1} \\
+        \beta_{a_{1}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
         \vdots \\
-        \beta_{a_{m}\bm{l}}\bm{l}_{i} + \beta_{a_{m}} - \gamma_{m} \\
+        \beta_{a_{m}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{m}} - \gamma_{m} \\
     \end{bmatrix}
 \end{equation}
+where notation for the coefficients from the CSME method are expanded as $\beta_{a} = (\beta_{a_{1}},...,\beta_{a_{m}})^{T}$ and $\beta_{al} = (\beta_{a_{1}l}, ..., \beta_{a_{m}l})^{T}$, where $\beta_{a_{j}l}$ is the $1 \times p$ vector of parameters corresponding to interactions between $a_{j}$ and covariates in $\textbf{L}$ for $j = 1,...,m$ (with zeroes for interactions not included in the outcome model).
 
 \subsection{IPW CSME Estimator}
 
