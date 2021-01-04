@@ -214,7 +214,7 @@ Insert description, under no measurement error it reduces to the DR estimator fr
 
 \subsection{Uniqueness of EE solutions}
 
-Each of the proofs above relies on there being a unique solution to each set of estimating equations. It has been noted in prior work (cite) that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice. In the various simulations of this paper, multiple solutions were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should watch for rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
+Each of the proofs above relies on there being a unique solution to each set of estimating equations. It has been noted in prior work~\citep{stefanski1987} that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice. In the various simulations of this paper, multiple solutions were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should watch for rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
 
 \section{Web Appendix B: Accounting for Two-Phase Sampling}
 
@@ -230,7 +230,7 @@ In this section, we evaluate the performance of the methods under two assumption
 
 \subsection{Under positivity violation}
 
-To evaluate the proposed methods under positivity violations we replicate the general structure of the first simulation study from Section 5 of the paper almost exactly. We create a strong positivity violation by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
+To evaluate the proposed methods under positivity violations we replicate the general structure of the first simulation study from Section 5 of the paper almost exactly. We create a strong positivity violation (lack of positivity in reasonably sized finite samples rather than a structural lack of positivity) by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
 
 \begin{table}[h]
 \tblcaption{Simulation study under positivity violation}
