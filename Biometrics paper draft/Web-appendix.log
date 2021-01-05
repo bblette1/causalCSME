@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  1 JAN 2021 20:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  4 JAN 2021 15:46
 entering extended mode
 **./Web-appendix.tex
 (Web-appendix.tex
@@ -466,20 +466,33 @@ G,.JBIG2,.JB2,.eps]
 (Web-appendix-concordance.tex) [1
 
 {C:/Users/bblette1/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3] 
-[4] [5] [6] [7] [8]
-Overfull \hbox (11.81375pt too wide) in paragraph at lines 250--251
+[4] [5]
+Overfull \hbox (2.71844pt too wide) in paragraph at lines 174--175
+[]\T1/aer/m/n/12 First, sup-pose that the out-come re-gres-sion model is cor-re
+ctly spec-i-fied, de-noted $\OML/cmm/m/it/12 Q\OT1/cmr/m/n/12 (\OML/cmm/b/it/12
+ A\OML/cmm/m/it/12 ; \OML/cmm/b/it/12 L\OT1/cmr/m/n/12 ) =
+ []
+
+[6] [7]
+
+Package natbib Warning: Citation `stefanski1987' on page 8 undefined on input l
+ine 226.
+
+[8] [9]
+Overfull \hbox (11.81375pt too wide) in paragraph at lines 257--258
  [][] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[9] [10]
-Overfull \hbox (11.81375pt too wide) in paragraph at lines 276--277
+[10]
+Overfull \hbox (11.81375pt too wide) in paragraph at lines 283--284
  [][] 
  []
 
-(Web-appendix.bbl [11]) [12] (Web-appendix.aux) ) 
+[11] (Web-appendix.bbl [12])
+
+Package natbib Warning: There were undefined citations.
+
+[13] (Web-appendix.aux) ) 
 Here is how much of TeX's memory you used:
  4326 strings out of 492902
  58878 string characters out of 3133541
@@ -487,26 +500,26 @@ Here is how much of TeX's memory you used:
  8107 multiletter control sequences out of 15000+200000
  45323 words of font info for 97 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,13n,32p,1553b,230s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmm
-i8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Pro
-gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Web-appendix.pdf (12 pages, 231195 bytes).
+ 41i,13n,32p,1582b,230s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
+ex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Prog
+ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Program Files/MiKTeX 2
+.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on Web-appendix.pdf (13 pages, 233549 bytes).
 PDF statistics:
- 110 PDF objects out of 1000 (max. 8388607)
+ 114 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  5 words of extra memory for PDF output out of 10000 (max. 10000000)
 

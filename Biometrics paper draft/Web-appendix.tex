@@ -145,7 +145,7 @@ E_{0} \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\}
 \end{align*}
 where $d\mu (\bm{a})$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
 
-From here there are two jumps to the proposed estimator. The first is that even if no treatments were mismeasured, one would still need to estimate the treatment weights from some kind of model. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified. The second jump was alluded to in Section 3.3 of the paper, that the proposed estimator uses weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure $A$ has a linear relationship with the confounders, i.e., $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but the measurement error will likely only introduce mild issues~\citep{carroll2006}.
+From here there are two jumps to the proposed estimator. The first is that even if no treatments were mismeasured, one would still need to estimate the treatment weights from some kind of model. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified. The second jump was alluded to in Section 3.3 of the paper, that the proposed estimator uses weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure has a linear relationship with the confounders, i.e., with simplified scalar notation, $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but the measurement error will likely only introduce mild issues~\citep{carroll2006}.
 
 \subsubsection{Relationship to classical causal estimators}
 
@@ -158,24 +158,31 @@ Note that when the measurement error covariance matrix $\Sigma = \textbf{0}_{m \
        SW_{i} \left [ \phi - \frac{ \{Y_{i} - E(Y_{i} | \bm{A}^{*}_{i}) \}^{2}}{Var(Y_{i} | \bm{A}^{*}_{i}) / \phi} \right ]
     \end{bmatrix}
 \end{equation}
-
 This is exactly the score function vector for a GLM weighted by $SW$. Thus, an IPW estimator fit using a weighted GLM for outcome $Y$ is a special case of the proposed IPW CSME estimator where there is no measurement error present.
 
 \subsection{Doubly Robust Estimator}
 
-Still changing notation over from old version of proof, don't bother reading this section until I get rid of the $\epsilon$ notation that isn't helpful here.
-
 \subsubsection{Large Sample Properties}
 
-We once again prove consistency and asymptotic normality of the proposed estimator using M-estimator theory. The estimating function of the DR estimator has the form
+Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. The estimating function of the DR estimator has the form
 
 \begin{equation}
-\frac{h(A)}{f(A | L)}[Y - E[Y | \Delta] - Q(A, L)]\Delta + \int_{a} h(a, V)Q(A = a, L)d\mu (a)
+\frac{h(\bm{A})}{f(\bm{A} | \bm{L})} [\{Y - E(Y | \bm{\Delta})\}\bm{\Delta} - Q(\bm{A}, \bm{L})] + \int_{\bm{a}} h(\bm{a})Q(\bm{A} = \bm{a}, \bm{L})d\mu (\bm{a})
 \end{equation}
+where $f(\bm{A}|\bm{L})$ and $h(\bm{A})$ are defined as before and $Q(\bm{A}, \bm{L})$ is a function of $\bm{A}$ and $\bm{L}$ that often represents the outcome regression. One must show that the expected value of the estimating function at the true parameter value $\gamma_{0}$ is equal to 0 if either the propensity model or outcome regression model is correctly specified.
 
-where $f(A|L)$ and $h(A)$ are defined as before and $Q(A, L)$ is a function of $A$ and $L$ that often represents the outcome regression. We must show that the expected value of the estimating function at the true parameter value $\psi_{0}$ is equal to 0 if either the propensity model or outcome regression model is correctly specified.
+First, suppose that the outcome regression model is correctly specified, denoted $Q(\bm{A}, \bm{L}) = Q_{0}(\bm{A}, \bm{L}) = E[Y | A, L] - \gamma_{0}(1, \bm{a})^{T}$. Let $E_{0}$ denote taking the expectation under true parameter $\gamma_{0}$, then
 
-First, suppose that the outcome regression model is correctly specified, denoted $Q(A, L) = Q_{0}(A, L) = E[Y | A, L] - \psi_{0}^{T}(1, \bm{a})^{T}$. Let $E_{0}$ denote taking the expectation under true parameter $\psi_{0}$, then
+\begin{align*}
+&E \bigg[\frac{h(A)}{f(A | L)}[ \{ Y - E(Y | L, \Delta) \}\Delta - Q_{0}(\Delta, L)] + \int_{a} h(a)Q_{0}(A = a, L)d\mu (a) \bigg] \\
+&= E \bigg[\frac{h(A)}{f(A | L)}[\{ Y - E(Y | L, \Delta) \}\Delta - Q_{0}(A, L)] \bigg] + E \bigg[\int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, L]d\mu (a) \bigg] \\
+&= E \left \{ E \bigg[\frac{h(A)}{g(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] | A, L \bigg] \right \} + E \left \{ E \bigg[\int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, L]d\mu (a) | V \bigg] \right \} \\
+&= E \left \{ \frac{h(A)}{g(A | L)}[Q_{0}(A, L) - Q_{0}(A, L)] \right \} + E \left \{ \int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, V]d\mu (a) \right \} \\
+&= E \left \{ \int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, V]d\mu (a) \right \} \\
+&= E \left \{ \int_{a} h(a)E[Y^{A} - E[Y^{A} | V] | A = a, V]d\mu (a) \right \} \\
+&= E \left \{ \int_{a} h(a)(E[Y^{a} | V] - E[Y^{a} |V])d\mu (a) \right \} \\
+&= 0
+\end{align*}
 
 \begin{align*}
 &E \bigg[\frac{h(A)}{f(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] + \int_{a} h(a)Q_{0}(A = a, L)d\mu (a) \bigg] \\
@@ -192,31 +199,31 @@ First, suppose that the outcome regression model is correctly specified, denoted
 Now suppose the outcome regression is potentially misspecified. We show the estimator is unbiased as long as the propensity score model is correctly specified, denoted $g(A|L) = g_{0}(A|L)$.
 
 \begin{align*}
-&E \bigg[\frac{h(A, V)}{g_{0}(A | L)}[\epsilon(\beta_{0}) - Q(A, L)] + \int_{a} h(a, V)Q(A = a, L)d\mu (a) \bigg] \\
-&= E \bigg[\frac{h(A, V)}{g_{0}(A | L)}\epsilon(\beta_{0}) \bigg] - E \bigg[\frac{h(A, V)}{g_{0}(A | L)}Q(A, L) \bigg] + E \bigg[ \int_{a} h(a, V)Q(A = a, L)d\mu (a) \bigg]
+&E \bigg[\frac{h(A)}{f_{0}(A | L)} \bigg[ \{ Y - E(Y | \bm{\Delta})\} \Delta_{k} - Q(A, L) \bigg] + \int_{a} h(a)Q(A = a, L)d\mu (a) \bigg] \\
+&= E \bigg[\frac{h(A)}{f_{0}(A | L)}\{ Y - E(Y | \bm{\Delta})\} \Delta_{k} \bigg] - E \bigg[\frac{h(A)}{f_{0}(A | L)}Q(A, L) \bigg] + E \bigg[ \int_{a} h(a)Q(A = a, L)d\mu (a) \bigg]
 \end{align*}
 
 Since the left term is an unbiased estimating function for $\beta$ as shown earlier, it suffices to show that
 
 \begin{equation*}
-\int_{a} E \bigg[ h(a, V)Q(A = a, L) \bigg] d\mu (a) - E \bigg[\frac{h(A, V)}{g_{0}(A | L)}Q(A, L) \bigg] = 0
+\int_{a} E \bigg[ h(a)Q(A = a, L) \bigg] d\mu (a) - E \bigg[\frac{h(A)}{f_{0}(A | L)}Q(A, L) \bigg] = 0
 \end{equation*}
 
 To see this, note that
 
 \begin{align*}
-E \bigg[\frac{h(A, V)}{g_{0}(A | L)}Q(A, L) \bigg] &= E \left \{ E \bigg[\frac{h(A, V)}{g_{0}(A | L)}Q(A, L) | L \bigg] \right \} \\
-&= E \left \{ \int_{a} \frac{h(a, V)}{g_{0}(a | L)}Q(A = a, L) g_{0}(a | L) d\mu (a) \right \} \\
-&= \int_{a} E \bigg[ h(a, V)Q(A = a, L) \bigg] d\mu (a)
+E \bigg[\frac{h(A)}{g_{0}(A | L)}Q(A, L) \bigg] &= E \left \{ E \bigg[\frac{h(A)}{g_{0}(A | L)}Q(A, L) | L \bigg] \right \} \\
+&= E \left \{ \int_{a} \frac{h(a)}{g_{0}(a | L)}Q(A = a, L) g_{0}(a | L) d\mu (a) \right \} \\
+&= \int_{a} E \bigg[ h(a)Q(A = a, L) \bigg] d\mu (a)
 \end{align*}
 
 \subsubsection{Relationship to classical causal estimators}
 
 Insert description, under no measurement error it reduces to the DR estimator from \citet{neugebauer2005}.
 
-\subsection{Additional considerations}
+\subsection{Uniqueness of EE solutions}
 
-Might want to add a short discussion on (i) using additional variables in the numerator model and (ii) accounting for estimation of $\Sigma$ or treatment weights or sampling weights when calculating the sandwich variance estimator. These are all covered in previous work so don't need to provide much detail, maybe can just mention briefly and provide references?
+Each of the proofs above relies on there being a unique solution to each set of estimating equations. It has been noted in prior work~\citep{stefanski1987} that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice. In the various simulations of this paper, multiple solutions were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should watch for rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
 
 \section{Web Appendix B: Accounting for Two-Phase Sampling}
 
@@ -232,7 +239,7 @@ In this section, we evaluate the performance of the methods under two assumption
 
 \subsection{Under positivity violation}
 
-To evaluate the proposed methods under positivity violations we replicate the general structure of the first simulation study from Section 5 of the paper almost exactly. We create a strong positivity violation by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
+To evaluate the proposed methods under positivity violations we replicate the general structure of the first simulation study from Section 5 of the paper almost exactly. We create a strong positivity violation (lack of positivity in reasonably sized finite samples rather than a structural lack of positivity) by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
 
 \begin{table}[h]
 \tblcaption{Simulation study under positivity violation}
@@ -280,7 +287,7 @@ The proposed methods still seem to perform well for treatment $A_{3}$. For treat
 
 \section{Web Appendix D: More complex model specifications}
 
-The three proposed methods are based on a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for many potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
+The three proposed methods are based on a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
 
 Any other options for if additive ME doesn't hold?
 
