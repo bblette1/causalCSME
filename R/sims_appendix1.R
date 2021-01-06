@@ -5,7 +5,7 @@ library(rootSolve)
 
 # Set parameter values
 nsims <- 500
-n <- 2000
+n <- 1250
 beta1_true <- 0.7
 beta3_true <- -0.4
 beta5_true <- 0.3
@@ -31,7 +31,7 @@ simulator <- function(trial, sigma_me) {
   Xstar <- X + rnorm(n, 0, sqrt(sigma_me))
 
   # Case-cohort sample, Xstar value when R,Y = 0 is arbitrary
-  R <- rbinom(n, 1, 0.2)
+  R <- rbinom(n, 1, 0.1)
   Xstar[R == 0 & Y == 0] <- 0
 
   data <- data.frame("Y" = Y, "Xstar" = Xstar, "L1" = L1, "L2" = L2,
@@ -101,11 +101,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_gform_ps <- coef(results_csme_gform)[6] - true_effect
-  se_gform_ps <- sqrt(vcov(results_csme_gform)[6, 6])
-  coverage_gform_ps <-
-    1*(coef(results_csme_gform)[6] - 1.96*se_gform_ps < true_effect &
-         coef(results_csme_gform)[6] + 1.96*se_gform_ps > true_effect)
+  if (failed == FALSE) {
+    bias_gform_ps <- coef(results_csme_gform)[6] - true_effect
+    se_gform_ps <- sqrt(vcov(results_csme_gform)[6, 6])
+    coverage_gform_ps <-
+      1*(coef(results_csme_gform)[6] - 1.96*se_gform_ps < true_effect &
+           coef(results_csme_gform)[6] + 1.96*se_gform_ps > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_gform_ps <- NA
@@ -172,11 +174,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_ipw_ps <- coef(results_csme_ipw)[2] - true_effect
-  se_ipw_ps <- sqrt(vcov(results_csme_ipw)[2, 2])
-  coverage_ipw_ps <-
-    1*(coef(results_csme_ipw)[2] - 1.96*se_ipw_ps < true_effect &
-         coef(results_csme_ipw)[2] + 1.96*se_ipw_ps > true_effect)
+  if (failed == FALSE) {
+    bias_ipw_ps <- coef(results_csme_ipw)[2] - true_effect
+    se_ipw_ps <- sqrt(vcov(results_csme_ipw)[2, 2])
+    coverage_ipw_ps <-
+      1*(coef(results_csme_ipw)[2] - 1.96*se_ipw_ps < true_effect &
+           coef(results_csme_ipw)[2] + 1.96*se_ipw_ps > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_ipw_ps <- NA
@@ -234,11 +238,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_aipw_ps <- coef(results_csme_aipw)[6] - true_effect
-  se_aipw_ps <- sqrt(vcov(results_csme_aipw)[6, 6])
-  coverage_aipw_ps <-
-    1*(coef(results_csme_aipw)[6] - 1.96*se_aipw_ps < true_effect &
-         coef(results_csme_aipw)[6] + 1.96*se_aipw_ps > true_effect)
+  if (failed == FALSE) {
+    bias_aipw_ps <- coef(results_csme_aipw)[6] - true_effect
+    se_aipw_ps <- sqrt(vcov(results_csme_aipw)[6, 6])
+    coverage_aipw_ps <-
+      1*(coef(results_csme_aipw)[6] - 1.96*se_aipw_ps < true_effect &
+           coef(results_csme_aipw)[6] + 1.96*se_aipw_ps > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_aipw_ps <- NA
@@ -316,11 +322,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_gform_or <- coef(results_csme_gform)[9] - true_effect
-  se_gform_or <- sqrt(vcov(results_csme_gform)[9, 9])
-  coverage_gform_or <-
-    1*(coef(results_csme_gform)[9] - 1.96*se_gform_or < true_effect &
-         coef(results_csme_gform)[9] + 1.96*se_gform_or > true_effect)
+  if (failed == FALSE) {
+    bias_gform_or <- coef(results_csme_gform)[9] - true_effect
+    se_gform_or <- sqrt(vcov(results_csme_gform)[9, 9])
+    coverage_gform_or <-
+      1*(coef(results_csme_gform)[9] - 1.96*se_gform_or < true_effect &
+           coef(results_csme_gform)[9] + 1.96*se_gform_or > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_gform_or <- NA
@@ -386,11 +394,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_ipw_or <- coef(results_ipw)[2] - true_effect
-  se_ipw_or <- sqrt(vcov(results_ipw)[2, 2])
-  coverage_ipw_or <-
-    1*(coef(results_ipw)[2] - 1.96*se_ipw_or < true_effect &
-         coef(results_ipw)[2] + 1.96*se_ipw_or > true_effect)
+  if (failed == FALSE) {
+    bias_ipw_or <- coef(results_ipw)[2] - true_effect
+    se_ipw_or <- sqrt(vcov(results_ipw)[2, 2])
+    coverage_ipw_or <-
+      1*(coef(results_ipw)[2] - 1.96*se_ipw_or < true_effect &
+           coef(results_ipw)[2] + 1.96*se_ipw_or > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_ipw_or <- NA
@@ -462,11 +472,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_aipw_or <- coef(results_csme_aipw)[9] - true_effect
-  se_aipw_or <- sqrt(vcov(results_csme_aipw)[9, 9])
-  coverage_aipw_or <-
-    1*(coef(results_csme_aipw)[9] - 1.96*se_aipw_or < true_effect &
-         coef(results_csme_aipw)[9] + 1.96*se_aipw_or > true_effect)
+  if (failed == FALSE) {
+    bias_aipw_or <- coef(results_csme_aipw)[9] - true_effect
+    se_aipw_or <- sqrt(vcov(results_csme_aipw)[9, 9])
+    coverage_aipw_or <-
+      1*(coef(results_csme_aipw)[9] - 1.96*se_aipw_or < true_effect &
+           coef(results_csme_aipw)[9] + 1.96*se_aipw_or > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_aipw_or <- NA
@@ -543,11 +555,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_gform_psor <- coef(results_csme_gform)[9] - true_effect
-  se_gform_psor <- sqrt(vcov(results_csme_gform)[9, 9])
-  coverage_gform_psor <-
-    1*(coef(results_csme_gform)[9] - 1.96*se_gform_psor < true_effect &
-         coef(results_csme_gform)[9] + 1.96*se_gform_psor > true_effect)
+  if (failed == FALSE) {
+    bias_gform_psor <- coef(results_csme_gform)[9] - true_effect
+    se_gform_psor <- sqrt(vcov(results_csme_gform)[9, 9])
+    coverage_gform_psor <-
+      1*(coef(results_csme_gform)[9] - 1.96*se_gform_psor < true_effect &
+           coef(results_csme_gform)[9] + 1.96*se_gform_psor > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_gform_psor <- NA
@@ -613,11 +627,13 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_ipw_psor <- coef(results_csme_ipw)[2] - true_effect
-  se_ipw_psor <- sqrt(vcov(results_csme_ipw)[2, 2])
-  coverage_ipw_psor<-
-    1*(coef(results_csme_ipw)[2] - 1.96*se_ipw_psor < true_effect &
-         coef(results_csme_ipw)[2] + 1.96*se_ipw_psor > true_effect)
+  if (failed == FALSE) {
+    bias_ipw_psor <- coef(results_csme_ipw)[2] - true_effect
+    se_ipw_psor <- sqrt(vcov(results_csme_ipw)[2, 2])
+    coverage_ipw_psor<-
+      1*(coef(results_csme_ipw)[2] - 1.96*se_ipw_psor < true_effect &
+           coef(results_csme_ipw)[2] + 1.96*se_ipw_psor > true_effect)
+  }
 
   if(failed == TRUE) {
     bias_ipw_psor <- NA
@@ -689,13 +705,15 @@ simulator <- function(trial, sigma_me) {
 
   }
 
-  bias_aipw_psor <- coef(results_csme_aipw)[9] - true_effect
-  se_aipw_psor <- sqrt(vcov(results_csme_aipw)[9, 9])
-  coverage_aipw_psor <-
-    1*(coef(results_csme_aipw)[9] - 1.96*se_aipw_psor < true_effect &
-         coef(results_csme_aipw)[9] + 1.96*se_aipw_psor > true_effect)
+  if (failed == FALSE) {
+    bias_aipw_psor <- coef(results_csme_aipw)[9] - true_effect
+    se_aipw_psor <- sqrt(vcov(results_csme_aipw)[9, 9])
+    coverage_aipw_psor <-
+      1*(coef(results_csme_aipw)[9] - 1.96*se_aipw_psor < true_effect &
+           coef(results_csme_aipw)[9] + 1.96*se_aipw_psor > true_effect)
+  }
 
-  if(failed == TRUE) {
+  if (failed == TRUE) {
     bias_aipw_psor <- NA
     se_aipw_psor <- NA
     coverage_aipw_psor <- NA
@@ -726,5 +744,5 @@ set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, mes))
 
 # Output
-outfile <- paste("./Results/results_app1_", i, ".Rdata", sep = "")
+outfile <- paste("./Results/results_app1_1250_", i, ".Rdata", sep = "")
 save(sim, file = outfile)
