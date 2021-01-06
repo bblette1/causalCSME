@@ -73,7 +73,7 @@ glmmod1_nocell <-
       data = analysisdat, family = "binomial", weights = estweights)
 
 glmmod1_cell <-
-  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y + CD8PFS + CD4PFS + 
+  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y + CD8PFS + CD4PFS +
                          marker1*race.y + marker1*age.y,
       data = analysisdat, family = "binomial", weights = estweights)
 
@@ -134,7 +134,7 @@ testmoddr <- glm(HIVwk28preunbl.y ~ marker1*age.y + marker1*race.y +
                  data = analysisdat, weights = analysisdat$sw1,
                  family = binomial)
 
-testmoddr <- glm(HIVwk28preunbl.y ~ marker2*age.y + marker2*race.y + 
+testmoddr <- glm(HIVwk28preunbl.y ~ marker2*age.y + marker2*race.y +
                    marker2*CD8PFS + CD4PFS,
                  data = analysisdat, weights = analysisdat$sw2,
                  family = binomial)
@@ -507,33 +507,33 @@ marker2lower_cell_int <- rep(NA, length(sigma2list))
 marker2upper_cell_int <- rep(NA, length(sigma2list))
 
 for (i in 1:7) {
-  
+
   sigma_me1 <- sigma1list[i]
   sigma_me2 <- sigma2list[i]
-  
+
   # Use Neidich results for starting value, then switch to previous ME mods
   startval_1_nocell <- log(0.47)
   startval_1_cell <- log(0.59)
   startval_2_nocell <- log(0.48)
   startval_2_cell <- log(0.63)
-  
+
   if (i > 1) {
     startval_1_nocell <- coef(results_csme_aipw1_nocell)[9]
     startval_1_cell <- coef(results_csme_aipw1_cell)[11]
     startval_2_nocell <- coef(results_csme_aipw2_nocell)[9]
     startval_2_cell <- coef(results_csme_aipw2_cell)[11]
   }
-  
+
   # ADCP, no cell adjustment
-  results_csme_aipw1_nocell <- 
+  results_csme_aipw1_nocell <-
     m_estimate(estFUN = eefun_csme_aipw1_nocell, data = analysisdat,
                compute_roots = TRUE,
-               root_control = 
+               root_control =
                   setup_root_control(start = c(coef(glmmod1_nocell),
                                                mean(analysisdat$race.y),
                                                mean(analysisdat$age.y),
                                                startval_1_nocell)))
-  
+
   marker1ests_nocell[i] <- exp(coef(results_csme_aipw1_nocell)[9])
   se1 <- sqrt(vcov(results_csme_aipw1_nocell)[9, 9])
   marker1lower_nocell[i] <- exp(coef(results_csme_aipw1_nocell)[9] - 1.96*se1)
@@ -541,45 +541,45 @@ for (i in 1:7) {
 
   print("1")
   # ADCP, CD4 and CD8 adjustment
-  results_csme_aipw1_cell <- 
+  results_csme_aipw1_cell <-
     m_estimate(estFUN = eefun_csme_aipw1_cell, data = analysisdat,
                compute_roots = TRUE,
-               root_control = 
+               root_control =
                  setup_root_control(start = c(coef(glmmod1_cell),
                                               mean(analysisdat$race.y),
                                               mean(analysisdat$age.y),
                                               startval_1_cell)))
-  
+
   marker1ests_cell[i] <- exp(coef(results_csme_aipw1_cell)[11])
   se1 <- sqrt(vcov(results_csme_aipw1_cell)[11, 11])
   marker1lower_cell[i] <- exp(coef(results_csme_aipw1_cell)[11] - 1.96*se1)
   marker1upper_cell[i] <- exp(coef(results_csme_aipw1_cell)[11] + 1.96*se1)
   print("2")
   # R2, no cell adjustment
-  results_csme_aipw2_nocell <- 
+  results_csme_aipw2_nocell <-
     m_estimate(estFUN = eefun_csme_aipw2_nocell, data = analysisdat,
                compute_roots = TRUE,
-               root_control = 
+               root_control =
                  setup_root_control(start = c(coef(glmmod2_nocell),
                                               mean(analysisdat$race.y),
                                               mean(analysisdat$age.y),
                                               startval_2_nocell)))
-  
+
   marker2ests_nocell[i] <- exp(coef(results_csme_aipw2_nocell)[9])
   se2 <- sqrt(vcov(results_csme_aipw2_nocell)[9, 9])
   marker2lower_nocell[i] <- exp(coef(results_csme_aipw2_nocell)[9] - 1.96*se2)
   marker2upper_nocell[i] <- exp(coef(results_csme_aipw2_nocell)[9] + 1.96*se2)
   print("3")
   # R2, CD4 and CD8 adjustment
-  results_csme_aipw2_cell <- 
+  results_csme_aipw2_cell <-
     m_estimate(estFUN = eefun_csme_aipw2_cell, data = analysisdat,
                compute_roots = TRUE,
-               root_control = 
+               root_control =
                  setup_root_control(start = c(coef(glmmod2_cell),
                                               mean(analysisdat$race.y),
                                               mean(analysisdat$age.y),
                                               startval_2_cell)))
-  
+
   marker2ests_cell[i] <- exp(coef(results_csme_aipw2_cell)[11])
   se2 <- sqrt(vcov(results_csme_aipw2_cell)[11, 11])
   marker2lower_cell[i] <- exp(coef(results_csme_aipw2_cell)[11] - 1.96*se2)
@@ -590,15 +590,23 @@ for (i in 1:7) {
 }
 
 par(mfrow = c(2,2))
-plotCI(seq(0, 0.3, 0.05), marker1ests_nocell, li = marker1lower_nocell,
-       ui = marker1upper_nocell, xlab = "ME variance", ylab = "Odds ratio",
-       main = "ADCP without cellular adjustment")
-plotCI(seq(0, 0.3, 0.05), marker1ests_cell, li = marker1lower_cell,
-       ui = marker1upper_cell, xlab = "ME variance", ylab = "Odds ratio",
-       main = "ADCP with cellular adjustment")
-plotCI(seq(0, 0.3, 0.05), marker2ests_nocell, li = marker2lower_nocell,
-       ui = marker2upper_nocell, xlab = "ME variance", ylab = "Odds ratio",
-       main = "R2 without cellular adjustment")
-plotCI(seq(0, 0.3, 0.05), marker2ests_cell, li = marker2lower_cell,
-       ui = marker2upper_cell, xlab = "ME variance", ylab = "Odds ratio",
-       main = "R2 with cellular adjustment")
+plotCI(seq(0, 0.5, 0.5/6), marker1ests_nocell, li = marker1lower_nocell,
+       ui = marker1upper_nocell, xlab = "ME as proportion of intra-vaccinee variance",
+       ylab = "Odds ratio", main = "ADCP without cellular adjustment",
+       xaxt = "n")
+axis(1, at = c(0, 0.25, 0.5))
+plotCI(seq(0, 0.5, 0.5/6), marker1ests_cell, li = marker1lower_cell,
+       ui = marker1upper_cell, xlab = "ME as proportion of intra-vaccinee variance",
+       ylab = "Odds ratio", main = "ADCP with cellular adjustment",
+       xaxt = "n")
+axis(1, at = c(0, 0.25, 0.5))
+plotCI(seq(0, 0.5, 0.5/6), marker2ests_nocell, li = marker2lower_nocell,
+       ui = marker2upper_nocell, xlab = "ME as proportion of intra-vaccinee variance",
+       ylab = "Odds ratio", main = "RII without cellular adjustment",
+       xaxt = "n")
+axis(1, at = c(0, 0.25, 0.5))
+plotCI(seq(0, 0.5, 0.5/6), marker2ests_cell, li = marker2lower_cell,
+       ui = marker2upper_cell, xlab = "ME as proportion of intra-vaccinee variance",
+       ylab = "Odds ratio", main = "RII with cellular adjustment",
+       xaxt = "n")
+axis(1, at = c(0, 0.25, 0.5))
