@@ -4,7 +4,6 @@ library(matrixStats)
 library(rootSolve)
 
 # Set parameter values
-set.seed(1234)
 nsims <- 500
 n <- 2000
 beta1_true <- 0.7
@@ -42,6 +41,9 @@ simulator <- function(trial, sigma_me) {
   pi_hat <- mean(R[Y == 0])
   data$ccw <- (1-Y)*R/pi_hat + Y
 
+  # Initial guess for causal effect (good but variable intuition)
+  guess <- true_effect + rnorm(1, 0, 0.1)
+
   # Fit logistic regression to use for starting values
   mod <- glm(Y ~ Xstar*L2, family = "binomial", weights = data$ccw)
 
@@ -74,18 +76,42 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  results_csme_gform <-
-    m_estimate(estFUN = eefun_csme_gform, data = data,
-               compute_roots = TRUE,
-               root_control = setup_root_control(start = c(coef(mod),
-                                                           mean(L2),
-                                                           0.7)))
+  # Solve the estimating equations in a try-catch system
+  # Almost always works on first try in main sims but Appendix 1 sims
+  # have very small effective sample size, leading to more issues
+  # Tries new starting values and sets to NA if always divergent
+  failed <- TRUE
+  j <- 1
+
+  while(failed == TRUE & j < 6) {
+
+    failed <- FALSE
+    startvec <- c(coef(mod), mean(L2), guess)*(j == 1) +
+      c(coef(mod) + rnorm(4, 0, j/5), mean(L2),
+        guess + rnorm(1, 0, j/10))*(j > 1)
+    results_csme_gform <-
+      tryCatch(m_estimate(estFUN = eefun_csme_gform, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
+    if (failed == FALSE) {
+      if (abs(coef(results_csme_gform)[6]) > 3) { failed <- TRUE }
+    }
+    j <- j + 1
+
+  }
 
   bias_gform_ps <- coef(results_csme_gform)[6] - true_effect
   se_gform_ps <- sqrt(vcov(results_csme_gform)[6, 6])
   coverage_gform_ps <-
     1*(coef(results_csme_gform)[6] - 1.96*se_gform_ps < true_effect &
          coef(results_csme_gform)[6] + 1.96*se_gform_ps > true_effect)
+
+  if(failed == TRUE) {
+    bias_gform_ps <- NA
+    se_gform_ps <- NA
+    coverage_gform_ps <- NA
+  }
 
   # Weighted CSME
   # Estimate weights
@@ -103,7 +129,7 @@ simulator <- function(trial, sigma_me) {
 
   # Model 2: IPW-CSE
   # Get point estimates and variance using geex
-  eefun_ipw <- function(data) {
+  eefun_csme_ipw <- function(data) {
     Y <- data$Y
     Xstar <- data$Xstar
     sw <- data$sw
@@ -124,10 +150,7 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  run <- F
-
-  if (run == T) {
-
+  # Solve the estimating equations in a try-catch system
   failed <- TRUE
   j <- 1
 
@@ -135,39 +158,31 @@ simulator <- function(trial, sigma_me) {
 
     failed <- FALSE
     startvec <- coef(wmod)[1:2]*(j == 1) +
-      coef(mod)[1:2]*(j == 2) +
-      rnorm(2, 0, j/5)*(j > 2)
-    results_ipw <- tryCatch(m_estimate(estFUN = eefun_ipw, data = data,
-                                       root_control = setup_root_control(start = startvec)),
-                            error = function(e) { failed <<- TRUE})
+                coef(mod)[1:2]*(j == 2) +
+                rnorm(2, c(0, guess), j/5)*(j > 2)
+    results_csme_ipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_ipw, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
-      if (abs(coef(results_ipw)[2]) > 2) { failed <- TRUE }
+      if (abs(coef(results_csme_ipw)[2]) > 3) { failed <- TRUE }
     }
     j <- j + 1
 
   }
 
-  bias_ipw_ps <- coef(results_ipw)[2] - true_effect
-  se_ipw_ps <- sqrt(vcov(results_ipw)[2, 2])
+  bias_ipw_ps <- coef(results_csme_ipw)[2] - true_effect
+  se_ipw_ps <- sqrt(vcov(results_csme_ipw)[2, 2])
   coverage_ipw_ps <-
-    1*(coef(results_ipw)[2] - 1.96*se_ipw_ps < true_effect &
-         coef(results_ipw)[2] + 1.96*se_ipw_ps > true_effect)
+    1*(coef(results_csme_ipw)[2] - 1.96*se_ipw_ps < true_effect &
+         coef(results_csme_ipw)[2] + 1.96*se_ipw_ps > true_effect)
 
   if(failed == TRUE) {
     bias_ipw_ps <- NA
     se_ipw_ps <- NA
     coverage_ipw_ps <- NA
   }
-
-  }
-
-  results_ipw <- m_estimate(estFUN = eefun_ipw, data = data,
-                        root_control = setup_root_control(start = coef(wmod)))
-  bias_ipw_ps <- coef(results_ipw)[2] - true_effect
-  se_ipw_ps <- sqrt(vcov(results_ipw)[2, 2])
-  coverage_ipw_ps <-
-    1*(coef(results_ipw)[2] - 1.96*se_ipw_ps < true_effect &
-         coef(results_ipw)[2] + 1.96*se_ipw_ps > true_effect)
 
   # Model 3: AIPW
   # Weighted version of model 1
@@ -205,11 +220,13 @@ simulator <- function(trial, sigma_me) {
   while(failed == TRUE & j < 6) {
 
     failed <- FALSE
-    startvec <- c(coef(mod), mean(L2), 0.7)*(j == 1) +
-      c(rnorm(4, 0, j/5), mean(L2), 0.7)*(j > 1)
-    results_csme_aipw <- tryCatch(m_estimate(estFUN = eefun_csme_aipw, data = data,
-                                       root_control = setup_root_control(start = startvec)),
-                            error = function(e) { failed <<- TRUE})
+    startvec <- c(coef(mod), mean(L2), guess)*(j == 1) +
+                c(rnorm(4, 0, j/5), mean(L2), guess)*(j > 1)
+    results_csme_aipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_aipw, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
       if (abs(coef(results_csme_aipw)[6]) > 2) { failed <- TRUE }
     }
@@ -229,13 +246,12 @@ simulator <- function(trial, sigma_me) {
     coverage_aipw_ps <- NA
   }
 
-  print("test")
-
+  #####################################################################
   # Outcome regression correct, propensity model wrong
 
-
   # Fit logistic regression to use for starting values
-  mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial", weights = data$ccw)
+  mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial",
+             weights = data$ccw)
 
   # Model 1: G-formula-CSME
   eefun_csme_gform <- function(data) {
@@ -279,19 +295,38 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  results_csme_gform <- m_estimate(estFUN = eefun_csme_gform, data = data,
-                                   compute_roots = TRUE,
-                                   root_control =
-                                     setup_root_control(start = c(coef(mod),
-                                                                  mean(L1),
-                                                                  mean(L2),
-                                                                  0.7)))
+  failed <- TRUE
+  j <- 1
+
+  while(failed == TRUE & j < 6) {
+
+    failed <- FALSE
+    startvec <- c(coef(mod), mean(L1), mean(L2), guess)*(j == 1) +
+      c(coef(mod) + rnorm(6, 0, j/5), mean(L1), mean(L2),
+        guess + rnorm(1, 0, j/10))*(j > 1)
+    results_csme_gform <-
+      tryCatch(m_estimate(estFUN = eefun_csme_gform, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
+    if (failed == FALSE) {
+      if (abs(coef(results_csme_gform)[9]) > 3) { failed <- TRUE }
+    }
+    j <- j + 1
+
+  }
 
   bias_gform_or <- coef(results_csme_gform)[9] - true_effect
   se_gform_or <- sqrt(vcov(results_csme_gform)[9, 9])
   coverage_gform_or <-
     1*(coef(results_csme_gform)[9] - 1.96*se_gform_or < true_effect &
          coef(results_csme_gform)[9] + 1.96*se_gform_or > true_effect)
+
+  if(failed == TRUE) {
+    bias_gform_or <- NA
+    se_gform_or <- NA
+    coverage_gform_or <- NA
+  }
 
   # Weighted CSME
   # Estimate weights
@@ -309,7 +344,7 @@ simulator <- function(trial, sigma_me) {
 
   # Model 2: IPW-CSE
   # Get point estimates and variance using geex
-  eefun_ipw <- function(data) {
+  eefun_csme_ipw <- function(data) {
     Y <- data$Y
     Xstar <- data$Xstar
     sw <- data$sw
@@ -337,13 +372,15 @@ simulator <- function(trial, sigma_me) {
 
     failed <- FALSE
     startvec <- coef(wmod)[1:2]*(j == 1) +
-      coef(mod)[1:2]*(j == 2) +
-      rnorm(2, 0, j/5)*(j > 2)
-    results_ipw <- tryCatch(m_estimate(estFUN = eefun_ipw, data = data,
-                                       root_control = setup_root_control(start = startvec)),
-                            error = function(e) { failed <<- TRUE})
+                coef(mod)[1:2]*(j == 2) +
+                rnorm(2, c(0, guess), j/5)*(j > 2)
+    results_ipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_ipw, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
-      if (abs(coef(results_ipw)[2]) > 2) { failed <- TRUE }
+      if (abs(coef(results_ipw)[2]) > 3) { failed <- TRUE }
     }
     j <- j + 1
 
@@ -354,6 +391,12 @@ simulator <- function(trial, sigma_me) {
   coverage_ipw_or <-
     1*(coef(results_ipw)[2] - 1.96*se_ipw_or < true_effect &
          coef(results_ipw)[2] + 1.96*se_ipw_or > true_effect)
+
+  if(failed == TRUE) {
+    bias_ipw_or <- NA
+    se_ipw_or <- NA
+    coverage_ipw_or <- NA
+  }
 
   # Model 3: AIPW
   # Include denominator density in g-formula CSME outcome model
@@ -398,13 +441,26 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  results_csme_aipw <- m_estimate(estFUN = eefun_csme_aipw, data = data,
-                                  compute_roots = TRUE,
-                                  root_control =
-                                    setup_root_control(start = c(coef(mod),
-                                                                 mean(L1),
-                                                                 mean(L2),
-                                                                 0.7)))
+  failed <- TRUE
+  j <- 1
+
+  while(failed == TRUE & j < 6) {
+
+    failed <- FALSE
+    startvec <- c(coef(mod), mean(L1), mean(L2), guess)*(j == 1) +
+                c(rnorm(6, coef(mod), j/5), mean(L1),
+                  mean(L2), rnorm(1, guess, j/10))*(j > 1)
+    results_csme_aipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_aipw, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
+    if (failed == FALSE) {
+      if (abs(coef(results_csme_aipw)[9]) > 3) { failed <- TRUE }
+    }
+    j <- j + 1
+
+  }
 
   bias_aipw_or <- coef(results_csme_aipw)[9] - true_effect
   se_aipw_or <- sqrt(vcov(results_csme_aipw)[9, 9])
@@ -412,10 +468,14 @@ simulator <- function(trial, sigma_me) {
     1*(coef(results_csme_aipw)[9] - 1.96*se_aipw_or < true_effect &
          coef(results_csme_aipw)[9] + 1.96*se_aipw_or > true_effect)
 
+  if(failed == TRUE) {
+    bias_aipw_or <- NA
+    se_aipw_or <- NA
+    coverage_aipw_or <- NA
+  }
 
-  print("test")
+  #####################################################################
   # Both models correct
-
 
   # Fit linear regression to use for starting values
   mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial")
@@ -462,19 +522,38 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  results_csme_gform <- m_estimate(estFUN = eefun_csme_gform, data = data,
-                                   compute_roots = TRUE,
-                                   root_control =
-                                     setup_root_control(start = c(coef(mod),
-                                                                  mean(L1),
-                                                                  mean(L2),
-                                                                  0.7)))
+  failed <- TRUE
+  j <- 1
+
+  while(failed == TRUE & j < 6) {
+
+    failed <- FALSE
+    startvec <- c(coef(mod), mean(L1), mean(L2), guess)*(j == 1) +
+                c(coef(mod) + rnorm(6, 0, j/5), mean(L1), mean(L2),
+                  guess + rnorm(1, 0, j/10))*(j > 1)
+    results_csme_gform <-
+      tryCatch(m_estimate(estFUN = eefun_csme_gform, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
+    if (failed == FALSE) {
+      if (abs(coef(results_csme_gform)[9]) > 3) { failed <- TRUE }
+    }
+    j <- j + 1
+
+  }
 
   bias_gform_psor <- coef(results_csme_gform)[9] - true_effect
   se_gform_psor <- sqrt(vcov(results_csme_gform)[9, 9])
   coverage_gform_psor <-
     1*(coef(results_csme_gform)[9] - 1.96*se_gform_psor < true_effect &
          coef(results_csme_gform)[9] + 1.96*se_gform_psor > true_effect)
+
+  if(failed == TRUE) {
+    bias_gform_psor <- NA
+    se_gform_psor <- NA
+    coverage_gform_psor <- NA
+  }
 
   # Weighted CSME
   # Estimate weights
@@ -492,7 +571,7 @@ simulator <- function(trial, sigma_me) {
 
   # Model 2: IPW-CSE
   # Get point estimates and variance using geex
-  eefun_ipw <- function(data) {
+  eefun_csme_ipw <- function(data) {
     Y <- data$Y
     Xstar <- data$Xstar
     sw <- data$sw
@@ -520,23 +599,31 @@ simulator <- function(trial, sigma_me) {
 
     failed <- FALSE
     startvec <- coef(wmod)[1:2]*(j == 1) +
-      coef(mod)[1:2]*(j == 2) +
-      rnorm(2, 0, j/5)*(j > 2)
-    results_ipw <- tryCatch(m_estimate(estFUN = eefun_ipw, data = data,
-                                       root_control = setup_root_control(start = startvec)),
-                            error = function(e) { failed <<- TRUE})
+                coef(mod)[1:2]*(j == 2) +
+                rnorm(2, coef(wmod), j/5)*(j > 2)
+    results_csme_ipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_ipw, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
-      if (abs(coef(results_ipw)[2]) > 2) { failed <- TRUE }
+      if (abs(coef(results_csme_ipw)[2]) > 3) { failed <- TRUE }
     }
     j <- j + 1
 
   }
 
-  bias_ipw_psor <- coef(results_ipw)[2] - true_effect
-  se_ipw_psor <- sqrt(vcov(results_ipw)[2, 2])
+  bias_ipw_psor <- coef(results_csme_ipw)[2] - true_effect
+  se_ipw_psor <- sqrt(vcov(results_csme_ipw)[2, 2])
   coverage_ipw_psor<-
-    1*(coef(results_ipw)[2] - 1.96*se_ipw_psor < true_effect &
-         coef(results_ipw)[2] + 1.96*se_ipw_psor > true_effect)
+    1*(coef(results_csme_ipw)[2] - 1.96*se_ipw_psor < true_effect &
+         coef(results_csme_ipw)[2] + 1.96*se_ipw_psor > true_effect)
+
+  if(failed == TRUE) {
+    bias_ipw_psor <- NA
+    se_ipw_psor <- NA
+    coverage_ipw_psor <- NA
+  }
 
   # Model 3: AIPW
   # Include denominator density in g-formula CSME outcome model
@@ -581,19 +668,38 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  results_csme_aipw <- m_estimate(estFUN = eefun_csme_aipw, data = data,
-                                  compute_roots = TRUE,
-                                  root_control =
-                                    setup_root_control(start = c(coef(mod),
-                                                                 mean(L1),
-                                                                 mean(L2),
-                                                                 0.7)))
+  failed <- TRUE
+  j <- 1
+
+  while(failed == TRUE & j < 6) {
+
+    failed <- FALSE
+    startvec <- c(coef(mod), mean(L1), mean(L2), guess)*(j == 1) +
+                c(rnorm(6, coef(mod), j/5), mean(L1),
+                  mean(L2), rnorm(1, guess, j/10))*(j > 1)
+    results_csme_aipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_aipw, data = data,
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
+    if (failed == FALSE) {
+      if (abs(coef(results_csme_aipw)[9]) > 3) { failed <- TRUE }
+    }
+    j <- j + 1
+
+  }
 
   bias_aipw_psor <- coef(results_csme_aipw)[9] - true_effect
   se_aipw_psor <- sqrt(vcov(results_csme_aipw)[9, 9])
   coverage_aipw_psor <-
     1*(coef(results_csme_aipw)[9] - 1.96*se_aipw_psor < true_effect &
          coef(results_csme_aipw)[9] + 1.96*se_aipw_psor > true_effect)
+
+  if(failed == TRUE) {
+    bias_aipw_psor <- NA
+    se_aipw_psor <- NA
+    coverage_aipw_psor <- NA
+  }
 
 
   return(c(bias_gform_ps, bias_ipw_ps, bias_aipw_ps,
