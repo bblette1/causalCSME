@@ -78,7 +78,6 @@ simulator <- function(trial, sigma_me) {
                 c(coef(mod) + rnorm(4, 0, j/5), mean(L2), guess)*(j > 1)
     results_csme_gform <-
       tryCatch(m_estimate(estFUN = eefun_csme_gform, data = data,
-                          outer_args = list(denom_mod),
                           root_control =
                             setup_root_control(start = startvec)),
                error = function(e) { failed <<- TRUE})
@@ -116,7 +115,7 @@ simulator <- function(trial, sigma_me) {
 
   # Get point estimates and variance using geex
   # First point estimates
-  eefun_ipw1 <- function(data) {
+  eefun_csme_ipw1 <- function(data) {
     Y <- data$Y
     Xstar <- data$Xstar
     sw <- data$sw
@@ -137,10 +136,10 @@ simulator <- function(trial, sigma_me) {
     }
   }
 
-  results_ipw <-
-    m_estimate(estFUN = eefun_ipw1, data = data,
+  results_csme_ipw <-
+    m_estimate(estFUN = eefun_csme_ipw1, data = data,
                root_control = setup_root_control(start = c(coef(wmod))))
-  bias_ipw_ps <- coef(results_ipw)[2] - true_effect
+  bias_ipw_ps <- coef(results_csme_ipw)[2] - true_effect
 
   # Then get variance estimates accounting for weight estimation
   eefun_ipw2 <- function(data, model1, model2) {
