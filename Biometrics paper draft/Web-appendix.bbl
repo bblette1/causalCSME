@@ -1,10 +1,27 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Buzas and Stefanski}{Buzas and
+  Stefanski}{1996}]{buzas1996}
+Buzas, J. and Stefanski, L. (1996).
+\newblock A note on corrected-score estimation.
+\newblock {\em Statistics \& Probability Letters} {\bf 28,} 1--8.
+
 \bibitem[\protect\citeauthoryear{Carroll, Ruppert, Stefanski, and
   Crainiceanu}{Carroll et~al.}{2006}]{carroll2006}
 Carroll, R.~J., Ruppert, D., Stefanski, L.~A., and Crainiceanu, C.~M. (2006).
 \newblock {\em Measurement error in nonlinear models: a modern perspective}.
 \newblock CRC press.
+
+\bibitem[\protect\citeauthoryear{Li, Palta, and Shao}{Li et~al.}{2004}]{li2004}
+Li, L., Palta, M., and Shao, J. (2004).
+\newblock A measurement error model with a poisson distributed surrogate.
+\newblock {\em Statistics in medicine} {\bf 23,} 2527--2536.
+
+\bibitem[\protect\citeauthoryear{Nakamura}{Nakamura}{1990}]{nakamura1990}
+Nakamura, T. (1990).
+\newblock Corrected score function for errors-in-variables models: Methodology
+  and application to generalized linear models.
+\newblock {\em Biometrika} {\bf 77,} 127--137.
 
 \bibitem[\protect\citeauthoryear{Neugebauer and van~der Laan}{Neugebauer and
   van~der Laan}{2005}]{neugebauer2005}
@@ -30,6 +47,13 @@ Saul, B. and Hudgens, M. (2020).
 Stefanski, L.~A. and Boos, D.~D. (2002).
 \newblock The calculus of m-estimation.
 \newblock {\em The American Statistician} {\bf 56,} 29--38.
+
+\bibitem[\protect\citeauthoryear{Stefanski and Carroll}{Stefanski and
+  Carroll}{1987}]{stefanski1987}
+Stefanski, L.~A. and Carroll, R.~J. (1987).
+\newblock Conditional scores and optimal scores for generalized linear
+  measurement-error models.
+\newblock {\em Biometrika} {\bf 74,} 703--716.
 
 \bibitem[\protect\citeauthoryear{Wang, Scharfstein, Tan, and MacKenzie}{Wang
   et~al.}{2009}]{wang2009}

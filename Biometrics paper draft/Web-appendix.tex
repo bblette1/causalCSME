@@ -5,6 +5,7 @@
 
 \usepackage{amsmath}
 \usepackage{bm}
+\usepackage{caption}
 \usepackage[margin=1in]{geometry}
 \usepackage{natbib}
 \usepackage{setspace}
@@ -19,10 +20,10 @@
 \newsavebox{\tabnotesbox}
 \newlength{\tablen}
 \newlength{\tabnoteslen}
-\newcommand\centerlast{%
-  \advance\leftskip by 0pt plus 1fil%
-  \advance\rightskip by 0pt plus -1fil%
-   \parfillskip0pt plus 2fil\relax}
+%\newcommand\centerlast{%
+  %\advance\leftskip by 0pt plus 1fil%
+  %\advance\rightskip by 0pt plus -1fil%
+   %\parfillskip0pt plus 2fil\relax}
 
 \long\def\tblcaption#1#2{\vspace*{-5pt}
 \sbox{\tabbox}{#2}
@@ -30,7 +31,7 @@
 \vskip8pt\refstepcounter{tblcap}
 \centering\parbox[c]{\textwidth}{
 \centerlast\noindent\mbox{\noindent\centerlast
- Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
+ Appendix Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
 \fontsize{9}{11}\selectfont \mbox{#2}}
 
 \long\def\tblcaptionnotes#1#2#3{
@@ -41,7 +42,7 @@
 \vskip8pt\refstepcounter{tblcap}
 \centering\parbox[c]{\textwidth}{
 \centerlast\noindent\mbox{\noindent\centerlast
- Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
+ Appendix Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
 \fontsize{9}{11}\selectfont \mbox{#2}\\[5pt]
 \parbox[@{}l]{\tabnoteslen}{\fontsize{8}{10}\selectfont #3}
 }
@@ -227,24 +228,29 @@ Each of the proofs above relies on there being a unique solution to each set of 
 
 \section{Web Appendix B: Accounting for Two-Phase Sampling}
 
-Many studies (including the HVTN 505 trial) use a two-phase sampling design. Such a design is particularly useful when the primary exposure(s) and outcome are easy to measure, but exposures and covariates of secondary interest are expensive or difficult to measure. Because each of the proposed methods above belongs to the estimating equation framework, it is straightforward to incorporate previously described methods for causal inference from studies with two-phase sampling. In this section, we demonstrate one such approach under a using a simulation study. In particular, for this simulation and the application section analysis, we follow the simple IPW method described in \citet{wang2009}, but the DR approaches from the same paper or from \citet{rose2011} could also be explored to account for two-phase sampling within our proposed methods. The simple IPW method is implemented by weighting each of the proposed estimating equations by the inverse probability of selection for the second-phase of the study (multiplying treatment weights by sampling weights for the IPW-CSME and DR-CSME estimators) and restricting the analysis to those selected. This works well for the subset of the HVTN 505 trial that is the focus of Section 2.5, but may be inadequate when analyzing exposures measured in a subsample in conjunction with exposures measured in the full sample.
+Many studies (including the HVTN 505 trial) use a two-phase sampling design. Such a design is particularly useful when the primary exposure(s) and outcome are easy to measure, but exposures and covariates of secondary interest are expensive or difficult to measure. Because each of the proposed methods above belongs to the estimating equation framework, it is straightforward to incorporate previously described methods for causal inference from studies with two-phase sampling. In this section, one such approach is demonstrated using a simulation study. In particular, for this simulation and the application section analysis, the simple IPW method described in \citet{wang2009} is implemented, but the DR approaches from the same paper or from \citet{rose2011} could also be explored to account for two-phase sampling within the proposed methods. The simple IPW method is implemented by weighting each of the proposed estimating equations by the inverse probability of selection for the second-phase of the study (multiplying treatment weights by sampling weights for the IPW-CSME and DR-CSME estimators) and restricting the analysis to those selected. This works well for the subset of the HVTN 505 trial that is the focus of Section 5 of the paper, but may be inadequate when analyzing exposures measured in a sub-sample in conjunction with exposures measured in the full sample.
 
 \subsection{Two-phase sampling simulations}
 
-We replicate the structure of the second simulation study described in Section 5 of the paper, but under a two-phase sampling design. ***These are a few months old and might not be fully up to date with most recent versions of main sims, double-check before adding here***. The results are presented in the following table:
+The structure of the second simulation study described in Section 5 of the paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done under two scenarios, one with $n=2000$ and a $20\%$ sub-cohort and another close to the design of the HVTN 505 trial, i.e., with $n=1250$ and a sub-cohort of $10\%$. The results for the first scenario are presented in the following table:
+
+The methods seem to perform well as they did in the full-sampling simulation provided in the paper, although the IPW CSME estimator has some bias and slightly lower coverage. The results for the second scenario are given here:
+
+There are a noticeable number of simulation runs where the root finding algorithm for a particular estimator diverged for the g-formula CSME estimator, likely due to the very low effective sample size in this scenario. This provided rationale for only using the DR CSME estimator in Section 5 of the paper.
 
 \section{Web Appendix C: Additional Simulations}
 
-In this section, we evaluate the performance of the methods under two assumption violations: (i) when positivity doesn't hold and (ii) when measurement error doesn't follow a classical additive model.
+In this section, the methods are studied under two assumption violations: (i) when positivity doesn't hold and (ii) when measurement error doesn't follow a classical additive model.
 
 \subsection{Under positivity violation}
 
-To evaluate the proposed methods under positivity violations we replicate the general structure of the first simulation study from Section 5 of the paper almost exactly. We create a strong positivity violation (lack of positivity in reasonably sized finite samples rather than a structural lack of positivity) by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
+To evaluate the proposed methods under positivity violations, the general structure of the first simulation study from Section 5 of the paper is replicated almost exactly. A strong positivity violation is created by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
 
 \begin{table}[h]
 \tblcaption{Simulation study under positivity violation}
+%\caption*{Appendix Table 1: Simulation study under positivity violation}
 {\tabcolsep=4.25pt
-\begin{tabular}{@{}ccccccccccccc@{}}
+\begin{tabular}{@{}lrrrrrrrrrrrr@{}}
 \tblhead{ & $\psi_{1}$ &&&& $\psi_{2}$ &&&& $\psi_{3}$ &&& \\
 Estimator & Bias & ASE & ESE & Coverage & Bias & ASE & ESE & Coverage & Bias & ASE & ESE & Coverage}
 Regression & -0.008 & 0.022 & 0.022 & 93.6\% & 0.070 & 0.044 & 0.045 & 69.4\% & 0.010 & 0.023 & 0.023 & 91.8\% \\
@@ -257,20 +263,18 @@ IPW CSME & -0.058 & 0.024 & 0.026 & 35.2\% & -0.004 & 0.057 & 0.060 & 96.2\% & -
 \end{tabular}}
 \end{table}
 
-We note that the results overall look similar to that in Table 1 of the paper. However, with the positivity assumption broken, the proposed methods do not perform as well in estimating the effect of $A_{1}$. In addition, for the proposed weighted-CSME estimator, some bias seems to bleed over into the estimation of effects of the other treatments for which positivity still holds. However, the proposed methods still greatly outperform all comparator methods in this scenario.
+The results overall look similar to that in Table 1 of the paper. However, with the positivity assumption broken, the proposed methods do not perform as well in estimating the effect of $A_{1}$. In addition, for the proposed weighted-CSME estimator, some bias seems to bleed over into the estimation of effects of the other treatments for which positivity still holds. However, the proposed methods still generally outperform the comparator methods in this scenario. \\
 
 Positivity violations become more likely with more treatment variables and with treatment variables that are continuous or take on many values. In these settings positivity should receive just as much scrutiny as the conditional exchangeability assumption. If positivity is implausible, it may be possible to define an estimator in our setting similar to that described in \citet{neugebauer2005} which was robust to their analogous "experimental treatment assumption".
 
 \subsection{Under non-additive measurement error}
 
-(Can probably remove this section, I like to see simulations under assumption violations but these didn't turn out particularly interesting)
-
-Next we evaluate the proposed methods when treatment measurement error does not follow the classical additive model. In particular, we once again replicate the first simulation study from Section 5 of the paper, but change the simulation of mismeasured treatments $A_{1}$ and $A_{3}$ such that $A_{1}$ now follows a multiplicative error model and $A_{3}$ follows on additive model where the magnitude of error depends on an unobserved variable C. In particular, we simulate $A_{1}^{*} = A_{1} \epsilon_{me1}$ where $\epsilon_{me1} \sim N(1, 0.15)$ and $A_{3}^{*} = A_{3} + \epsilon_{me3}$ where $\epsilon_{me3} \sim N(0, 0.2 + 0.3C)$ and $C \sim Binom(0.5)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 5 of the paper. The results are presented in the following table.
+Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the first simulation study from Section 5 of the paper is again replicated, but the simulation of mismeasured treatments $A_{1}$ and $A_{3}$ are changed such that $A_{1}$ now follows a multiplicative error model and $A_{3}$ follows on additive model where the magnitude of error depends on an unobserved variable C. In particular, they were simulated as $A_{1}^{*} = A_{1} \epsilon_{me1}$ where $\epsilon_{me1} \sim N(1, 0.15)$ and $A_{3}^{*} = A_{3} + \epsilon_{me3}$ where $\epsilon_{me3} \sim N(0, 0.2 + 0.3C)$ and $C \sim Binom(0.5)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 5 of the paper. The results are presented in the following table.
 
 \begin{table}[h]
 \tblcaption{Simulation study under non-additive measurement error}
 {\tabcolsep=4.25pt
-\begin{tabular}{@{}ccccccccccccc@{}}
+\begin{tabular}{@{}lrrrrrrrrrrrr@{}}
 \tblhead{ & $\psi_{1}$ &&&& $\psi_{2}$ &&&& $\psi_{3}$ &&& \\
 Estimator & Bias & ASE & ESE & Coverage & Bias & ASE & ESE & Coverage & Bias & ASE & ESE & Coverage}
 Regression & 0.032 & 0.023 & 0.024 & 75.4\% & 0.070 & 0.043 & 0.045 & 68.0\% & 0.013 & 0.022 & 0.022 & 88.8\% \\
@@ -289,7 +293,7 @@ The proposed methods still seem to perform well for treatment $A_{3}$. For treat
 
 The three proposed methods are based on a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
 
-Any other options for if additive ME doesn't hold?
+Finally, while conditional score functions are somewhat limited in scope in terms of model specification, the related method of corrected score functions has been extended to problems of additive but non-normal measurement error~\citep{buzas1996} and to non-additive measurement models in certain cases (\citealp{nakamura1990}; \citealp*{li2004}). Describing how to use such corrected score functions to estimate causal parameters could be the focus of future work in this area.
 
 \bibliographystyle{biom}
 \bibliography{refs}
