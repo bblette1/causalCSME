@@ -231,11 +231,9 @@ Many studies (including the HVTN 505 trial) use a two-phase sampling design. Suc
 
 \subsection{Two-phase sampling simulations}
 
-The structure of the second simulation study described in Section 5 of the paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done under two scenarios, one with $n=2000$ and a $20\%$ sub-cohort and another close to the design of the HVTN 505 trial, i.e., with $n=1250$ and a sub-cohort of $10\%$. The results for the first scenario are presented in the following table:
+The structure of the second simulation study described in Section 5 of the paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done under two scenarios, one with $n=5000$ and a $30\%$ sub-cohort (such that the number of individuals with exposure measured is about the same as the second simulation in the paper) and another close to the design of the HVTN 505 trial, i.e., with $n=1250$ and a sub-cohort of $10\%$. The results for the first scenario are presented in Appendix Table 1. The methods seem to perform well as they did in the full-sampling simulation provided in the paper, although the IPW CSME estimator has some noticeable bias and lower coverage and the DR CSME estimator does not perform as well as expected  when only the propensity model is specified correctly.
 
-The methods seem to perform well as they did in the full-sampling simulation provided in the paper, although the IPW CSME estimator has some bias and slightly lower coverage. The results for the second scenario are given here:
-
-There are a noticeable number of simulation runs where the root finding algorithm for a particular estimator diverged for the g-formula CSME estimator, likely due to the very low effective sample size in this scenario. This provided rationale for only using the DR CSME estimator in Section 5 of the paper.
+The results for the second scenario are given in Web Appendix 2. Under the study design and the approximately $10\%$ risk of the outcome simulated, the exposure is only observed for about $250$ individuals in each simulated data set. There are a noticeable number of simulation runs where the root finding algorithm diverged for the g-formula CSME and DR CSME estimators, likely due to this very low effective sample size. In general, the DR CSME performed best, providing rationale for only using the DR CSME estimator in Section 5 of the paper.
 
 \section{Web Appendix C: Additional Simulations}
 
