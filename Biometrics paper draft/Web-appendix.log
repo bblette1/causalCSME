@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  5 JAN 2021 20:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  6 JAN 2021 18:01
 entering extended mode
 **./Web-appendix.tex
 (Web-appendix.tex
@@ -493,20 +493,17 @@ ctly spec-i-fied, de-noted $\OML/cmm/m/it/12 Q\OT1/cmr/m/n/12 (\OML/cmm/b/it/12
  A\OML/cmm/m/it/12 ; \OML/cmm/b/it/12 L\OT1/cmr/m/n/12 ) =
  []
 
-[6] [7] [8] [9]
-Overfull \hbox (11.81395pt too wide) in paragraph at lines 263--264
+[6] [7] [8] [9] [10]
+Overfull \hbox (11.81395pt too wide) in paragraph at lines 297--298
  [][] 
  []
 
-[10]
-Overfull \hbox (11.81395pt too wide) in paragraph at lines 287--288
+[11]
+Overfull \hbox (11.81395pt too wide) in paragraph at lines 321--322
  [][] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[11] (Web-appendix.bbl [12]) [13] (Web-appendix.aux) ) 
+[12] (Web-appendix.bbl [13]) [14] (Web-appendix.aux) ) 
 Here is how much of TeX's memory you used:
  5437 strings out of 492902
  79018 string characters out of 3133541
@@ -531,9 +528,9 @@ ic/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cms
 y6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C
 :/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Web-appendix.pdf (13 pages, 236361 bytes).
+Output written on Web-appendix.pdf (14 pages, 240108 bytes).
 PDF statistics:
- 114 PDF objects out of 1000 (max. 8388607)
+ 117 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  5 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -233,7 +233,43 @@ Many studies (including the HVTN 505 trial) use a two-phase sampling design. Suc
 
 The structure of the second simulation study described in Section 5 of the paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done under two scenarios, one with $n=5000$ and a $30\%$ sub-cohort (such that the number of individuals with exposure measured is about the same as the second simulation in the paper) and another close to the design of the HVTN 505 trial, i.e., with $n=1250$ and a sub-cohort of $10\%$. The results for the first scenario are presented in Appendix Table 1. The methods seem to perform well as they did in the full-sampling simulation provided in the paper, although the IPW CSME estimator has some noticeable bias and lower coverage and the DR CSME estimator does not perform as well as expected  when only the propensity model is specified correctly.
 
+\begin{table}[h]
+\tblcaption{Simulation study for case-cohort design with larger effective sample size}
+{\tabcolsep=6.25pt
+\begin{tabular}{@{}lcrrrr@{}}
+\tblhead{Estimator & Correct Specifications & Bias & ASE & ESE & Coverage}
+G-formula CSME & PS & -16.3 & 6.4 & 6.3 & 28\% \\
+IPW CSME & PS & -2.8 & 7.1 & 7.1 & 93\% \\
+DR CSME & PS & -2.4 & 7.1 & 7.2 & 94\% \\[3pt]
+G-formula CSME & OR & 0.0 & 7.1 & 7.1 & 95\% \\
+IPW CSME & OR & -16.4 & 6.7 & 6.7 & 32\% \\
+DR CSME & OR & 0.2 & 7.5 & 7.5 & 95\% \\[3pt]
+G-formula CSME & PS and OR & 0.0 & 7.1 & 7.1 & 95\% \\
+IPW CSME & PS and OR & -2.8 & 7.1 & 7.2 & 93\% \\
+DR CSME & PS and OR & 0.4 & 7.8 & 7.7 & 95\%
+\lastline
+\end{tabular}}
+\end{table}
+
 The results for the second scenario are given in Web Appendix 2. Under the study design and the approximately $10\%$ risk of the outcome simulated, the exposure is only observed for about $250$ individuals in each simulated data set. There are a noticeable number of simulation runs where the root finding algorithm diverged for the g-formula CSME and DR CSME estimators, likely due to this very low effective sample size. In general, the DR CSME performed best, providing rationale for only using the DR CSME estimator in Section 5 of the paper.
+
+\begin{table}[h]
+\tblcaption{Simulation study for case-cohort design with smaller effective sample size}
+{\tabcolsep=6.25pt
+\begin{tabular}{@{}lcrrrr@{}}
+\tblhead{Estimator & Correct Specifications & Bias & ASE & ESE & Coverage}
+G-formula CSME & PS & -16.3 & 6.4 & 6.3 & 28\% \\
+IPW CSME & PS & -2.8 & 7.1 & 7.1 & 93\% \\
+DR CSME & PS & -2.4 & 7.1 & 7.2 & 94\% \\[3pt]
+G-formula CSME & OR & 0.0 & 7.1 & 7.1 & 95\% \\
+IPW CSME & OR & -16.4 & 6.7 & 6.7 & 32\% \\
+DR CSME & OR & 0.2 & 7.5 & 7.5 & 95\% \\[3pt]
+G-formula CSME & PS and OR & 0.0 & 7.1 & 7.1 & 95\% \\
+IPW CSME & PS and OR & -2.8 & 7.1 & 7.2 & 93\% \\
+DR CSME & PS and OR & 0.4 & 7.8 & 7.7 & 95\%
+\lastline
+\end{tabular}}
+\end{table}
 
 \section{Web Appendix C: Additional Simulations}
 
