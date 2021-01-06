@@ -244,7 +244,7 @@ In this section, the methods are studied under two assumption violations: (i) wh
 
 \subsection{Under positivity violation}
 
-To evaluate the proposed methods under positivity violations, the general structure of the first simulation study from Section 5 of the paper is replicated almost exactly. A strong positivity violation is created by changing how the treatment $A_{1}$ is generated from $N(4 + L_{1}, 1)$ to $N(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in the following table.
+To evaluate the proposed methods under positivity violations, the general structure of the first simulation study from Section 5 of the paper is replicated almost exactly. A strong positivity violation is created by changing how the treatment $A_{1}$ is generated from $\mathcal{N}(4 + L_{1}, 1)$ to $\mathcal{N}(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in Appendix Table 1.
 
 \begin{table}[h]
 \tblcaption{Simulation study under positivity violation}
@@ -263,13 +263,13 @@ IPW CSME & -0.058 & 0.024 & 0.026 & 35.2\% & -0.004 & 0.057 & 0.060 & 96.2\% & -
 \end{tabular}}
 \end{table}
 
-The results overall look similar to that in Table 1 of the paper. However, with the positivity assumption broken, the proposed methods do not perform as well in estimating the effect of $A_{1}$. In addition, for the proposed weighted-CSME estimator, some bias seems to bleed over into the estimation of effects of the other treatments for which positivity still holds. However, the proposed methods still generally outperform the comparator methods in this scenario. \\
+The results overall look similar to that in Table 1 of the paper. However, with the positivity assumption broken, the proposed methods do not perform as well in estimating the effect of $A_{1}$. In addition, for the proposed weighted-CSME estimator, some bias seems to bleed over into the estimation of effects of the other treatments for which positivity still holds. However, the proposed methods still generally perform okay versus the comparator methods in this scenario.
 
 Positivity violations become more likely with more treatment variables and with treatment variables that are continuous or take on many values. In these settings positivity should receive just as much scrutiny as the conditional exchangeability assumption. If positivity is implausible, it may be possible to define an estimator in our setting similar to that described in \citet{neugebauer2005} which was robust to their analogous "experimental treatment assumption".
 
 \subsection{Under non-additive measurement error}
 
-Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the first simulation study from Section 5 of the paper is again replicated, but the simulation of mismeasured treatments $A_{1}$ and $A_{3}$ are changed such that $A_{1}$ now follows a multiplicative error model and $A_{3}$ follows on additive model where the magnitude of error depends on an unobserved variable C. In particular, they were simulated as $A_{1}^{*} = A_{1} \epsilon_{me1}$ where $\epsilon_{me1} \sim N(1, 0.15)$ and $A_{3}^{*} = A_{3} + \epsilon_{me3}$ where $\epsilon_{me3} \sim N(0, 0.2 + 0.3C)$ and $C \sim Binom(0.5)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 5 of the paper. The results are presented in the following table.
+Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the first simulation study from Section 5 of the paper is again replicated, but the simulation of mismeasured treatments $A_{1}$ and $A_{3}$ are changed such that $A_{1}$ now follows a multiplicative error model and $A_{3}$ follows on additive model where the magnitude of error depends on an unobserved variable C. In particular, they were simulated as $A_{1}^{*} = A_{1} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.15)$ and $A_{3}^{*} = A_{3} + \epsilon_{me_{3}}$ where $\epsilon_{me_{3}} \sim \mathcal{N}(0, 0.2 + 0.3C)$ and $C \sim \text{Binom}(0.5)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 5 of the paper. The results are presented in Appendix Table 2. The proposed methods still seem to perform well for treatment $A_{3}$. For treatment $A_{1}$ there is some finite-sample bias, but the proposed methods continued to outperform the comparator methods.
 
 \begin{table}[h]
 \tblcaption{Simulation study under non-additive measurement error}
@@ -286,8 +286,6 @@ IPW CSME & -0.021 & 0.027 & 0.030 & 91.0\% & -0.003 & 0.058 & 0.061 & 95.6\% & -
 \lastline
 \end{tabular}}
 \end{table}
-
-The proposed methods still seem to perform well for treatment $A_{3}$. For treatment $A_{1}$ there is some finite-sample bias, but the proposed methods continued to outperform the comparator methods.
 
 \section{Web Appendix D: More complex model specifications}
 
