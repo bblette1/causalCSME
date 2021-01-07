@@ -314,7 +314,7 @@ where the outcome predictions are from a fit CSME model with relevant interactio
 \begin{equation}
     \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
     \begin{bmatrix}
-       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \Delta_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
+       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
         \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
         \beta_{a_{1}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
         \vdots \\
@@ -337,6 +337,7 @@ Since the CSME approach is defined using estimating equations, it's relatively s
 \begin{equation*}
 SW_{i} = \frac{f(A_{i1}, A_{i2}, ..., A_{in})}{f(A_{i1}, A_{i2}, ..., A_{in}) | \bm{L}_{i})} = \frac{f(A_{i1})f(A_{i2} | A_{i1}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1})}{f(A_{i,1} | \bm{L}_{i})f(A_{i2} | A_{i1}, \bm{L}_{i}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1}, \bm{L}_{i})}
 \end{equation*}
+and the $\beta_{0}$ and $\beta_{a}$ parameters nested within the conditional expectation and variance can be changed to $\gamma_{0}$ and $\gamma_{(-0)}$ such that $\hat{\gamma}$ is the solution to (4).
 
 Rather than the Markov factorization given above, most MSM with multiple treatments use weights of the form $SW_{i} = \prod_{j=1}^{m} f(A_{ij}) / f(A_{ij} | \bm{L}_{i})$ as originally described by \citet{hernan2001}, which assumes that the treatments are independent conditional on $\bm{L}$. For the simulations and application of this paper, this assumption will be made, but note that such a simplification may be dubious in various applications and will not hold if there are direct arrows between treatments in the DAG. For examples of estimating the joint propensity of various dependent exposures using mixed models, see \citet{tchetgen2012}, \citet{perez2014}, or \citet*{liu2016}. In the remainder of this paper, weights for continuous treatments will be estimated using a ratio of normal densities, but other methods~\citep{hirano2004} and more flexible choices for weight models~\citep{naimi2014} can also be used in general.
 
@@ -446,7 +447,7 @@ In this section, the data is analyzed making the same Binomial family distributi
 \begin{figure}[h!]
 \centering
 \includegraphics[width=5.9in]{Figure2.png}
-\caption{Application results. Each panel shows the results of the DR estimator for the main effect of ADCP or R\RNum{2} in their respective models in the form of odds ratios and confidence intervals. The x-axis reflects increasing user-specified variance of measurement error for the exposures.}
+\caption{Application results. Each panel shows the results of the DR estimator for the main effect of ADCP or R\RNum{2} in their respective models in the form of odds ratios and confidence intervals. The x-axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed intra-vaccinee exposure variance.}
 \label{fig:two}
 \end{figure}
 

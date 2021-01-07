@@ -9,6 +9,6 @@
 \begin{figure}[h!]
 \centering
 \includegraphics[width=5.9in]{Figure2.png}
-\caption{Application results. Each panel shows the results of the DR estimator for the main effect of ADCP or R\RNum{2} in their respective models in the form of odds ratios and confidence intervals. The x-axis reflects increasing user-specified variance of measurement error for the exposures.}
+\caption{Application results. Each panel shows the results of the DR estimator for the main effect of ADCP or R\RNum{2} in their respective models in the form of odds ratios and confidence intervals. The x-axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed intra-vaccinee exposure variance.}
 \label{fig:two}
 \end{figure}
