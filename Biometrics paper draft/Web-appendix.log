@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  6 JAN 2021 18:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  7 JAN 2021 10:21
 entering extended mode
 **./Web-appendix.tex
 (Web-appendix.tex
@@ -507,7 +507,7 @@ Overfull \hbox (11.81395pt too wide) in paragraph at lines 321--322
 Here is how much of TeX's memory you used:
  5437 strings out of 492902
  79018 string characters out of 3133541
- 151044 words of memory out of 3000000
+ 150044 words of memory out of 3000000
  9212 multiletter control sequences out of 15000+200000
  45323 words of font info for 97 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -528,7 +528,7 @@ ic/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cms
 y6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C
 :/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Web-appendix.pdf (14 pages, 240108 bytes).
+Output written on Web-appendix.pdf (14 pages, 240475 bytes).
 PDF statistics:
  117 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

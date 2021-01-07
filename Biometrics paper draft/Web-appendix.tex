@@ -239,35 +239,35 @@ The structure of the second simulation study described in Section 5 of the paper
 {\tabcolsep=6.25pt
 \begin{tabular}{@{}lcrrrr@{}}
 \tblhead{Estimator & Correct Specifications & Bias & ASE & ESE & Coverage}
-G-formula CSME & PS & -16.3 & 6.4 & 6.3 & 28\% \\
-IPW CSME & PS & -2.8 & 7.1 & 7.1 & 93\% \\
-DR CSME & PS & -2.4 & 7.1 & 7.2 & 94\% \\[3pt]
-G-formula CSME & OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & OR & -16.4 & 6.7 & 6.7 & 32\% \\
-DR CSME & OR & 0.2 & 7.5 & 7.5 & 95\% \\[3pt]
-G-formula CSME & PS and OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & PS and OR & -2.8 & 7.1 & 7.2 & 93\% \\
-DR CSME & PS and OR & 0.4 & 7.8 & 7.7 & 95\%
+G-formula CSME & PS & -13.5 & 6.1 & 6.1 & 41\% \\
+IPW CSME & PS & -10.8 & 6.0 & 6.0 & 55\% \\
+DR CSME & PS & -7.6 & 6.3 & 6.4 & 76\% \\[3pt]
+G-formula CSME & OR & 0.0 & 7.0 & 6.9 & 95\% \\
+IPW CSME & OR & -16.4 & 5.9 & 5.9 & 23\% \\
+DR CSME & OR & 0.1 & 7.1 & 7.0 & 95\% \\[3pt]
+G-formula CSME & PS and OR & 0.0 & 7.0 & 6.9 & 95\% \\
+IPW CSME & PS and OR & -10.8 & 6.0 & 6.0 & 55\% \\
+DR CSME & PS and OR & 0.1 & 7.1 & 7.1 & 95\%
 \lastline
 \end{tabular}}
 \end{table}
 
-The results for the second scenario are given in Web Appendix 2. Under the study design and the approximately $10\%$ risk of the outcome simulated, the exposure is only observed for about $250$ individuals in each simulated data set. There are a noticeable number of simulation runs where the root finding algorithm diverged for the g-formula CSME and DR CSME estimators, likely due to this very low effective sample size. In general, the DR CSME performed best, providing rationale for only using the DR CSME estimator in Section 5 of the paper.
+The results for the second scenario are given in Web Appendix 2. Under the study design and the approximately $10\%$ risk of the outcome simulated, the exposure is only observed for about $250$ individuals in each simulated data set. There are a noticeable number of simulation runs where the root finding algorithm diverged for the g-formula CSME and DR CSME estimators, likely due to this very low effective sample size, occurring in about 30$\%$ of simulation runs (this occurred in 0 simulation runs for the higher sample size in Appendix Table 1). In general, the DR CSME performed best, providing rationale for only using the DR CSME estimator in Section 5 of the paper. The algorithm underlying implementation of the DR estimator converged for all model specifications in Section 5.
 
 \begin{table}[h]
 \tblcaption{Simulation study for case-cohort design with smaller effective sample size}
 {\tabcolsep=6.25pt
 \begin{tabular}{@{}lcrrrr@{}}
 \tblhead{Estimator & Correct Specifications & Bias & ASE & ESE & Coverage}
-G-formula CSME & PS & -16.3 & 6.4 & 6.3 & 28\% \\
-IPW CSME & PS & -2.8 & 7.1 & 7.1 & 93\% \\
-DR CSME & PS & -2.4 & 7.1 & 7.2 & 94\% \\[3pt]
-G-formula CSME & OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & OR & -16.4 & 6.7 & 6.7 & 32\% \\
-DR CSME & OR & 0.2 & 7.5 & 7.5 & 95\% \\[3pt]
-G-formula CSME & PS and OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & PS and OR & -2.8 & 7.1 & 7.2 & 93\% \\
-DR CSME & PS and OR & 0.4 & 7.8 & 7.7 & 95\%
+G-formula CSME & PS & -9.5 & 19.0 & 17.6 & 87\% \\
+IPW CSME & PS & -11.8 & 17.5 & 16.7 & 85\% \\
+DR CSME & PS & -6.0 & 19.1 & 17.9 & 91\% \\[3pt]
+G-formula CSME & OR & 7.1 & 22.1 & 19.9 & 93\% \\
+IPW CSME & OR & -15.0 & 17.4 & 16.5 & 80\% \\
+DR CSME & OR & 7.2 & 22.2 & 20.0 & 93\% \\[3pt]
+G-formula CSME & PS and OR & 8.0 & 22.4 & 19.9 & 93\% \\
+IPW CSME & PS and OR & -11.8 & 17.5 & 16.7 & 85\% \\
+DR CSME & PS and OR & 8.0 & 25.2 & 20.0 & 92\%
 \lastline
 \end{tabular}}
 \end{table}
@@ -278,7 +278,7 @@ In this section, the methods are studied under two assumption violations: (i) wh
 
 \subsection{Under positivity violation}
 
-To evaluate the proposed methods under positivity violations, the general structure of the first simulation study from Section 5 of the paper is replicated almost exactly. A strong positivity violation is created by changing how the treatment $A_{1}$ is generated from $\mathcal{N}(4 + L_{1}, 1)$ to $\mathcal{N}(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in Appendix Table 1.
+To evaluate the proposed methods under positivity violations, the general structure of the first simulation study from Section 5 of the paper is replicated almost exactly. A strong positivity violation is created by changing how the treatment $A_{1}$ is generated from $\mathcal{N}(4 + L_{1}, 1)$ to $\mathcal{N}(4 + L_{1}, 0.2)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with $L_{1} = 1$ and $L_{1} = 0$, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in Appendix Table 3.
 
 \begin{table}[h]
 \tblcaption{Simulation study under positivity violation}
@@ -303,7 +303,7 @@ Positivity violations become more likely with more treatment variables and with 
 
 \subsection{Under non-additive measurement error}
 
-Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the first simulation study from Section 5 of the paper is again replicated, but the simulation of mismeasured treatments $A_{1}$ and $A_{3}$ are changed such that $A_{1}$ now follows a multiplicative error model and $A_{3}$ follows on additive model where the magnitude of error depends on an unobserved variable C. In particular, they were simulated as $A_{1}^{*} = A_{1} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.15)$ and $A_{3}^{*} = A_{3} + \epsilon_{me_{3}}$ where $\epsilon_{me_{3}} \sim \mathcal{N}(0, 0.2 + 0.3C)$ and $C \sim \text{Binom}(0.5)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 5 of the paper. The results are presented in Appendix Table 2. The proposed methods still seem to perform well for treatment $A_{3}$. For treatment $A_{1}$ there is some finite-sample bias, but the proposed methods continued to outperform the comparator methods.
+Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the first simulation study from Section 5 of the paper is again replicated, but the simulation of mismeasured treatments $A_{1}$ and $A_{3}$ are changed such that $A_{1}$ now follows a multiplicative error model and $A_{3}$ follows on additive model where the magnitude of error depends on an unobserved variable C. In particular, they were simulated as $A_{1}^{*} = A_{1} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.15)$ and $A_{3}^{*} = A_{3} + \epsilon_{me_{3}}$ where $\epsilon_{me_{3}} \sim \mathcal{N}(0, 0.2 + 0.3C)$ and $C \sim \text{Binom}(0.5)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 5 of the paper. The results are presented in Appendix Table 4. The proposed methods still seem to perform well for treatment $A_{3}$. For treatment $A_{1}$ there is some finite-sample bias, but the proposed methods continued to outperform the comparator methods.
 
 \begin{table}[h]
 \tblcaption{Simulation study under non-additive measurement error}
