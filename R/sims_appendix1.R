@@ -490,7 +490,8 @@ simulator <- function(trial, sigma_me) {
   # Both models correct
 
   # Fit linear regression to use for starting values
-  mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial")
+  mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial",
+             weights = data$ccw)
 
   # Model 1: G-formula-CSME
   eefun_csme_gform <- function(data) {
