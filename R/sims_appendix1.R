@@ -117,10 +117,10 @@ simulator <- function(trial, sigma_me) {
 
   # Weighted CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L1 + L2, weights = data$ccw)
+  denom_mod <- lm(Xstar ~ L1 + L2)
   p_denom <- predict(denom_mod, type='response')
   dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1, weights = data$ccw)
+  num_mod <- lm(Xstar ~ 1)
   p_num <- predict(num_mod, type='response')
   dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
   data$w <- dens_num / dens_denom
@@ -338,10 +338,10 @@ simulator <- function(trial, sigma_me) {
 
   # Weighted CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L2, weights = data$ccw)
+  denom_mod <- lm(Xstar ~ L2)
   p_denom <- predict(denom_mod, type='response')
   dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1, weights = data$ccw)
+  num_mod <- lm(Xstar ~ 1)
   p_num <- predict(num_mod, type='response')
   dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
   data$w <- dens_num / dens_denom
@@ -572,10 +572,10 @@ simulator <- function(trial, sigma_me) {
 
   # Weighted CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L1 + L2, weights = data$ccw)
+  denom_mod <- lm(Xstar ~ L1 + L2)
   p_denom <- predict(denom_mod, type='response')
   dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1, weights = data$ccw)
+  num_mod <- lm(Xstar ~ 1)
   p_num <- predict(num_mod, type='response')
   dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
   data$w <- dens_num / dens_denom
@@ -738,8 +738,8 @@ simulator <- function(trial, sigma_me) {
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1_true)),
                      mes = rep(sigma_me, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
-combo_i <- combos[(i), ]
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 500
+combo_i <- combos[(i - 500), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, mes))
