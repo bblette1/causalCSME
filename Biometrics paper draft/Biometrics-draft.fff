@@ -1,14 +1,14 @@
 \begin{figure}
 \centering
 \includegraphics[width=6in]{Paper1_Fig1.png}
-\caption{Directed Acyclic Graphs (DAGs) corresponding to the problem setup, with variables defined in section 2 and $U$ corresponding to measurement error. (a) A general DAG where $\bm{A}$ is a vector of exposures, some of which may be mismeasured (indicated by the arrow to $\bm{A}^{*}$) and some of which may be subject to confounding bias (indicated by the arrow from $\bm{L}$). (b) A DAG for a specific exposure vector with four different types of exposures: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed modeling framework.}
+\caption{Assumed directed acyclic graph (DAG) structure with variables defined in section 2 and $U$ corresponding to measurement error. (a) A general DAG where $\bm{A}$ is a vector of exposures, some of which may be mismeasured (indicated by the arrow to $\bm{A}^{*}$) and some of which may be subject to confounding bias (indicated by the arrows from $\bm{L}$ to $\bm{A}$ and Y). (b) A DAG for a specific exposure vector with four different types of exposures: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed methods.}
 \label{fig:one}
 \end{figure}
 \efloatseparator
  
 \begin{figure}[h!]
 \centering
-\includegraphics[width=5.9in]{Figure2.png}
-\caption{Application results. Each panel shows the results of the DR estimator for the main effect of ADCP or R\RNum{2} in their respective models in the form of odds ratios and confidence intervals. The x-axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed intra-vaccinee exposure variance.}
+\includegraphics[width=6.9in]{Figure2.png}
+\caption{HVTN 505 results. Each panel shows the DR estimate and 95$\%$ confidence interval for the main effect of ADCP or R\RNum{2} in their respective models. The horizontal axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed exposure variance within vaccinated individuals.}
 \label{fig:two}
 \end{figure}

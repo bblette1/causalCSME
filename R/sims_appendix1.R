@@ -117,10 +117,10 @@ simulator <- function(trial, sigma_me) {
 
   # Weighted CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L1 + L2)
+  denom_mod <- lm(Xstar ~ L1 + L2, weights = data$ccw)
   p_denom <- predict(denom_mod, type='response')
   dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1)
+  num_mod <- lm(Xstar ~ 1, weights = data$ccw)
   p_num <- predict(num_mod, type='response')
   dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
   data$w <- dens_num / dens_denom
