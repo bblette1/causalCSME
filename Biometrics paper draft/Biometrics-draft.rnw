@@ -345,7 +345,6 @@ Estimating the weights provides an additional challenge in that the exposure mea
 In the absence of measurement error, both the g-formula and IPW methods rely on model specifications that may not be correct in practice. The g-formula provides consistent estimation of potential outcome means only when the outcome model with exposures and confounders is correctly specified. Likewise, the IPW estimator is consistent only when the propensity score model is correctly specified. In contrast, doubly-robust (DR) estimators entail specifying both propensity and outcome models, but remain consistent if one is misspecified and the other is not (\citealp*{robins1994}; \citealp{lunceford2004,bang2005}).
 
 A DR estimator for the additive measurement error setting can be written similarly to those described in \citet{robins2000b} and \citet{neugebauer2005} as the solution to the set of estimating equations $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
-
 \begin{equation*}
     \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
     \begin{bmatrix}
@@ -441,7 +440,7 @@ In this section, the data is analyzed making the same Binomial family distributi
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=6.9in]{Figure2.png}
+\includegraphics[width=6.2in]{Figure2.png}
 \caption{HVTN 505 results. Each panel shows the DR estimate and 95$\%$ confidence interval for the main effect of ADCP or R\RNum{2} in their respective models. The horizontal axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed exposure variance within vaccinated individuals.}
 \label{fig:two}
 \end{figure}
