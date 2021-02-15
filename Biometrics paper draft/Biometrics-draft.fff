@@ -8,7 +8,7 @@
  
 \begin{figure}[h!]
 \centering
-\includegraphics[width=6.9in]{Figure2.png}
+\includegraphics[width=6.2in]{Figure2.png}
 \caption{HVTN 505 results. Each panel shows the DR estimate and 95$\%$ confidence interval for the main effect of ADCP or R\RNum{2} in their respective models. The horizontal axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed exposure variance within vaccinated individuals.}
 \label{fig:two}
 \end{figure}
