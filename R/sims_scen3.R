@@ -1,6 +1,6 @@
 rm(list = ls())
 library(geex)
-library(matrixStats)
+library(matrixstats)
 library(rootSolve)
 
 # Set parameter values
@@ -20,13 +20,12 @@ simulator <- function(trial, sigma_me) {
   # Generate data
   L1 <- rbinom(n, 1, L1_prob)
   L2 <- rnorm(n, L2_mean, 0.5)
-  X <- rnorm(n, 2 + 0.4*L1 - 0.5*L2, 0.9)
-  Y_logit <- -2 + beta1_true*X - 0.4*L1 + beta3_true*X*L1 -
-    0.2*L2 + beta5_true*X*L2 + rnorm(n, 0, 0.2)
-  Y_prob <- exp(Y_logit) / (1 + exp(Y_logit))
-  Y <- rbinom(n, 1, Y_prob)
-  Xstar <- X + rnorm(n, 0, sqrt(sigma_me))
-  data <- data.frame("Y" = Y, "Xstar" = Xstar, "L1" = L1, "L2" = L2)
+  A <- rnorm(n, 2 + 0.4*L1 - 0.5*L2, 0.9)
+  Y_mean <- 1.5 + beta1_true*A + 0.4*L1 + beta3_true*A*L1 - 0.3*L2 +
+            beta5_true*A*L2
+  Y <- rnorm(n, 1.5 + Y_mean, 0.4)
+  Astar <- A + rnorm(n, 0, sqrt(sigma_me))
+  data <- data.frame("Y" = Y, "Astar" = Astar, "L1" = L1, "L2" = L2)
 
   # Initial guess for causal effect (good but variable intuition)
   guess <- true_effect + rnorm(1, 0, 0.1)
@@ -34,33 +33,37 @@ simulator <- function(trial, sigma_me) {
   ######################################################################
   # Outcome regression wrong, propensity model correct
 
-  # Fit logistic regression to use for starting values
-  mod <- glm(Y ~ Xstar*L2, family = "binomial")
+  # Fit regression to use for starting values
+  mod <- lm(Y ~ Astar*L2, data = data)
 
   # Model 1: G-formula-CSME
   eefun_csme_gform <- function(data) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     L2 <- data$L2
-    delta <- function(beta1, beta3) {
-      Xstar + sigma_me*(beta1 + beta3*L2)*Y
+    delta <- function(beta1, beta3, sigma_ep) {
+      Astar + sigma_me*(beta1 + beta3*L2)*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, beta2, beta3, sigma_ep) {
+      (beta0 + (beta1 + beta3*L2)*delta(beta1, beta3, sigma_ep) +
+       beta2*L2) /
+        (1 + ((beta1 + beta3*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
-    condexp <- function(beta0, beta1, beta2, beta3) {
-      H(beta0 + (beta1 + beta3*L2)*delta(beta1, beta3) +
-          beta2*L2 - ((beta1 + beta3*L2)^2)*sigma_me / 2)
+    condvar <- function(beta1, beta3, sigma_ep) {
+      sigma_ep / (1 + ((beta1 + beta3*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
     function(theta) {
-      c((Y - condexp(theta[1], theta[2], theta[3], theta[4])),
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4]))*L2,
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4]))*
-          delta(theta[2], theta[4]),
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4]))*
-          L2*delta(theta[2], theta[4]),
-        L2 - theta[5],
-        theta[2] + theta[4]*theta[5] - theta[6]
+      c((Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5])),
+        (Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5]))*
+          delta(theta[2], theta[4], theta[5]),
+        (Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5]))*L2,
+        (Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5]))*
+          L2*delta(theta[2], theta[4], theta[5]),
+        theta[5] - theta[5]*
+          (Y-condexp(theta[1], theta[2], theta[3], theta[4], theta[5]))^2 /
+          condvar(theta[2], theta[4], theta[5]),
+        L2 - theta[6],
+        theta[2] + theta[4]*theta[6] - theta[7]
       )
     }
   }
@@ -74,25 +77,25 @@ simulator <- function(trial, sigma_me) {
   while(failed == TRUE & j < 6) {
 
     failed <- FALSE
-    startvec <- c(coef(mod), mean(L2), guess)*(j == 1) +
-      c(coef(mod) + rnorm(4, 0, j/5), mean(L2), guess)*(j > 1)
+    startvec <- c(coef(mod), sigma(mod)^2, mean(L2), guess)*(j == 1) +
+      c(coef(mod) + rnorm(4, 0, j/5), sigma(mod)^2, mean(L2), guess)*(j > 1)
     results_csme_gform <-
       tryCatch(m_estimate(estFUN = eefun_csme_gform, data = data,
                           root_control =
                             setup_root_control(start = startvec)),
                error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
-      if (abs(coef(results_csme_gform)[6]) > 3) { failed <- TRUE }
+      if (abs(coef(results_csme_gform)[7]) > 3) { failed <- TRUE }
     }
     j <- j + 1
 
   }
 
-  bias_gform_ps <- coef(results_csme_gform)[6] - true_effect
-  se_gform_ps <- sqrt(vcov(results_csme_gform)[6, 6])
+  bias_gform_ps <- coef(results_csme_gform)[7] - true_effect
+  se_gform_ps <- sqrt(vcov(results_csme_gform)[7, 7])
   coverage_gform_ps <-
-    1*(coef(results_csme_gform)[6] - 1.96*se_gform_ps < true_effect &
-         coef(results_csme_gform)[6] + 1.96*se_gform_ps > true_effect)
+    1*(coef(results_csme_gform)[7] - 1.96*se_gform_ps < true_effect &
+         coef(results_csme_gform)[7] + 1.96*se_gform_ps > true_effect)
 
   if(failed == TRUE) {
     bias_gform_ps <- NA
@@ -102,60 +105,68 @@ simulator <- function(trial, sigma_me) {
 
   # Model 2: IPW-CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L1 + L2)
+  denom_mod <- lm(Astar ~ L1 + L2)
   p_denom <- predict(denom_mod, type='response')
-  dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1)
+  dens_denom <- dnorm(Astar, p_denom, summary(denom_mod)$sigma)
+  num_mod <- lm(Astar ~ 1)
   p_num <- predict(num_mod, type='response')
-  dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
+  dens_num <- dnorm(Astar, p_num, summary(denom_mod)$sigma)
   data$sw <- dens_num / dens_denom
 
   # Fit weighted regression for starting values
-  wmod <- glm(Y ~ Xstar, weights = sw, family = "binomial", data = data)
+  wmod <- lm(Y ~ Astar, weights = sw, data = data)
 
   # Get point estimates and variance using geex
   # First point estimates
   eefun_csme_ipw1 <- function(data) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     sw <- data$sw
-    delta <- function(beta1) {
-      Xstar + sigma_me*beta1*Y
+    delta <- function(beta1, sigma_ep) {
+      Astar + sigma_me*beta1*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, sigma_ep) {
+      (beta0 + beta1*delta(beta1, sigma_ep)) /
+        (1 + (beta1^2)*sigma_me / sigma_ep)
     }
-    condexp <- function(beta0, beta1) {
-      H(beta0 + beta1*delta(beta1) - (beta1^2)*sigma_me/2)
+    condvar <- function(beta1, sigma_ep) {
+      sigma_ep /
+        (1 + (beta1^2)*sigma_me / sigma_ep)
     }
     function(theta) {
-      c(sw*(Y - condexp(theta[1], theta[2])),
-        sw*(Y - condexp(theta[1], theta[2]))*
-          delta(theta[2])
+      c(sw*(Y - condexp(theta[1], theta[2], theta[3])),
+        sw*(Y - condexp(theta[1], theta[2], theta[3]))*
+          delta(theta[2], theta[3]),
+        sw*(theta[3] - theta[3]*
+          (Y - condexp(theta[1], theta[2], theta[3]))^2 /
+          condvar(theta[2], theta[3]))
       )
     }
   }
 
   results_csme_ipw <-
     m_estimate(estFUN = eefun_csme_ipw1, data = data,
-               root_control = setup_root_control(start = c(coef(wmod))))
+               root_control = setup_root_control(start = c(coef(wmod),
+                                                           sigma(wmod)^2)))
   bias_ipw_ps <- coef(results_csme_ipw)[2] - true_effect
 
   # Then get variance estimates accounting for weight estimation
   eefun_ipw2 <- function(data, model1, model2) {
     Y <- data$Y
-    Xstar <- model.response(model.frame(model1, data = data))
+    Astar <- model.response(model.frame(model1, data = data))
     Lmat <- model.matrix(model1, data = data)
     Vmat <- model.matrix(model2, data = data)
     n <- dim(data)[1]
-    delta <- function(beta1) {
-      Xstar + sigma_me*beta1*Y
+    delta <- function(beta1, sigma_ep) {
+      Astar + sigma_me*beta1*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, sigma_ep) {
+      (beta0 + beta1*delta(beta1, sigma_ep)) /
+        (1 + (beta1^2)*sigma_me / sigma_ep)
     }
-    condexp <- function(beta0, beta1) {
-      H(beta0 + beta1*delta(beta1) - (beta1^2)*sigma_me/2)
+    condvar <- function(beta1, sigma_ep) {
+      sigma_ep /
+        (1 + (beta1^2)*sigma_me / sigma_ep)
     }
     function(theta) {
       p  <- length(theta)
@@ -164,19 +175,22 @@ simulator <- function(trial, sigma_me) {
       rho1 <- Lmat %*% theta[1:p1]
       rho2 <- Vmat %*% theta[(p1+1):(p1+p2)]
 
-      dens_denom <- dnorm(Xstar, rho1, sqrt(theta[p-2]))
-      dens_num <- dnorm(Xstar, rho2, sqrt(theta[p-2]))
+      dens_denom <- dnorm(Astar, rho1, sqrt(theta[p-2]))
+      dens_num <- dnorm(Astar, rho2, sqrt(theta[p-2]))
       sw <- dens_num / dens_denom
 
-      score_eqns1 <- apply(Lmat, 2, function(x) sum((Xstar - rho1) * x))
-      score_eqns2 <- apply(Vmat, 2, function(x) sum((Xstar - rho2) * x))
+      score_eqns1 <- apply(Lmat, 2, function(x) sum((Astar - rho1) * x))
+      score_eqns2 <- apply(Vmat, 2, function(x) sum((Astar - rho2) * x))
 
       c(score_eqns1,
         score_eqns2,
-        (n-p1)/n * theta[p-2] - (Xstar - Lmat %*% theta[1:p1])^2,
-        sw*(Y - condexp(theta[p-1], theta[p])),
-        sw*(Y - condexp(theta[p-1], theta[p]))*
-          delta(theta[p])
+        (n-p1)/n * theta[p-3] - (Astar - Lmat %*% theta[1:p1])^2,
+        sw*(Y - condexp(theta[p-2], theta[p-1], theta[p])),
+        sw*(Y - condexp(theta[p-2], theta[p-1], theta[p]))*
+          delta(theta[p-1], theta[p]),
+        sw*(theta[p] - theta[p]*
+              (Y - condexp(theta[p-2], theta[p-1], theta[p]))^2 /
+              condvar(theta[p-1], theta[p]))
       )
     }
   }
@@ -186,7 +200,7 @@ simulator <- function(trial, sigma_me) {
                outer_args = list(model1 = denom_mod, model2 = num_mod),
                compute_roots = FALSE,
                roots = c(coef(denom_mod), coef(num_mod),
-                         sigma(denom_mod)^2, coef(results_ipw)))
+                         sigma(denom_mod)^2, coef(results_csme_ipw)))
 
   se_ipw_ps <- sqrt(vcov(results_ipw2)[7, 7])
   coverage_ipw_ps <-
@@ -194,41 +208,48 @@ simulator <- function(trial, sigma_me) {
          coef(results_ipw2)[7] + 1.96*se_ipw_ps > true_effect)
 
   # Model 3: DR-CSME
-  # Weighted version of model 1 shortcut
   eefun_csme_aipw <- function(data, model) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     L2 <- data$L2
     Lmat <- model.matrix(model, data = data)
     sw <- data$sw
-    delta <- function(beta1, beta3) {
-      Xstar + sigma_me*(beta1 + beta3*L2)*Y
+    delta <- function(beta1, beta3, sigma_ep) {
+      Astar + sigma_me*(beta1 + beta3*L2)*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, beta2, beta3, sigma_ep) {
+      (beta0 + (beta1 + beta3*L2)*delta(beta1, beta3, sigma_ep) +
+         beta2*L2) /
+        (1 + ((beta1 + beta3*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
-    condexp <- function(beta0, beta1, beta2, beta3) {
-      H(beta0 + (beta1 + beta3*L2)*delta(beta1, beta3) +
-          beta2*L2 - ((beta1 + beta3*L2)^2)*sigma_me / 2)
+    condvar <- function(beta1, beta3, sigma_ep) {
+      sigma_ep / (1 + ((beta1 + beta3*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
     function(theta) {
       p  <- length(theta)
       p1 <- length(coef(model))
       rho <- Lmat %*% theta[1:p1]
 
-      score_eqns <- apply(Lmat, 2, function(x) sum((Xstar - rho) * x))
+      score_eqns <- apply(Lmat, 2, function(x) sum((Astar - rho) * x))
 
       c(score_eqns,
-        Xstar - theta[p-6],
-        sw*(Y - condexp(theta[p-5], theta[p-4], theta[p-3], theta[p-2])),
-        sw*(Y - condexp(theta[p-5], theta[p-4], theta[p-3], theta[p-2]))*
-          L2,
-        sw*(Y - condexp(theta[p-5], theta[p-4], theta[p-3], theta[p-2]))*
-          delta(theta[p-4], theta[p-2]),
-        sw*(Y - condexp(theta[p-5], theta[p-4], theta[p-3], theta[p-2]))*
-          L2*delta(theta[p-4], theta[p-2]),
+        Astar - theta[p-7],
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2])),
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2]))*L2,
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2]))*
+          delta(theta[p-5], theta[p-3], theta[p-2]),
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2]))*
+          L2*delta(theta[p-5], theta[p-3], theta[p-2]),
+        sw*(theta[p-2] - theta[p-2]*
+              (Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                           theta[p-2]))^2 /
+              condvar(theta[p-5], theta[p-3], theta[p-2])),
         L2 - theta[p-1],
-        theta[p-4] + theta[p-2]*theta[p-1] - theta[p]
+        theta[p-5] + theta[p-3]*theta[p-1] - theta[p]
       )
     }
   }
@@ -239,10 +260,10 @@ simulator <- function(trial, sigma_me) {
   while(failed == TRUE & j < 6) {
 
     failed <- FALSE
-    startvec <- c(coef(denom_mod), mean(Xstar), coef(mod),
-                  mean(L2), 0.7)*(j == 1) +
-      c(coef(denom_mod), mean(Xstar), rnorm(4, 0, j/5),
-        mean(L2), 0.7)*(j > 1)
+    startvec <- c(coef(denom_mod), mean(Astar), coef(mod), sigma(mod)^2,
+                  mean(L2), guess)*(j == 1) +
+      c(coef(denom_mod), mean(Astar), rnorm(4, 0, j/5), sigma(mod)^2,
+        mean(L2), guess)*(j > 1)
     results_csme_aipw <-
       tryCatch(m_estimate(estFUN = eefun_csme_aipw, data = data,
                           outer_args = list(denom_mod),
@@ -250,14 +271,14 @@ simulator <- function(trial, sigma_me) {
                             setup_root_control(start = startvec)),
                error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
-      if (abs(coef(results_csme_aipw)[6]) > 2) { failed <- TRUE }
+      if (abs(coef(results_csme_aipw)[11]) > 3) { failed <- TRUE }
     }
     j <- j + 1
 
   }
 
-  bias_aipw_ps <- coef(results_csme_aipw)[10] - true_effect
-  se_aipw_ps <- sqrt(vcov(results_csme_aipw)[10, 10])
+  bias_aipw_ps <- coef(results_csme_aipw)[11] - true_effect
+  se_aipw_ps <- sqrt(vcov(results_csme_aipw)[11, 11])
   coverage_aipw_ps <-
     1*(coef(results_csme_aipw)[10] - 1.96*se_aipw_ps < true_effect &
          coef(results_csme_aipw)[10] + 1.96*se_aipw_ps > true_effect)
@@ -272,46 +293,51 @@ simulator <- function(trial, sigma_me) {
   # Outcome regression correct, propensity model wrong
 
 
-  # Fit logistic regression to use for starting values
-  mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial")
+  # Fit regression to use for starting values
+  mod <- lm(Y ~ Astar*L1 + Astar*L2, data = data)
 
   # Model 1: G-formula-CSME
   eefun_csme_gform <- function(data) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     L1 <- data$L1
     L2 <- data$L2
-    delta <- function(beta1, beta4, beta5) {
-      Xstar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y
+    delta <- function(beta1, beta4, beta5, sigma_ep) {
+      Astar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5,
+                        sigma_ep) {
+      (beta0 + beta2*L1 + beta3*L2 + (beta1 + beta4*L1 + beta5*L2)*
+          delta(beta1, beta4, beta5, sigma_ep)) /
+          (1 + ((beta1 + beta4*L1 + beta5*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
-    condexp <- function(beta0, beta1, beta2, beta3,
-                        beta4, beta5) {
-      H(beta0 + (beta1 + beta4*L1 + beta5*L2)*
-          delta(beta1, beta4, beta5) + beta2*L1 + beta3*L2 -
-          ((beta1 + beta4*L1 + beta5*L2)^{2})*sigma_me / 2)
+    condvar <- function(beta1, beta4, beta5, sigma_ep) {
+      sigma_ep /
+        (1 + ((beta1 + beta4*L1 + beta5*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
     function(theta) {
       c((Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6])),
+                     theta[5], theta[6], theta[7])),
         (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*L1,
+                     theta[5], theta[6], theta[7]))*
+          delta(theta[2], theta[5], theta[6], theta[7]),
         (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*L2,
+                     theta[5], theta[6], theta[7]))*L1,
         (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*
-          delta(theta[2], theta[5], theta[6]),
+                     theta[5], theta[6], theta[7]))*L2,
         (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*
-          L1*delta(theta[2], theta[5], theta[6]),
+                     theta[5], theta[6], theta[7]))*
+          L1*delta(theta[2], theta[5], theta[6], theta[7]),
         (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*
-          L2*delta(theta[2], theta[5], theta[6]),
-        L1 - theta[7],
-        L2 - theta[8],
-        theta[2] + theta[5]*theta[7] + theta[6]*theta[8] - theta[9]
+                     theta[5], theta[6], theta[7]))*
+          L2*delta(theta[2], theta[5], theta[6], theta[7]),
+        theta[7] - theta[7]*
+          (Y - condexp(theta[1], theta[2], theta[3], theta[4],
+                     theta[5], theta[6], theta[7]))^2 /
+          condvar(theta[2], theta[5], theta[6], theta[7]),
+        L1 - theta[8],
+        L2 - theta[9],
+        theta[2] + theta[5]*theta[8] + theta[6]*theta[9] - theta[10]
       )
     }
   }
@@ -320,55 +346,61 @@ simulator <- function(trial, sigma_me) {
     m_estimate(estFUN = eefun_csme_gform, data = data,
                compute_roots = TRUE,
                root_control =
-                 setup_root_control(start = c(coef(mod), mean(L1),                                                            mean(L2), 0.7)))
+                 setup_root_control(start = c(coef(mod), sigma(mod)^2,
+                                              mean(L1), mean(L2), guess)))
 
-  bias_gform_or <- coef(results_csme_gform)[9] - true_effect
-  se_gform_or <- sqrt(vcov(results_csme_gform)[9, 9])
+  bias_gform_or <- coef(results_csme_gform)[10] - true_effect
+  se_gform_or <- sqrt(vcov(results_csme_gform)[10, 10])
   coverage_gform_or <-
-    1*(coef(results_csme_gform)[9] - 1.96*se_gform_or < true_effect &
-         coef(results_csme_gform)[9] + 1.96*se_gform_or > true_effect)
+    1*(coef(results_csme_gform)[10] - 1.96*se_gform_or < true_effect &
+         coef(results_csme_gform)[10] + 1.96*se_gform_or > true_effect)
 
   # Weighted CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L2)
+  denom_mod <- lm(Astar ~ L2)
   p_denom <- predict(denom_mod, type='response')
-  dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1)
+  dens_denom <- dnorm(Astar, p_denom, summary(denom_mod)$sigma)
+  num_mod <- lm(Astar ~ 1)
   p_num <- predict(num_mod, type='response')
-  dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
+  dens_num <- dnorm(Astar, p_num, summary(denom_mod)$sigma)
   data$sw <- dens_num / dens_denom
 
   # Fit weighted regression for starting values
-  wmod <- glm(Y ~ Xstar, weights = data$sw, family = "binomial")
+  wmod <- lm(Y ~ Astar, weights = sw, data = data)
 
-  # Model 2: IPW-CSE
+  # Model 2: IPW-CSME
   # Get point estimates and variance using geex
   eefun_ipw <- function(data, model) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     Lmat <- model.matrix(model, data = data)
     sw <- data$sw
-    delta <- function(beta1) {
-      Xstar + sigma_me*beta1*Y
+    delta <- function(beta1, sigma_ep) {
+      Astar + sigma_me*beta1*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, sigma_ep) {
+      (beta0 + beta1*delta(beta1, sigma_ep)) /
+        (1 + (beta1^2)*sigma_me / sigma_ep)
     }
-    condexp <- function(beta0, beta1) {
-      H(beta0 + beta1*delta(beta1) - (beta1^2)*sigma_me/2)
+    condvar <- function(beta1, sigma_ep) {
+      sigma_ep /
+        (1 + (beta1^2)*sigma_me / sigma_ep)
     }
     function(theta) {
       p  <- length(theta)
       p1 <- length(coef(model))
       rho <- Lmat %*% theta[1:p1]
 
-      score_eqns <- apply(Lmat, 2, function(x) sum((Xstar - rho) * x))
+      score_eqns <- apply(Lmat, 2, function(x) sum((Astar - rho) * x))
 
       c(score_eqns,
-        Xstar - theta[p-2],
-        sw*(Y - condexp(theta[p-1], theta[p])),
-        sw*(Y - condexp(theta[p-1], theta[p]))*
-          delta(theta[p])
+        Astar - theta[p-3],
+        sw*(Y - condexp(theta[p-2], theta[p-1], theta[p])),
+        sw*(Y - condexp(theta[p-2], theta[p-1], theta[p]))*
+          delta(theta[p-1], theta[p]),
+        sw*(theta[p] - theta[p]*
+              (Y - condexp(theta[p-2], theta[p-1], theta[p]))^2 /
+              condvar(theta[p-1], theta[p]))
       )
     }
   }
@@ -379,9 +411,12 @@ simulator <- function(trial, sigma_me) {
   while(failed == TRUE & j < 6) {
 
     failed <- FALSE
-    startvec <- c(coef(denom_mod), mean(Xstar), coef(wmod)[1:2])*(j == 1) +
-      c(coef(denom_mod), mean(Xstar), coef(mod)[1:2])*(j == 2) +
-      c(coef(denom_mod), mean(Xstar), rnorm(2, 0, j/5))*(j > 2)
+    startvec <-
+      c(coef(denom_mod), mean(Astar), coef(wmod)[1:2], sigma(wmod)^2)*
+        (j == 1) +
+      c(coef(denom_mod), mean(Astar), coef(mod)[1:2], sigma(mod)^2)*
+        (j == 2) +
+      c(coef(denom_mod), mean(Astar), rnorm(3, 0, j/5))*(j > 2)
     results_ipw <-
       tryCatch(m_estimate(estFUN = eefun_ipw, data = data,
                           outer_args = list(denom_mod),
@@ -389,7 +424,7 @@ simulator <- function(trial, sigma_me) {
                             setup_root_control(start = startvec)),
                error = function(e) { failed <<- TRUE})
     if (failed == FALSE) {
-      if (abs(coef(results_ipw)[2]) > 2) { failed <- TRUE }
+      if (abs(coef(results_ipw)[5]) > 3) { failed <- TRUE }
     }
     j <- j + 1
 
@@ -402,54 +437,58 @@ simulator <- function(trial, sigma_me) {
          coef(results_ipw)[5] + 1.96*se_ipw_or > true_effect)
 
   # Model 3: AIPW
-  # Include denominator density in g-formula CSME outcome model
   eefun_csme_aipw <- function(data, model) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     L1 <- data$L1
     L2 <- data$L2
     Lmat <- model.matrix(model, data = data)
     sw <- data$sw
-    delta <- function(beta1, beta4, beta5) {
-      Xstar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y
+    delta <- function(beta1, beta4, beta5, sigma_ep) {
+      Astar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5,
+                        sigma_ep) {
+      (beta0 + beta2*L1 + beta3*L2 +
+        (beta1 + beta4*L1 + beta5*L2)*delta(beta1, beta4, beta5,sigma_ep)) /
+        (1 + ((beta1 + beta4*L1 + beta5*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
-    condexp <- function(beta0, beta1, beta2, beta3,
-                        beta4, beta5) {
-      H(beta0 + (beta1 + beta4*L1 + beta5*L2)*
-          delta(beta1, beta4, beta5) + beta2*L1 + beta3*L2 -
-          ((beta1 + beta4*L1 + beta5*L2)^{2})*sigma_me / 2)
+    condvar <- function(beta1, beta4, beta5, sigma_ep) {
+      sigma_ep /
+        (1 + ((beta1 + beta4*L1 + beta5*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
     function(theta) {
       p  <- length(theta)
       p1 <- length(coef(model))
       rho <- Lmat %*% theta[1:p1]
 
-      score_eqns <- apply(Lmat, 2, function(x) sum((Xstar - rho) * x))
+      score_eqns <- apply(Lmat, 2, function(x) sum((Astar - rho) * x))
 
       c(score_eqns,
-        Xstar - theta[p-9],
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3])),
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*L1,
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*L2,
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*
-          delta(theta[p-7], theta[p-4], theta[p-3]),
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*
-          L1*delta(theta[p-7], theta[p-4], theta[p-3]),
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*
-          L2*delta(theta[p-7], theta[p-4], theta[p-3]),
+        Astar - theta[p-10],
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3])),
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*
+          delta(theta[p-8], theta[p-5], theta[p-4], theta[p-3]),
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*L1,
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*L2,
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*
+          L1*delta(theta[p-8], theta[p-5], theta[p-4], theta[p-3]),
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*
+          L2*delta(theta[p-8], theta[p-5], theta[p-4], theta[p-3]),
+        sw*(theta[p-3] - theta[p-3]*
+              (Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                           theta[p-5], theta[p-4], theta[p-3]))^2 /
+              condvar(theta[p-8], theta[p-5], theta[p-4], theta[p-3])),
         L1 - theta[p-2],
         L2 - theta[p-1],
-        theta[p-7] + theta[p-4]*theta[p-2] +
-          theta[p-3]*theta[p-1] - theta[p]
+        theta[p-8] + theta[p-5]*theta[p-2] +
+          theta[p-4]*theta[p-1] - theta[p]
       )
     }
   }
@@ -458,198 +497,94 @@ simulator <- function(trial, sigma_me) {
     m_estimate(estFUN = eefun_csme_aipw, data = data, compute_roots = TRUE,
                outer_args = list(denom_mod),
                root_control =
-                 setup_root_control(start = c(coef(denom_mod), mean(Xstar),
-                                              coef(mod), mean(L1),
-                                              mean(L2), 0.7)))
+                 setup_root_control(start = c(coef(denom_mod), mean(Astar),
+                                              coef(mod), sigma(mod)^2,
+                                              mean(L1), mean(L2), guess)))
 
-  bias_aipw_or <- coef(results_csme_aipw)[12] - true_effect
-  se_aipw_or <- sqrt(vcov(results_csme_aipw)[12, 12])
+  bias_aipw_or <- coef(results_csme_aipw)[13] - true_effect
+  se_aipw_or <- sqrt(vcov(results_csme_aipw)[13, 13])
   coverage_aipw_or <-
-    1*(coef(results_csme_aipw)[12] - 1.96*se_aipw_or < true_effect &
-         coef(results_csme_aipw)[12] + 1.96*se_aipw_or > true_effect)
+    1*(coef(results_csme_aipw)[13] - 1.96*se_aipw_or < true_effect &
+         coef(results_csme_aipw)[13] + 1.96*se_aipw_or > true_effect)
 
   #####################################################################
   # Both models correct
 
-  # Fit logistic regression to use for starting values
-  mod <- glm(Y ~ Xstar*L1 + Xstar*L2, family = "binomial")
+  # Fit linear regression to use for starting values
+  mod <- lm(Y ~ Astar*L1 + Astar*L2, data = data)
 
   # Model 1: G-formula-CSME
-  eefun_csme_gform <- function(data) {
-    Y <- data$Y
-    Xstar <- data$Xstar
-    L1 <- data$L1
-    L2 <- data$L2
-    delta <- function(beta1, beta4, beta5) {
-      Xstar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y
-    }
-    H <- function(x) {
-      1 / (1 + exp(-x))
-    }
-    condexp <- function(beta0, beta1, beta2, beta3,
-                        beta4, beta5) {
-      H(beta0 + (beta1 + beta4*L1 + beta5*L2)*
-          delta(beta1, beta4, beta5) + beta2*L1 + beta3*L2 -
-          ((beta1 + beta4*L1 + beta5*L2)^{2})*sigma_me / 2)
-    }
-    function(theta) {
-      c((Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6])),
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*L1,
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*L2,
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*
-          delta(theta[2], theta[5], theta[6]),
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*
-          L1*delta(theta[2], theta[5], theta[6]),
-        (Y - condexp(theta[1], theta[2], theta[3], theta[4],
-                     theta[5], theta[6]))*
-          L2*delta(theta[2], theta[5], theta[6]),
-        L1 - theta[7],
-        L2 - theta[8],
-        theta[2] + theta[5]*theta[7] + theta[6]*theta[8] - theta[9]
-      )
-    }
-  }
+  bias_gform_psor <- bias_gform_or
+  se_gform_psor <- se_gform_or
+  coverage_gform_psor <- coverage_gform_or
 
-  results_csme_gform <-
-    m_estimate(estFUN = eefun_csme_gform, data = data,
-               compute_roots = TRUE,
-               root_control =
-                 setup_root_control(start = c(coef(mod), mean(L1),
-                                              mean(L2), 0.7)))
-
-  bias_gform_psor <- coef(results_csme_gform)[9] - true_effect
-  se_gform_psor <- sqrt(vcov(results_csme_gform)[9, 9])
-  coverage_gform_psor <-
-    1*(coef(results_csme_gform)[9] - 1.96*se_gform_psor < true_effect &
-         coef(results_csme_gform)[9] + 1.96*se_gform_psor > true_effect)
-
-  # Weighted CSME
   # Estimate weights
-  denom_mod <- lm(Xstar ~ L1 + L2)
+  denom_mod <- lm(Astar ~ L1 + L2)
   p_denom <- predict(denom_mod, type='response')
-  dens_denom <- dnorm(Xstar, p_denom, summary(denom_mod)$sigma)
-  num_mod <- lm(Xstar ~ 1)
+  dens_denom <- dnorm(Astar, p_denom, summary(denom_mod)$sigma)
+  num_mod <- lm(Astar ~ 1)
   p_num <- predict(num_mod, type='response')
-  dens_num <- dnorm(Xstar, p_num, summary(denom_mod)$sigma)
+  dens_num <- dnorm(Astar, p_num, summary(denom_mod)$sigma)
   data$sw <- dens_num / dens_denom
 
-  # Fit weighted regression for starting values
-  wmod <- glm(Y ~ Xstar, weights = data$sw, family = "binomial")
-
   # Model 2: IPW-CSE
-  # Get point estimates and variance using geex
-  eefun_ipw <- function(data, model) {
-    Y <- data$Y
-    Xstar <- data$Xstar
-    Lmat <- model.matrix(model, data = data)
-    sw <- data$sw
-    delta <- function(beta1) {
-      Xstar + sigma_me*beta1*Y
-    }
-    H <- function(x) {
-      1 / (1 + exp(-x))
-    }
-    condexp <- function(beta0, beta1) {
-      H(beta0 + beta1*delta(beta1) - (beta1^2)*sigma_me/2)
-    }
-    function(theta) {
-      p  <- length(theta)
-      p1 <- length(coef(model))
-      rho <- Lmat %*% theta[1:p1]
-
-      score_eqns <- apply(Lmat, 2, function(x) sum((Xstar - rho) * x))
-
-      c(score_eqns,
-        Xstar - theta[p-2],
-        sw*(Y - condexp(theta[p-1], theta[p])),
-        sw*(Y - condexp(theta[p-1], theta[p]))*
-          delta(theta[p])
-      )
-    }
-  }
-
-  failed <- TRUE
-  j <- 1
-
-  while(failed == TRUE & j < 2) {
-
-    failed <- FALSE
-    startvec <- c(coef(denom_mod), mean(Xstar), coef(wmod)[1:2])*(j == 1) +
-      c(coef(denom_mod), mean(Xstar), coef(mod)[1:2])*(j == 2) +
-      c(coef(denom_mod), mean(Xstar), rnorm(2, 0, j/5))*(j > 2)
-    results_ipw <-
-      tryCatch(m_estimate(estFUN = eefun_ipw, data = data,
-                          outer_args = list(denom_mod),
-                          root_control =
-                            setup_root_control(start = startvec)),
-               error = function(e) { failed <<- TRUE})
-    if (failed == FALSE) {
-      if (abs(coef(results_ipw)[2]) > 2) { failed <- TRUE }
-    }
-    j <- j + 1
-
-  }
-
-  bias_ipw_psor <- coef(results_ipw)[6] - true_effect
-  se_ipw_psor <- sqrt(vcov(results_ipw)[6, 6])
-  coverage_ipw_psor<-
-    1*(coef(results_ipw)[6] - 1.96*se_ipw_psor < true_effect &
-         coef(results_ipw)[6] + 1.96*se_ipw_psor > true_effect)
+  bias_ipw_psor <- bias_ipw_ps
+  se_ipw_psor <- se_ipw_ps
+  coverage_ipw_psor <- coverage_ipw_ps
 
   # Model 3: AIPW
-  # Include denominator density in g-formula CSME outcome model
   eefun_csme_aipw <- function(data, model) {
     Y <- data$Y
-    Xstar <- data$Xstar
+    Astar <- data$Astar
     L1 <- data$L1
     L2 <- data$L2
     Lmat <- model.matrix(model, data = data)
     sw <- data$sw
-    delta <- function(beta1, beta4, beta5) {
-      Xstar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y
+    delta <- function(beta1, beta4, beta5, sigma_ep) {
+      Astar + sigma_me*(beta1 + beta4*L1 + beta5*L2)*Y / sigma_ep
     }
-    H <- function(x) {
-      1 / (1 + exp(-x))
+    condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5,
+                        sigma_ep) {
+      (beta0 + beta2*L1 + beta3*L2 +
+        (beta1 + beta4*L1 + beta5*L2)*delta(beta1, beta4, beta5,sigma_ep)) /
+        (1 + ((beta1 + beta4*L1 + beta5*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
-    condexp <- function(beta0, beta1, beta2, beta3,
-                        beta4, beta5) {
-      H(beta0 + (beta1 + beta4*L1 + beta5*L2)*
-          delta(beta1, beta4, beta5) + beta2*L1 + beta3*L2 -
-          ((beta1 + beta4*L1 + beta5*L2)^{2})*sigma_me / 2)
+    condvar <- function(beta1, beta4, beta5, sigma_ep) {
+      sigma_ep /
+        (1 + ((beta1 + beta4*L1 + beta5*L2)^2)*sigma_me / sigma_ep)[[1]]
     }
     function(theta) {
       p  <- length(theta)
       p1 <- length(coef(model))
       rho <- Lmat %*% theta[1:p1]
 
-      score_eqns <- apply(Lmat, 2, function(x) sum((Xstar - rho) * x))
+      score_eqns <- apply(Lmat, 2, function(x) sum((Astar - rho) * x))
 
       c(score_eqns,
-        Xstar - theta[p-9],
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3])),
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*L1,
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*L2,
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*
-          delta(theta[p-7], theta[p-4], theta[p-3]),
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*
-          L1*delta(theta[p-7], theta[p-4], theta[p-3]),
-        sw*(Y - condexp(theta[p-8], theta[p-7], theta[p-6], theta[p-5],
-                        theta[p-4], theta[p-3]))*
-          L2*delta(theta[p-7], theta[p-4], theta[p-3]),
+        Astar - theta[p-10],
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3])),
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*
+          delta(theta[p-8], theta[p-5], theta[p-4], theta[p-3]),
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*L1,
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*L2,
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*
+          L1*delta(theta[p-8], theta[p-5], theta[p-4], theta[p-3]),
+        sw*(Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                        theta[p-5], theta[p-4], theta[p-3]))*
+          L2*delta(theta[p-8], theta[p-5], theta[p-4], theta[p-3]),
+        sw*(theta[p-3] - theta[p-3]*
+              (Y - condexp(theta[p-9], theta[p-8], theta[p-7], theta[p-6],
+                           theta[p-5], theta[p-4], theta[p-3]))^2 /
+              condvar(theta[p-8], theta[p-5], theta[p-4], theta[p-3])),
         L1 - theta[p-2],
         L2 - theta[p-1],
-        theta[p-7] + theta[p-4]*theta[p-2] +
-          theta[p-3]*theta[p-1] - theta[p]
+        theta[p-8] + theta[p-5]*theta[p-2] +
+          theta[p-4]*theta[p-1] - theta[p]
       )
     }
   }
@@ -658,15 +593,15 @@ simulator <- function(trial, sigma_me) {
     m_estimate(estFUN = eefun_csme_aipw, data = data, compute_roots = TRUE,
                outer_args = list(denom_mod),
                root_control =
-                 setup_root_control(start = c(coef(denom_mod), mean(Xstar),
-                                              coef(mod), mean(L1),
-                                              mean(L2), 0.7)))
+                 setup_root_control(start = c(coef(denom_mod), mean(Astar),
+                                              coef(mod), sigma(mod)^2,
+                                              mean(L1), mean(L2), guess)))
 
-  bias_aipw_psor <- coef(results_csme_aipw)[13] - true_effect
-  se_aipw_psor <- sqrt(vcov(results_csme_aipw)[13, 13])
+  bias_aipw_psor <- coef(results_csme_aipw)[14] - true_effect
+  se_aipw_psor <- sqrt(vcov(results_csme_aipw)[14, 14])
   coverage_aipw_psor <-
-    1*(coef(results_csme_aipw)[13] - 1.96*se_aipw_psor < true_effect &
-         coef(results_csme_aipw)[13] + 1.96*se_aipw_psor > true_effect)
+    1*(coef(results_csme_aipw)[14] - 1.96*se_aipw_psor < true_effect &
+         coef(results_csme_aipw)[14] + 1.96*se_aipw_psor > true_effect)
 
 
   return(c(bias_gform_ps, bias_ipw_ps, bias_aipw_ps,
@@ -693,5 +628,5 @@ set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, mes))
 
 # Output
-outfile <- paste("./Results/results_scen2_", i, ".Rdata", sep = "")
+outfile <- paste("./Results/results_scen3_", i, ".Rdata", sep = "")
 save(sim, file = outfile)
