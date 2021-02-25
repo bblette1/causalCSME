@@ -13,8 +13,8 @@ L2_prob <- 0.2
 true_effect_a3 <-
   0.4*exp(-2 + 0.7*3) / (1 + exp(-2 + 0.7*3)) +
   0.1*exp(-1.6 + 0.5*3) / (1 + exp(-1.6 + 0.5*3)) +
-  0.1*exp(-2.6 + 0.3*3) / (1 + exp(-2.6 + 0.3*3)) +
-  0.4*exp(-2.2 + 0.1*3) / (1 + exp(-2.2 + 0.1*3))
+  0.4*exp(-2.6 + 0.3*3) / (1 + exp(-2.6 + 0.3*3)) +
+  0.1*exp(-2.2 + 0.1*3) / (1 + exp(-2.2 + 0.1*3))
 sigma_me <- 0.25
 
 # Simulation function to be sent to computing cluster
