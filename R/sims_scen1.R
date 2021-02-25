@@ -138,16 +138,20 @@ simulator <- function(trial, beta1_true) {
     Astar <- data$Astar
     L1 <- data$L1
     L2 <- data$L2
+    H <- function(x) {
+      1 / (1 + exp(-x))
+    }
     function(theta) {
       c(L1 - theta[1],
         L2 - theta[2],
-        (Y - (theta[3] + Astar*theta[4] + L1*theta[5] + L2*theta[6] +
+        (Y - H(theta[3] + Astar*theta[4] + L1*theta[5] + L2*theta[6] +
               Astar*L1*theta[7] + Astar*L2*theta[8])) *
           c(1, Astar, L1, L2, Astar*L1, Astar*L2),
-        t(c(1, 3, 1, 1, 3, 3)) %*% theta[3:8]*theta[1]*theta[2] +
-          t(c(1, 3, 1, 0, 3, 0)) %*% theta[3:8]*theta[1]*(1-theta[2]) +
-          t(c(1, 3, 0, 1, 0, 3)) %*% theta[3:8]*(1-theta[1])*theta[2] +
-          t(c(1, 3, 0, 0, 0, 0)) %*% theta[3:8]*(1-theta[1])*(1-theta[2]) -
+        H(t(c(1, 3, 1, 1, 3, 3)) %*% theta[3:8])*theta[1]*theta[2] +
+          H(t(c(1, 3, 1, 0, 3, 0)) %*% theta[3:8])*theta[1]*(1-theta[2]) +
+          H(t(c(1, 3, 0, 1, 0, 3)) %*% theta[3:8])*(1-theta[1])*theta[2] +
+          H(t(c(1, 3, 0, 0, 0, 0)) %*% theta[3:8])*
+          (1-theta[1])*(1-theta[2]) -
           theta[9]
       )
     }
@@ -193,10 +197,11 @@ simulator <- function(trial, beta1_true) {
           L2*delta(theta[2], theta[5], theta[6]),
         L1 - theta[7],
         L2 - theta[8],
-        t(c(1, 3, 1, 1, 3, 3)) %*% theta[1:6]*theta[7]*theta[8] +
-          t(c(1, 3, 1, 0, 3, 0)) %*% theta[1:6]*theta[7]*(1-theta[8]) +
-          t(c(1, 3, 0, 1, 0, 3)) %*% theta[1:6]*(1-theta[7])*theta[8] +
-          t(c(1, 3, 0, 0, 0, 0)) %*% theta[1:6]*(1-theta[7])*(1-theta[8]) -
+        H(t(c(1, 3, 1, 1, 3, 3)) %*% theta[1:6])*theta[7]*theta[8] +
+          H(t(c(1, 3, 1, 0, 3, 0)) %*% theta[1:6])*theta[7]*(1-theta[8]) +
+          H(t(c(1, 3, 0, 1, 0, 3)) %*% theta[1:6])*(1-theta[7])*theta[8] +
+          H(t(c(1, 3, 0, 0, 0, 0)) %*% theta[1:6])*
+          (1-theta[7])*(1-theta[8]) -
           theta[9]
       )
     }
