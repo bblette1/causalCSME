@@ -1,6 +1,5 @@
 rm(list = ls())
 library(geex)
-library(matrixstats)
 library(rootSolve)
 
 # Set parameter values
