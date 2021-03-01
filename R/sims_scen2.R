@@ -7,20 +7,20 @@ n <- 800
 beta1 <- 0.2
 beta2 <- -0.5
 beta3 <- -0.3
-beta4 <- -0.4
+beta4 <- -0.5
 lambda <- 2
-sigma_me1 <- 0.09
-sigma_me3 <- 0.25
+sigma_me1 <- 0.36
+sigma_me3 <- 0.16
 
 simulator <- function(trial, beta1) {
 
   L <- rexp(n, lambda)
-  A1 <- rnorm(n, 4 + 0.5*L, 1)
-  A2 <- rnorm(n, 1.25 + 0.3*L, 0.5)
+  A1 <- rnorm(n, 4 + 0.7*L, 1)
+  A2 <- rnorm(n, 1.25 + 0.4*L, 0.5)
   A3 <- rnorm(n, 2.5, 0.7)
-  Y_prob <- exp(-2 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L -
+  Y_prob <- exp(-1.5 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L -
                   log(lambda / (lambda - beta4))) /
-            (1 + exp(-2 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
+            (1 + exp(-1.5 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
   Y <- rbinom(n, 1, Y_prob)
   A1star <- A1 + rnorm(n, 0, sqrt(sigma_me1))
   A3star <- A3 + rnorm(n, 0, sqrt(sigma_me3))
