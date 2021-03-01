@@ -201,7 +201,8 @@ simulator <- function(trial, sigma_me) {
                roots = c(coef(denom_mod), coef(num_mod),
                          sigma(denom_mod)^2, coef(results_csme_ipw)))
 
-  se_ipw_ps <- sqrt(vcov(results_ipw2)[7, 7])
+  #se_ipw_ps <- sqrt(vcov(results_ipw2)[7, 7])
+  se_ipw_ps <- sqrt(vcov(results_csme_ipw)[2, 2])
   coverage_ipw_ps <-
     1*(coef(results_ipw2)[7] - 1.96*se_ipw_ps < true_effect &
          coef(results_ipw2)[7] + 1.96*se_ipw_ps > true_effect)
@@ -279,8 +280,8 @@ simulator <- function(trial, sigma_me) {
   bias_aipw_ps <- coef(results_csme_aipw)[11] - true_effect
   se_aipw_ps <- sqrt(vcov(results_csme_aipw)[11, 11])
   coverage_aipw_ps <-
-    1*(coef(results_csme_aipw)[10] - 1.96*se_aipw_ps < true_effect &
-         coef(results_csme_aipw)[10] + 1.96*se_aipw_ps > true_effect)
+    1*(coef(results_csme_aipw)[11] - 1.96*se_aipw_ps < true_effect &
+       coef(results_csme_aipw)[11] + 1.96*se_aipw_ps > true_effect)
 
   if(failed == TRUE) {
     bias_aipw_ps <- NA
