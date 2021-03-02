@@ -238,7 +238,7 @@ Confounding bias and measurement error are common barriers to identification, es
 
 The measurement error literature is commonly split into (i) functional methods, which make no or limited assumptions on the distribution of mismeasured variables, and (ii) structural methods, which make explicit distributional assumptions~\citep{carroll2006}. Several causal methods based on structural approaches have been developed (\citealp{kuroki2014,edwards2015multiple,braun2017}; \citealp*{hong2017}). Likewise, three of the four most popular functional methods (regression calibration, SIMEX, and methods based on instrumental variables) have been adapted to a variety of causal problems (\citealp*{vansteelandt2009}; \citealp{cole2010,kendall2015,lockwood2015,kyle2016,wu2019}). These methods all rely on either supplemental data, such as replication, validation, or instrumental data, or on strong distributional and extrapolation assumptions to draw inference.
 
-In contrast, the fourth main functional approach, that of score functions, leverages the likelihood structure under classical additive measurement error to draw inference without supplemental data or such strong assumptions. Despite this advantage, this method has only been adapted to perform causal inference in very limited capacity, perhaps due to its increased complexity over other functional approaches and lack of available software. In particular, \citet*{mccaffrey2013} suggested using weighted conditional score equations to correct for measurement error in confounders and the approach was eventually implemented in \citet{shu2019}. In this paper, we expand this methodology in multiple directions, considering exposure/treatment measurement error and defining g-formula, IPW, and doubly-robust estimators.
+In contrast, the fourth main functional approach, that of score functions, leverages the likelihood structure under classical additive measurement error to draw inference without supplemental data or such strong assumptions. Despite this advantage, this method has only been adapted to perform causal inference in very limited capacity, perhaps due to its increased complexity over other functional approaches and lack of available software. In particular, \citet*{mccaffrey2013} suggested using weighted conditional score equations to correct for measurement error in confounders and the approach was eventually implemented in \citet{shu2019}. In this paper, this methodology is expanded in multiple directions, considering exposure/treatment measurement error and defining g-formula, IPW, and doubly-robust estimators.
 
 The proposed methods are motivated by the HVTN 505 vaccine trial. This trial evaluated a candidate HIV vaccine and stopped administering immunizations in 2013 after reaching predetermined cutoffs for futility~\citep{hammer2013}. However, follow-up analyses of trial data described several correlates of risk among trial participants~\citep{decamp2017,janes2017,fong2018,neidich2019}. Some of these biomarkers correspond to possible target immune responses for future vaccine trials, but their causal effects on HIV-1 infection have not been described. The methods derived in this paper are motivated by this problem, where the biomarkers are measured with error and their effects are likely subject to confounding, but there is no supplemental data available.
 
@@ -249,11 +249,11 @@ This paper proceeds as follows. In Section 2, notation and the estimand are defi
 
 Suppose there are $m$ exposures/treatments of interest which may or may not be measured correctly. Let $\bm{A}_{i} = (A_{i1}, A_{i2}, ..., A_{im})$ be a row vector denoting the true exposures for individual $i$ and $\bm{A}^{*}_{i} =  (A^{*}_{i1}, A^{*}_{i2}, ..., A^{*}_{im})$ be the corresponding set of measured exposures. Suppose only the first $j$ exposures are measured with error, such that $A_{ik} = A^{*}_{ik}$ for $k > j$ for all individuals. For example, in the HVTN 505 trial, a biomarker of interest $A$ is antibody-dependent cellular phagocytosis activity. This biomarker was not observed exactly, but an imperfect phagocytic score $A^{*}$ was measured using flow cytometry analysis. Exposures subject to measurement error are assumed to be continuous random variables, while exposures known to be correctly measured may be continuous or discrete. Let $Y_{i}$ be the outcome of interest. Define $Y_{i}(\bm{a})$ to be the potential outcome under treatments $\bm{A} = \bm{a} = (a_{1}, a_{2}, ..., a_{m})$. Since there is at least one continuous exposure, each individual has infinite potential outcomes. Let $\bm{L}_{i} =  (L_{i1}, L_{i2}, ..., L_{ip})$ represent a vector of baseline covariates measured prior to the exposures. Assume that $n$ i.i.d. copies of the random variables $(\bm{L}, \bm{A}^{*}, Y)$ are observed.
 
-Consider the marginal structural model (MSM)
+This paper proposes estimators based on g-formula, IPW, and doubly-robust techniques. The g-formula estimator will target the dose-response surface, namely $E\{ Y(\bm{a}) \}$ for $\bm{a} \in \bm{\mathcal{A}}$ where $\bm{\mathcal{A}}$ represents the (usually compact) $m$-dimensional space of exposure values of interest. For example, with one exposure, this may be the dose response curve across a closed interval of exposure values. On the other hand, the proposed IPW estimator will estimate the parameters of a marginal structural model (MSM), given by
 \begin{equation}
     g(\text{E}[Y(\bm{a})]) = \gamma (1, \bm{a})^{T}
 \end{equation}
-where $g$ is a link function for an exponential family density, e.g., $g(\cdot) = \text{logit}(\cdot)$. The MSM parameter $\gamma = (\gamma_{0}, ..., \gamma_{m})$ is a row vector of length $m+1$ which quantifies the effects of the exposures on the outcome. The parameter $\gamma_{0}$ describes the mean outcome when all exposures are set to 0, which may or may not be of interest depending on the exposures being studied. The linear structure of the MSM is key to matching the conditional score framework described in the next section; more complicated specifications are considered in Web Appendix D.
+where $g$ is a link function for an exponential family density, e.g., $g(\cdot) = \text{logit}(\cdot)$. The MSM parameter $\gamma = (\gamma_{0}, ..., \gamma_{m})$ is a row vector of length $m+1$ which quantifies the effects of the exposures on the outcome. The parameter $\gamma_{0}$ describes the mean outcome when all exposures are set to 0, which may or may not be of interest depending on the exposures being studied. The MSM also corresponds to a dose-response surface but with a more restrictive linear structure than that targeted by the g-formula estimator. This is a consequence of the conditional score framework described in the next section, but estimation procedures for non-linear MSM specifications are considered in Web Appendix D. Doubly-robust estimators can be derived to target either of these estimands; this paper describes a doubly-robust estimator that, like the g-formula, will target the less restrictive dose-response surface.
 
 \begin{figure}
 \centering
@@ -303,29 +303,21 @@ Next, three methods will be proposed which combine the CSME approach with common
 
 \subsection{G-formula CSME Estimator}
 
-\sloppy The first proposed method combines the g-formula with the CSME method. Let $\bm{A}_{(-j)} = (A_{1}, ..., A_{j-1}, A_{j+1}, ..., A_{m})$ be the vector of treatments excluding $A_{j}$ and let $Y(a_{j}, \bm{a}_{(-j)})$ be the potential outcome under $A_{j} = a_{j}$ and $\bm{A}_{(-j)} = \bm{a}_{(-j)}$. Then the g-formula CSME estimator of $\gamma_{j}$ for $j = 1,...,m$ is
-\begin{align*}
-    \hat{\gamma_{j}} &= \hat{\text{E}}\{ Y(a_{j}, \bm{a}_{(-j)}) \} - \hat{\text{E}}\{ Y(a_{j} - 1, \bm{a}_{(-j)}) \} \\
-    &= \int_{\bm{l} \in \bm{L}} \hat{\text{E}}(Y | A_{j} = a_{j}, \bm{A}_{(-j)} = \bm{a}_{(-j)}, \bm{L}) d\hat{F}_{\bm{L}}(\bm{l}) \\
-    &- \int_{\bm{l} \in \bm{L}} \hat{\text{E}}(Y | A_{j} = a_{j} - 1, \bm{A}_{(-j)} = \bm{a}_{(-j)}, \bm{L}) d\hat{F}_{\bm{L}}(\bm{l})
-\end{align*}
-where the outcome predictions are from a fit CSME model with relevant interaction terms and $a_{j}$ and $\bm{a}_{(-j)}$ are constants. Equivalently, this estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, \gamma_{1}, ..., \gamma_{m})$ and
-
+\sloppy The first proposed method combines the g-formula with the CSME method. As in the setting with no measurement error, the g-formula can be written as $\hat{E}\{ Y(\bm{a}) \} = \int_{\bm{l} \in \bm{L}} \hat{\text{E}}(Y | \bm{A} = \bm{a}, \bm{L}) d\hat{F}_{\bm{L}}(\bm{l})$. The outcome model predictions $\hat{\text{E}}(Y | \bm{A} = \bm{a}, \bm{L})$ are typically estimated using a GLM or other popular models. To address exposure measurement error, the proposed g-formula CSME estimator instead estimates predictions from a CSME outcome model with relevant covariates and interaction terms in the model specification. This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}))$ and
 \begin{equation}
     \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
     \begin{bmatrix}
        \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
         \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
-        \beta_{a_{1}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
-        \vdots \\
-        \beta_{a_{m}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{m}} - \gamma_{m} \\
+        g^{-1}(\beta_{0} + \bm{a}^{*}_{i}\beta_{a} + \bm{l}_{i}\beta_{l} +
+        \bm{a}^{*}_{i}\beta_{al}\bm{l}_{i}^{T}) - E \{ Y(\bm{a}) \}
     \end{bmatrix}
 \end{equation}
-where notation for the coefficients from the CSME method are expanded as $\beta_{a} = (\beta_{a_{1}},...,\beta_{a_{m}})^{T}$ and $\beta_{al} = (\beta_{a_{1}l}, ..., \beta_{a_{m}l})^{T}$, where $\beta_{a_{j}l}$ is the $1 \times p$ vector of parameters corresponding to interactions between $a_{j}$ and covariates in $\textbf{L}$ for $j = 1,...,m$ (with zeroes for interactions not included in the outcome model).
+where the $\beta$ parameters are nested within the conditional expectation and variance terms as previously described. In theory, the user can impose no structure on the dose-response surface and simply estimate $\hat{E}\{ Y(\bm{a}) \}$ for a large grid of points $\bm{a}$ in the space of interest. However, in practice the outcome regression specification will place some restrictions on the dose-response surface.
 
 \subsection{IPW CSME Estimator}
 
-Since the CSME approach is defined using estimating equations, it's relatively straightforward to define an IPW extension. In particular, consider an estimator of the parameters of interest that solves $\sum_{i=1}^{n} \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) = 0$ where:
+Since the CSME approach is defined using estimating equations, it's relatively straightforward to define an IPW extension. In particular, consider an estimator of the MSM parameters in (1) that solves $\sum_{i=1}^{n} \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) = 0$ where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, \gamma_{1}, ..., \gamma_{m})$ and:
 
 \begin{equation}
     \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
@@ -334,10 +326,10 @@ Since the CSME approach is defined using estimating equations, it's relatively s
        SW_{i} \left [ \phi - \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i})\}^{2} / \{ Var(Y_{i} | \bm{\Delta}_{i}) / \phi \} \right ]
     \end{bmatrix}
 \end{equation}
-\begin{equation*}
+\begin{equation}
 SW_{i} = \frac{f(A_{i1}, A_{i2}, ..., A_{in})}{f(A_{i1}, A_{i2}, ..., A_{in}) | \bm{L}_{i})} = \frac{f(A_{i1})f(A_{i2} | A_{i1}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1})}{f(A_{i,1} | \bm{L}_{i})f(A_{i2} | A_{i1}, \bm{L}_{i}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1}, \bm{L}_{i})}
-\end{equation*}
-and the $\beta_{0}$ and $\beta_{a}$ parameters nested within the conditional expectation and variance can be changed to $\gamma_{0}$ and $\gamma_{(-0)}$ such that $\hat{\gamma}$ is the solution to (4).
+\end{equation}
+and the $\beta_{0}$ and $\beta_{a}$ parameters nested within the conditional expectation and variance can be changed to $\gamma_{0}$ and $\gamma_{1},...,\gamma_{m}$ such that $\hat{\gamma}$ is the solution to (4).
 
 Rather than the Markov factorization given above, most MSM with multiple treatments use weights of the form $SW_{i} = \prod_{j=1}^{m} f(A_{ij}) / f(A_{ij} | \bm{L}_{i})$ as originally described by \citet{hernan2001}, which assumes that the treatments are independent conditional on $\bm{L}$. For the simulations and application of this paper, this assumption will be made, but note that such a simplification may be dubious in various applications and will not hold if there are direct arrows between treatments in the DAG. For examples of estimating the joint propensity of various dependent exposures using mixed models, see \citet{tchetgen2012}, \citet{perez2014}, or \citet*{liu2016}. In the remainder of this paper, weights for continuous treatments will be estimated using a ratio of normal densities, but other methods~\citep{hirano2004} and more flexible choices for weight models~\citep{naimi2014} can also be used in general.
 
@@ -347,18 +339,31 @@ Estimating the weights provides an additional challenge in that the exposure mea
 
 \subsection{Doubly-Robust CSME Estimator}
 
-In the absence of measurement error, both the g-formula and IPW methods rely on model specifications that may not be correct in practice. The g-formula provides consistent estimation of potential outcome means only when the outcome model with exposures and confounders is correctly specified. Likewise, the IPW estimator is consistent only when the propensity score model is correctly specified. In contrast, doubly-robust (DR) estimators entail specifying both propensity and outcome models, but remain consistent if one is misspecified and the other is not (\citealp*{robins1994}; \citealp{lunceford2004,bang2005}).
+Both g-formula and IPW methods rely on model specifications that may not be correct in practice. The g-formula provides consistent estimation of potential outcome means only when the outcome model with exposures and confounders is correctly specified. Likewise, IPW estimators are consistent only when the propensity score model is correctly specified. In contrast, doubly-robust (DR) estimators entail specifying both propensity and outcome models, but remain consistent if one is misspecified and the other is not (\citealp*{robins1994}; \citealp{lunceford2004,bang2005}).
 
-A DR estimator for the additive measurement error setting can be written similarly to those described in \citet{robins2000b} and \citet{neugebauer2005} as the solution to the set of estimating equations $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
+A DR estimator for the additive measurement error setting can be written similarly to the estimator described in \citet{hirano2001}. Namely, one can perform the g-formula using a weighted outcome regression where the weights are the inverse probability weights given in equation (5). This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}))$ and
+\begin{equation}
+    \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
+    \begin{bmatrix}
+       SW_{i}\{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
+        SW_{i}[\phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \}] \\
+        g^{-1}(\beta_{0} + \bm{a}^{*}_{i}\beta_{a} + \bm{l}_{i}\beta_{l} +
+        \bm{a}^{*}_{i}\beta_{al}\bm{l}_{i}^{T}) - E \{ Y(\bm{a}) \}
+    \end{bmatrix}
+\end{equation}
+The $\beta$ parameters are nested in the conditional expectation and variance terms as before, and the stabilized weights $SW_{i}$ are estimated as described for the IPW estimator. As for the g-formula CSME estimator, the proposed DR CSME estimator can be evaluated across a grid of values $\bm{a}$ of interest to estimate a dose-response surface.
 
+An alternative DR estimator, similar to those described in \citet{robins2000b} and \citet{neugebauer2005}, can also be considered and is given by the solution to the set of estimating equations $\sum_{i=1}^{n} \psi_{DR-CSME-alt}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
 \begin{equation*}
-    \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
+    \psi_{DR-CSME-alt}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
     \begin{bmatrix}
        SW_{i} \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i}) - Q(\bm{A}_{i}, \bm{L}_{i}) \} + \int_{\bm{a}} h(\bm{a})Q(\bm{a}, \bm{L}_{i})d\mu (\bm{a}) \\
        SW_{i} \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i}) - Q(\bm{A}_{i}, \bm{L}_{i}) \} \bm{\Delta}_{i} + \int_{\bm{a}} h(\bm{a})Q(\bm{a}, \bm{L}_{i})d\mu (\bm{a})
     \end{bmatrix},
 \end{equation*}
 $h(\bm{a})$ is the numerator of the stabilized weights, $d\mu (\bm{a})$ is a Lebesgue measure, and $Q(\bm{A}, \bm{L})$ is a function of $\bm{A}$ and $\bm{L}$. This estimator is doubly-robust in the sense that it is consistent if either the weights $SW$ are derived from correctly specified propensity models or if the outcome regression is a correctly specified CSME model, given by $Q(\bm{A}, \bm{L}) = \beta_{0} + \beta_{a}\bm{A} + \beta_{l}\bm{L} + \beta_{al}(\bm{A} \otimes \bm{L}^{T}) - \psi^{T}(1, \bm{A}^{T})^{T}$.
+
+However, this alternative DR estimator is limited in that it targets the same MSM parameter estimand as the IPW estimator. This is problematic because the restrictions imposed on the dose-response surface by the assumed outcome regression will exclude a linear surface form for many link functions. Thus, the estimator will only truly be doubly-robust in settings where this phenomenon does not occur, such as when the outcome regression uses an identity link, or a log or probit link with no interactions between covariates and treatments. The DR estimator proposed based on the \citet{hirano2001} approach is much more flexible and is recommended in general; this estimator will be referred to as ``the DR estimator'' for the remainder of the paper.
 
 \subsection{Handling Unknown Measurement Error Variance}
 
