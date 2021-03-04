@@ -3,7 +3,7 @@ library(geex)
 library(rootSolve)
 
 # Set parameter values
-nsims <- 500
+nsims <- 1000
 n <- 800
 beta1_true <- 0.7
 beta4_true <- -0.4
@@ -234,8 +234,8 @@ simulator <- function(trial, beta1_true) {
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1_true)),
                      betas = rep(beta1_true, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
-combo_i <- combos[(i), ]
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
+combo_i <- combos[(i-1000), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, betas))
