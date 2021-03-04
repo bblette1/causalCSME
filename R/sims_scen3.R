@@ -6,12 +6,12 @@ library(rootSolve)
 nsims <- 1000
 n <- 1500
 beta1_true <- 0.7
-beta3_true <- -0.4
-beta5_true <- 0.3
+beta3_true <- -0.7
+beta5_true <- 0.4
 L1_prob <- 0.5
 L2_mean <- 1
 true_effect <- beta1_true + beta3_true*L1_prob + beta5_true*L2_mean
-sigma_me <- 0.09
+sigma_me <- 0.16
 
 # Simulator function to be sent to computing cluster
 simulator <- function(trial, sigma_me) {
@@ -19,8 +19,8 @@ simulator <- function(trial, sigma_me) {
   # Generate data
   L1 <- rbinom(n, 1, L1_prob)
   L2 <- rnorm(n, L2_mean, 0.5)
-  A <- rnorm(n, 2 + 0.4*L1 - 0.5*L2, 0.9)
-  Y_mean <- 1.5 + beta1_true*A + 0.6*L1 + beta3_true*A*L1 - 0.5*L2 +
+  A <- rnorm(n, 2 + 0.9*L1 - 0.6*L2, 1.1)
+  Y_mean <- 1.5 + beta1_true*A + 0.9*L1 + beta3_true*A*L1 - 0.6*L2 +
             beta5_true*A*L2
   Y <- rnorm(n, Y_mean, 0.4)
   Astar <- A + rnorm(n, 0, sqrt(sigma_me))
@@ -621,8 +621,8 @@ simulator <- function(trial, sigma_me) {
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1_true)),
                      mes = rep(sigma_me, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
-combo_i <- combos[(i), ]
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
+combo_i <- combos[(i-1000), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, mes))
