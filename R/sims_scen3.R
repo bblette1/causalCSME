@@ -3,8 +3,8 @@ library(geex)
 library(rootSolve)
 
 # Set parameter values
-nsims <- 500
-n <- 2000
+nsims <- 1000
+n <- 1500
 beta1_true <- 0.7
 beta3_true <- -0.4
 beta5_true <- 0.3
@@ -20,9 +20,9 @@ simulator <- function(trial, sigma_me) {
   L1 <- rbinom(n, 1, L1_prob)
   L2 <- rnorm(n, L2_mean, 0.5)
   A <- rnorm(n, 2 + 0.4*L1 - 0.5*L2, 0.9)
-  Y_mean <- 1.5 + beta1_true*A + 0.4*L1 + beta3_true*A*L1 - 0.3*L2 +
+  Y_mean <- 1.5 + beta1_true*A + 0.6*L1 + beta3_true*A*L1 - 0.5*L2 +
             beta5_true*A*L2
-  Y <- rnorm(n, 1.5 + Y_mean, 0.4)
+  Y <- rnorm(n, Y_mean, 0.4)
   Astar <- A + rnorm(n, 0, sqrt(sigma_me))
   data <- data.frame("Y" = Y, "Astar" = Astar, "L1" = L1, "L2" = L2)
 
