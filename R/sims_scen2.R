@@ -1,8 +1,9 @@
 rm(list = ls())
 library(geex)
 library(rootSolve)
+library(survey)
 
-nsims <- 500
+nsims <- 1000
 n <- 800
 beta1 <- 0.2
 beta2 <- -0.5
@@ -15,12 +16,12 @@ sigma_me3 <- 0.16
 simulator <- function(trial, beta1) {
 
   L <- rexp(n, lambda)
-  A1 <- rnorm(n, 4 + 0.7*L, 1)
+  A1 <- rnorm(n, 4 + 0.6*L, 1)
   A2 <- rnorm(n, 1.25 + 0.4*L, 0.5)
   A3 <- rnorm(n, 2.5, 0.7)
-  Y_prob <- exp(-1.5 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L -
+  Y_prob <- exp(-2 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L -
                   log(lambda / (lambda - beta4))) /
-            (1 + exp(-1.5 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
+            (1 + exp(-2 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
   Y <- rbinom(n, 1, Y_prob)
   A1star <- A1 + rnorm(n, 0, sqrt(sigma_me1))
   A3star <- A3 + rnorm(n, 0, sqrt(sigma_me3))
@@ -124,12 +125,18 @@ simulator <- function(trial, beta1) {
   data$sw <- data$sw1*data$sw2
 
   # Fit weighted regression
-  wmod <- glm(Y ~ A1star + A2 + A3star, weights = data$sw,
-              family = "binomial")
+  #wmod <- glm(Y ~ A1star + A2 + A3star, weights = data$sw,
+              #family = "binomial")
+  wmod <- svyglm(Y ~ A1star + A2 + A3star,
+                 design = svydesign(id = ~1, weights=data$sw, data=data),
+                 family = "binomial")
+
   bias1_ipw <- coef(wmod)[2] - beta1
   bias2_ipw <- coef(wmod)[3] - beta2
   bias3_ipw <- coef(wmod)[4] - beta3
 
+  run <- F
+  if (run == T) {
   eefun_wr <- function(data, model1, model2, model3, model4) {
     Y <- data$Y
     A3star <- data$A3star
@@ -198,15 +205,112 @@ simulator <- function(trial, beta1) {
                                      sigma(denom_mod2)^2,
                                      coef(wmod), sigma(wmod)^2))
 
-  se1_ipw <- sqrt(vcov(results_wr)[10, 10])
+
+  eefun_wr <- function(data) {
+    Y <- data$Y
+    A1star <- data$A1star
+    A2 <- data$A2
+    A3star <- data$A3star
+    sw <- data$sw
+    n <- dim(data)[1]
+
+    function(theta) {
+      c(sw*(Y - (theta[1] + theta[2]*A1star + theta[3]*A2 +
+                   theta[4]*A3star)),
+        sw*(Y - (theta[1] + theta[2]*A1star + theta[3]*A2 +
+                   theta[4]*A3star))*A1star,
+        sw*(Y - (theta[1] + theta[2]*A1star + theta[3]*A2 +
+                   theta[4]*A3star))*A2,
+        sw*(Y - (theta[1] + theta[2]*A1star + theta[3]*A2 +
+                   theta[4]*A3star))*A3star,
+        sw*(theta[5] - (Y - (theta[1] + theta[2]*A1star +
+                               theta[3]*A2 + theta[4]*A3star))^2)
+      )
+    }
+  }
+
+  results_wr <- m_estimate(estFUN = eefun_wr, data = data,
+                           compute_roots = FALSE,
+                           roots = c(coef(wmod), sigma(wmod)^2))
+
+  eefun_wr <- function(data) {
+    Y <- data$Y
+    A3star <- data$A3star
+    A1star <- data$A1star
+    L <- data$L
+    A2 <- model.response(model.frame(model3, data = data))
+    #sw <- data$sw
+    n <- dim(data)[1]
+
+    function(theta) {
+      p  <- length(theta)
+      p1 <- length(coef(model1))
+      p2 <- length(coef(model2))
+      p3 <- length(coef(model3))
+      p4 <- length(coef(model4))
+      rho1 <- L1 %*% theta[1:p1]
+      rho2 <- V1 %*% theta[(p1+1):(p1+p2)]
+      rho3 <- L2 %*% theta[(p1+p2+1):(p1+p2+p3)]
+      rho4 <- V2 %*% theta[(p1+p2+p3+1):(p1+p2+p3+p4)]
+
+      dens_denom1 <- dnorm(A1star, rho1, sqrt(theta[p-6]))
+      dens_num1 <- dnorm(A1star, rho2, sqrt(theta[p-6]))
+      dens_denom2 <- dnorm(A2, rho3, sqrt(theta[p-5]))
+      dens_num2 <- dnorm(A2, rho4, sqrt(theta[p-5]))
+      sw1 <- dens_num1 / dens_denom1
+      sw2 <- dens_num2 / dens_denom2
+      sw <- sw1*sw2
+
+      score_eqns1 <- apply(L1, 2, function(x) sum((A1star - rho1) * x))
+      score_eqns2 <- apply(V1, 2, function(x) sum((A1star - rho2) * x))
+      score_eqns3 <- apply(L2, 2, function(x) sum((A2 - rho3) * x))
+      score_eqns4 <- apply(V2, 2, function(x) sum((A2 - rho4) * x))
+
+      c((A1star - rho1)*L1[,1],
+        (A1star - rho1)*L1[,2],
+        (A1star - rho2)*V1[,1],
+        (A2 - rho3)*L2[,1],
+        (A2 - rho3)*L2[,2],
+        (A2 - rho4)*V2[,1],
+        (n-p1)/n * theta[p-6] - (A1star - theta[1] - theta[2]*L)^2,
+        (n-p3)/n * theta[p-5] - (A2 - L2 %*% theta[(p1+p2+1):(p1+p2+p3)])^2,
+        sw*(Y - (theta[p-4] + theta[p-3]*A1star + theta[p-2]*A2 +
+                   theta[p-1]*A3star)),
+        sw*(Y - (theta[p-4] + theta[p-3]*A1star + theta[p-2]*A2 +
+                   theta[p-1]*A3star))*A1star,
+        sw*(Y - (theta[p-4] + theta[p-3]*A1star + theta[p-2]*A2 +
+                   theta[p-1]*A3star))*A2,
+        sw*(Y - (theta[p-4] + theta[p-3]*A1star + theta[p-2]*A2 +
+                   theta[p-1]*A3star))*A3star,
+        sw*(theta[p] - (Y - (theta[p-4] + theta[p-3]*A1star +
+                               theta[p-2]*A2 + theta[p-1]*A3star))^2)
+      )
+    }
+  }
+
+  results_wr <- m_estimate(estFUN = eefun_wr, data = data,
+                           outer_args = list(denom_mod1, num_mod1,
+                                             denom_mod2, num_mod2),
+                           compute_roots = FALSE,
+                           roots = c(coef(denom_mod1), coef(num_mod1),
+                                     coef(denom_mod2), coef(num_mod2),
+                                     sigma(denom_mod1)^2,
+                                     sigma(denom_mod2)^2,
+                                     coef(wmod), sigma(wmod)^2))
+
+  }
+
+
+
+  se1_ipw <- sqrt(vcov(wmod)[2, 2])
   coverage1_ipw <- 1*(coef(wmod)[2] - 1.96*se1_ipw < beta1 &
                       coef(wmod)[2] + 1.96*se1_ipw > beta1)
 
-  se2_ipw <- sqrt(vcov(results_wr)[11, 11])
+  se2_ipw <- sqrt(vcov(wmod)[3, 3])
   coverage2_ipw <- 1*(coef(wmod)[3] - 1.96*se2_ipw < beta2 &
                       coef(wmod)[3] + 1.96*se2_ipw > beta2)
 
-  se3_ipw <- sqrt(vcov(results_wr)[12, 12])
+  se3_ipw <- sqrt(vcov(wmod)[4, 4])
   coverage3_ipw <- 1*(coef(wmod)[4] - 1.96*se3_ipw < beta3 &
                       coef(wmod)[4] + 1.96*se3_ipw > beta3)
 
