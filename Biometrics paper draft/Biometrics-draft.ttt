@@ -1,22 +1,39 @@
 \begin{table}[]
-    \footnotesize
+    \centering
+    %\footnotesize
     \caption{Results from the first simulation study. Bias reflects 100 times the average bias across simulated data sets for each method. ASE is 100 times the average of estimated standard errors. ESE is 100 times the standard deviation of parameter estimates. Cov is the empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer.}
+    \begin{tabular}{lrrrr}
+    \hline
+         Estimator & Bias & ASE & ESE & Coverage \\
+         \hline
+         %\hhline{|=|=|=|=|=|=|}
+Regression & -51.5 & 18.3 & 18.3 & 19\% \\
+CSME & -21.8 & 28.4 & 28.6 & 87\% \\
+G-formula & -3.9 & 2.6 & 2.6 & 67\% \\
+G-formula CSME & 0.5 & 4.0 & 4.1 & 95\% \\
+         \hline
+    \end{tabular}
+    \label{tab:one}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[]
+    \footnotesize
+    \caption{Results from the second simulation study. Bias, ASE, ESE, and Coverage reflect the same quantities described in Table 1.}
     \begin{center}
     \begin{tabular}{lrrrrrrrrrrrr}
     \hline
         & \multicolumn{4}{c}{$\gamma_{1}$} & \multicolumn{4}{c}{$\gamma_{2}$} & \multicolumn{4}{c}{$\gamma_{3}$} \\
         Estimator & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov \\
          \hline
-Regression & 5.0 & 2.4 & 2.4 & 45\% & 7.1 & 4.3 & 4.4 & 68\% & 1.6 & 2.1 & 2.1 & 89\% \\
-CSME & 7.6 & 2.6 & 2.7 & 17\% & 7.1 & 4.3 & 4.4 & 67\% & -0.2 & 3.1 & 3.2 & 96\% \\
-G-formula & -1.8 & 1.7 & 1.7 & 83\% & 0.0 & 3.7 & 3.6 & 94\% & 1.6 & 2.1 & 2.1 & 89\% \\
-IPW & -1.8 & 2.7 & 3.0 & 92\% & -0.3 & 5.9 & 6.2 & 96\% & 1.6 & 3.2 & 3.2 & 91\% \\
-G-formula CSME & 0.1 & 1.9 & 1.9 & 95\% & 0.0 & 3.7 & 3.6 & 94\% & -0.2 & 3.1 & 3.2 & 96\% \\
-IPW CSME & 0.1 & 3.0 & 3.2 & 96\% & -0.3 & 5.8 & 6.2 & 96\% & -0.2 & 4.9 & 4.8 & 94\% \\
+Regression & -5.2 & 12.4 & 12.1 & 92\% & 14.8 & 28.5 & 28.5 & 92\% & 13.0 & 14.4 & 13.9 & 83\% \\
+CSME & 13.3 & 22.6 & 21.8 & 93\% & 14.0 & 29.5 & 28.7 & 91\% & -1.9 & 22.8 & 21.9 & 94\% \\
+IPW & -11.8 & 8.6 & 8.7 & 72\% & 0.0 & 21.9 & 21.0 & 94\% & 13.8 & 14.7 & 14.2 & 83\% \\
+IPW CSME & 1.1 & 14.9 & 15.0 & 96\% & -0.6 & 22.2 & 21.3 & 94\% & -0.5 & 23.0 & 22.1 & 95\% \\
          \hline
     \end{tabular}
     \end{center}
-    \label{tab:one}
+    \label{tab:two}
 \end{table}
 \efloatseparator
  
@@ -29,16 +46,16 @@ IPW CSME & 0.1 & 3.0 & 3.2 & 96\% & -0.3 & 5.8 & 6.2 & 96\% & -0.2 & 4.9 & 4.8 &
          Estimator & Correct Specifications & Bias & ASE & ESE & Coverage \\
          \hline
          %\hhline{|=|=|=|=|=|=|}
-G-formula CSME & PS & -16.3 & 6.4 & 6.3 & 28\% \\
-IPW CSME & PS & -2.8 & 7.1 & 7.1 & 93\% \\
-DR CSME & PS & -2.4 & 7.1 & 7.2 & 94\% \\[3pt]
-G-formula CSME & OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & OR & -16.4 & 6.7 & 6.7 & 32\% \\
-DR CSME & OR & 0.2 & 7.5 & 7.5 & 95\% \\[3pt]
-G-formula CSME & PS and OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & PS and OR & -2.8 & 7.1 & 7.2 & 93\% \\
-DR CSME & PS and OR & 0.4 & 7.8 & 7.7 & 95\% \\
+G-formula CSME & PS & -6.6 & 1.9 & 1.9 & 8\% \\
+IPW CSME & PS & 0.0 & 3.2 & 3.1 & 95\% \\
+DR CSME & PS & 0.0 & 2.6 & 2.6 & 94\% \\[3pt]
+G-formula CSME & OR & 0.0 & 1.7 & 1.7 & 94\% \\
+IPW CSME & OR & -6.3 & 2.0 & 2.0 & 12\% \\
+DR CSME & OR & 0.1 & 1.7 & 1.7 & 95\% \\[3pt]
+G-formula CSME & PS and OR & 0.0 & 1.7 & 1.7 & 94\% \\
+IPW CSME & PS and OR & 0.0 & 3.2 & 3.1 & 95\% \\
+DR CSME & PS and OR & 0.1 & 1.9 & 1.9 & 94\% \\
          \hline
     \end{tabular}
-    \label{tab:two}
+    \label{tab:three}
 \end{table}

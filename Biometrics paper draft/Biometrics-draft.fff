@@ -6,9 +6,17 @@
 \end{figure}
 \efloatseparator
  
+\begin{figure}
+\centering
+\includegraphics[width=6in]{fig2.png}
+\caption{Estimated dose-response curves for each of the four methods compared in the first simulation study. The oracle represents the true curve corresponding to the data generating mechanism used. For the sample size of 800 used in each simulation iteration, a typical support for the exposure would cover the interval from 0 to 4, with most values lying between 0.5 and 3.5.}
+\label{fig:two}
+\end{figure}
+\efloatseparator
+ 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=5.9in]{Figure2.png}
 \caption{Application results. Each panel shows the results of the DR estimator for the main effect of ADCP or R\RNum{2} in their respective models in the form of odds ratios and confidence intervals. The x-axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed intra-vaccinee exposure variance.}
-\label{fig:two}
+\label{fig:three}
 \end{figure}
