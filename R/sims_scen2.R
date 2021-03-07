@@ -8,8 +8,8 @@ n <- 800
 beta1 <- 0.3
 beta2 <- -0.5
 beta3 <- -0.4
-beta4 <- 0.7
-beta5 <- -0.4
+beta4 <- 0.6
+beta5 <- -0.3
 beta6 <- -0.6
 lambda <- 3
 sigma_me1 <- 0.81
@@ -24,7 +24,7 @@ simulator <- function(trial, beta1) {
   Y_prob <- exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L +
                   beta5*A1*L + beta6*A2*L -
                   log(lambda / (lambda - beta4 - beta5*A1 - beta6*A2))) /
-            (1 + exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
+            (1 + exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3))
   Y <- rbinom(n, 1, Y_prob)
   A1star <- A1 + rnorm(n, 0, sqrt(sigma_me1))
   A3star <- A3 + rnorm(n, 0, sqrt(sigma_me3))
@@ -94,16 +94,16 @@ simulator <- function(trial, beta1) {
                              root_control =
                                setup_root_control(start = coef(mod)))
 
-  bias1_csme <- coef(results_csme)[2] - (beta1)
+  bias1_csme <- coef(results_csme)[2] - beta1
   se1_csme <- sqrt(vcov(results_csme)[2, 2])
   coverage1_csme <-
-    1*(coef(results_csme)[2] - 1.96*se1_csme < (beta1) &
-       coef(results_csme)[2] + 1.96*se1_csme > (beta1))
-  bias2_csme <- coef(results_csme)[4] - (beta2)
+    1*(coef(results_csme)[2] - 1.96*se1_csme < beta1 &
+       coef(results_csme)[2] + 1.96*se1_csme > beta1)
+  bias2_csme <- coef(results_csme)[4] - beta2
   se2_csme <- sqrt(vcov(results_csme)[4, 4])
   coverage2_csme <-
-    1*(coef(results_csme)[4] - 1.96*se2_csme < (beta2) &
-       coef(results_csme)[4] + 1.96*se2_csme > (beta2))
+    1*(coef(results_csme)[4] - 1.96*se2_csme < beta2 &
+       coef(results_csme)[4] + 1.96*se2_csme > beta2)
   bias3_csme <- coef(results_csme)[5] - beta3
   se3_csme <- sqrt(vcov(results_csme)[5, 5])
   coverage3_csme <- 1*(coef(results_csme)[5] - 1.96*se3_csme < beta3 &
@@ -319,7 +319,7 @@ simulator <- function(trial, beta1) {
   coverage3_ipw <- 1*(coef(wmod)[4] - 1.96*se3_ipw < beta3 &
                       coef(wmod)[4] + 1.96*se3_ipw > beta3)
 
-  # Model 6: IPW-CSME
+  # Model 4: IPW-CSME
   # Get point estimates and variance using geex
   # We get point estimates using a geex with only some parameters
   # Then variance using geex with the full set of parameters
@@ -515,8 +515,8 @@ simulator <- function(trial, beta1) {
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1)),
                      betas = rep(beta1, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
-combo_i <- combos[(i), ]
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
+combo_i <- combos[(i-1000), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, betas))
