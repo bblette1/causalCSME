@@ -5,23 +5,26 @@ library(survey)
 
 nsims <- 1000
 n <- 800
-beta1 <- 0.2
+beta1 <- 0.3
 beta2 <- -0.5
-beta3 <- -0.3
-beta4 <- -0.5
-lambda <- 2
-sigma_me1 <- 0.36
-sigma_me3 <- 0.16
+beta3 <- -0.4
+beta4 <- 0.7
+beta5 <- -0.4
+beta6 <- -0.6
+lambda <- 3
+sigma_me1 <- 0.81
+sigma_me3 <- 0.25
 
 simulator <- function(trial, beta1) {
 
   L <- rexp(n, lambda)
-  A1 <- rnorm(n, 4 + 0.6*L, 1)
-  A2 <- rnorm(n, 1.25 + 0.4*L, 0.5)
+  A1 <- rnorm(n, 4 + 0.8*L, 1.1)
+  A2 <- rnorm(n, 1.4 + 0.5*L, 0.6)
   A3 <- rnorm(n, 2.5, 0.7)
-  Y_prob <- exp(-2 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L -
-                  log(lambda / (lambda - beta4))) /
-            (1 + exp(-2 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
+  Y_prob <- exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L +
+                  beta5*A1*L + beta6*A2*L -
+                  log(lambda / (lambda - beta4 - beta5*A1 - beta6*A2))) /
+            (1 + exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L))
   Y <- rbinom(n, 1, Y_prob)
   A1star <- A1 + rnorm(n, 0, sqrt(sigma_me1))
   A3star <- A3 + rnorm(n, 0, sqrt(sigma_me3))
@@ -33,13 +36,13 @@ simulator <- function(trial, beta1) {
 
   bias1_lm <- coef(mod)[[2]] - beta1
   se1_lm <- summary(mod)$coefficients[2, 2]
-  coverage1_lm <- 1*(coef(mod)[[2]] - 1.96*se1_lm < beta1 &
-                       coef(mod)[[2]] + 1.96*se1_lm > beta1)
+  coverage1_lm <- 1*(coef(mod)[[2]] - 1.96*se1_lm < (beta1) &
+                       coef(mod)[[2]] + 1.96*se1_lm > (beta1))
 
-  bias2_lm <- coef(mod)[[4]] - beta2
+  bias2_lm <- coef(mod)[[4]] - (beta2)
   se2_lm <- summary(mod)$coefficients[4, 2]
-  coverage2_lm <- 1*(coef(mod)[[4]] - 1.96*se2_lm < beta2 &
-                       coef(mod)[[4]] + 1.96*se2_lm > beta2)
+  coverage2_lm <- 1*(coef(mod)[[4]] - 1.96*se2_lm < (beta2) &
+                       coef(mod)[[4]] + 1.96*se2_lm > (beta2))
 
   bias3_lm <- coef(mod)[[5]] - beta3
   se3_lm <- summary(mod)$coefficients[5, 2]
@@ -91,14 +94,16 @@ simulator <- function(trial, beta1) {
                              root_control =
                                setup_root_control(start = coef(mod)))
 
-  bias1_csme <- coef(results_csme)[2] - beta1
+  bias1_csme <- coef(results_csme)[2] - (beta1)
   se1_csme <- sqrt(vcov(results_csme)[2, 2])
-  coverage1_csme <- 1*(coef(results_csme)[2] - 1.96*se1_csme < beta1 &
-                       coef(results_csme)[2] + 1.96*se1_csme > beta1)
-  bias2_csme <- coef(results_csme)[4] - beta2
+  coverage1_csme <-
+    1*(coef(results_csme)[2] - 1.96*se1_csme < (beta1) &
+       coef(results_csme)[2] + 1.96*se1_csme > (beta1))
+  bias2_csme <- coef(results_csme)[4] - (beta2)
   se2_csme <- sqrt(vcov(results_csme)[4, 4])
-  coverage2_csme <- 1*(coef(results_csme)[4] - 1.96*se2_csme < beta2 &
-                       coef(results_csme)[4] + 1.96*se2_csme > beta2)
+  coverage2_csme <-
+    1*(coef(results_csme)[4] - 1.96*se2_csme < (beta2) &
+       coef(results_csme)[4] + 1.96*se2_csme > (beta2))
   bias3_csme <- coef(results_csme)[5] - beta3
   se3_csme <- sqrt(vcov(results_csme)[5, 5])
   coverage3_csme <- 1*(coef(results_csme)[5] - 1.96*se3_csme < beta3 &
@@ -131,8 +136,8 @@ simulator <- function(trial, beta1) {
                  design = svydesign(id = ~1, weights=data$sw, data=data),
                  family = "binomial")
 
-  bias1_ipw <- coef(wmod)[2] - beta1
-  bias2_ipw <- coef(wmod)[3] - beta2
+  bias1_ipw <- coef(wmod)[2] - (beta1)
+  bias2_ipw <- coef(wmod)[3] - (beta2)
   bias3_ipw <- coef(wmod)[4] - beta3
 
   run <- F
@@ -303,12 +308,12 @@ simulator <- function(trial, beta1) {
 
 
   se1_ipw <- sqrt(vcov(wmod)[2, 2])
-  coverage1_ipw <- 1*(coef(wmod)[2] - 1.96*se1_ipw < beta1 &
-                      coef(wmod)[2] + 1.96*se1_ipw > beta1)
+  coverage1_ipw <- 1*(coef(wmod)[2] - 1.96*se1_ipw < (beta1) &
+                      coef(wmod)[2] + 1.96*se1_ipw > (beta1))
 
   se2_ipw <- sqrt(vcov(wmod)[3, 3])
-  coverage2_ipw <- 1*(coef(wmod)[3] - 1.96*se2_ipw < beta2 &
-                      coef(wmod)[3] + 1.96*se2_ipw > beta2)
+  coverage2_ipw <- 1*(coef(wmod)[3] - 1.96*se2_ipw < (beta2) &
+                      coef(wmod)[3] + 1.96*se2_ipw > (beta2))
 
   se3_ipw <- sqrt(vcov(wmod)[4, 4])
   coverage3_ipw <- 1*(coef(wmod)[4] - 1.96*se3_ipw < beta3 &
@@ -374,8 +379,8 @@ simulator <- function(trial, beta1) {
 
   if(failed == TRUE) { next }
 
-  bias1_ipw_csme <- coef(results_ipw_csme1)[2] - beta1
-  bias2_ipw_csme <- coef(results_ipw_csme1)[3] - beta2
+  bias1_ipw_csme <- coef(results_ipw_csme1)[2] - (beta1)
+  bias2_ipw_csme <- coef(results_ipw_csme1)[3] - (beta2)
   bias3_ipw_csme <- coef(results_ipw_csme1)[4] - beta3
 
   eefun_ipw_csme2 <- function(data, model1, model2, model3, model4) {
@@ -481,13 +486,13 @@ simulator <- function(trial, beta1) {
 
   se1_ipw_csme <- sqrt(vcov(results_ipw_csme1)[2, 2])
   coverage1_ipw_csme <-
-    1*(coef(results_ipw_csme1)[2] - 1.96*se1_ipw_csme < beta1 &
-         coef(results_ipw_csme1)[2] + 1.96*se1_ipw_csme > beta1)
+    1*(coef(results_ipw_csme1)[2] - 1.96*se1_ipw_csme < (beta1) &
+         coef(results_ipw_csme1)[2] + 1.96*se1_ipw_csme > (beta1))
 
   se2_ipw_csme <- sqrt(vcov(results_ipw_csme1)[3, 3])
   coverage2_ipw_csme <-
-    1*(coef(results_ipw_csme1)[3] - 1.96*se2_ipw_csme < beta2 &
-         coef(results_ipw_csme1)[3] + 1.96*se2_ipw_csme > beta2)
+    1*(coef(results_ipw_csme1)[3] - 1.96*se2_ipw_csme < (beta2) &
+         coef(results_ipw_csme1)[3] + 1.96*se2_ipw_csme > (beta2))
 
   se3_ipw_csme <- sqrt(vcov(results_ipw_csme1)[4, 4])
   coverage3_ipw_csme <-
