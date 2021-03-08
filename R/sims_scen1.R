@@ -114,8 +114,6 @@ simulator <- function(trial, beta1_true) {
       predict(mod, newdata = data.frame(Astar = i, L1 = 0, L2 = 0),
               type = "response")*(1 - mean(L1))*(1 - mean(L2))
 
-    gform_deriv <- c(1, i, mean(L1), mean(L2), i*mean(L1), i*mean(L2))
-
     gform_csme_ests[i*10 + 1] <-
       exp(t(coef(results_csme)[1:6]) %*% c(1, i, 1, 1, i, i)) /
         (1 + exp(t(coef(results_csme)[1:6]) %*% c(1, i, 1, 1, i, i)))*
