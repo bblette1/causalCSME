@@ -1,5 +1,9 @@
-# Build application data set
+# Load libraries
 rm(list = ls())
+library(dplyr)
+library(geex)
+
+# Build application data set
 load("C:/Users/bblette1/Downloads/HVTN505_2019-08-08/HVTN505/data/dat.505.rda")
 
 assays <- subset(var.505, assay %in% c("fcrR2a", "fcrR3a", "phago"))
@@ -10,109 +14,740 @@ primarydat$ptid <- primarydat$pub_id
 fulldat <- merge(dat.505, primarydat, by = "ptid", all = T)
 fulldat$marker1 <- log(fulldat$ADCP1)
 fulldat$marker2 <- fulldat$R2aConSgp140CFI
-fulldat$marker3 <- fulldat$R3agp41
-fulldat$marker3 <- fulldat$R3aConSgp140CFI
 
+# Simple imputation of missing confounder, marker2 0 value
 set.seed(1234)
-
-# Simple impute missing confounder, marker2 0 value
 fulldat$BMI.y[is.na(fulldat$BMI.y)] <- median(fulldat$BMI.y, na.rm = T)
 imputemax <- min(fulldat$marker2[fulldat$marker2 > 0], na.rm = T)
 fulldat$marker2[fulldat$marker2 == 0 & !is.na(fulldat$marker2) &
                 fulldat$trt.y == 1] <- runif(1, 0, imputemax)
 
 fulldat$sampled <- !is.na(fulldat$marker1)
-sampmod <- glm(sampled ~ HIVwk28preunbl.y, data = fulldat[fulldat$trt.y == 1, ])
+sampmod <- glm(sampled ~ HIVwk28preunbl.y,
+               data = fulldat[fulldat$trt.y == 1, ])
 
 # Create analysis dataset
 # Restrict to treatment, use all three markers
-# Where is behavior risk variable?
-# Do we need to do anything with CD4 and CD8
-# OR from 2019 paper vs DR estimator vs DR with ME
-# Different specifications for OR and IPW, leave one confounder out (BMI)?
-library(dplyr)
 fulldat$CD4PFS <- fulldat$CD4_ANYVRCENV_PolyfunctionalityScore_score_bin
 fulldat$CD8PFS <- fulldat$CD8_ANYVRCENV_PolyfunctionalityScore_score_bin
 analysisdat <- fulldat %>%
   filter(trt.y == 1) %>%
-  select(HIVall.y, HIVwk28preunbl.y, marker1, marker2, marker3,
+  select(HIVall.y, HIVwk28preunbl.y, marker1, marker2,
          race.y, BMI.y, age.y, bhvrisk.y, ADCP1_bin, CD4PFS, CD8PFS)
 
 # Probability selected by treatment
 # Weights based on HIV at week 28, not end of study
 analysisdat$estweights <-
-  (!is.na(analysisdat$marker1))*(analysisdat$HIVwk28preunbl.y == 1) / (25 / sum(fulldat$HIVwk28preunbl.y[fulldat$trt.y == 1])) +
-  (!is.na(analysisdat$marker1))*(analysisdat$HIVwk28preunbl.y == 0) / (125 / sum(1 - fulldat$HIVwk28preunbl.y[fulldat$trt.y == 1]))
-
-# Different race yields same model?
-
-testmod <- glm(HIVwk28preunbl.y ~ marker1 + age.y + BMI.y + race.y + bhvrisk.y,
-               data = analysisdat, weights = analysisdat$estweights,
-               family = binomial)
-
-testmod <- glm(HIVwk28preunbl.y ~ marker1 + CD8PFS + CD4PFS +age.y + BMI.y + race.y + bhvrisk.y,
-               data = analysisdat, weights = analysisdat$estweights,
-               family = binomial)
-
-testmod <- glm(HIVwk28preunbl.y ~ marker2 + age.y + BMI.y + race.y + bhvrisk.y,
-               data = analysisdat, weights = analysisdat$estweights,
-               family = binomial)
-# Look at both weighted and unweighted
-
-# In a pre-specified secondary analysis reported in 2019, an HIV-1 specific Env protein
-# VRC B gp140 had the strongest Fcgamma2ra/3a association with HIV acquisition
-# out of an array of measured proteins. These assays may be subject to ME
-# nd an additive ME model seems plausible for each of the three biomarkers.
-# No supp data, snes analysis etc.
+  (!is.na(analysisdat$marker1))*(analysisdat$HIVwk28preunbl.y == 1) /
+  (25 / sum(fulldat$HIVwk28preunbl.y[fulldat$trt.y == 1])) +
+  (!is.na(analysisdat$marker1))*(analysisdat$HIVwk28preunbl.y == 0) /
+  (125 / sum(1 - fulldat$HIVwk28preunbl.y[fulldat$trt.y == 1]))
 
 
-# Outcome regressions for starting values
-glmmod1_nocell <-
-  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y +
-                         marker1*race.y + marker1*age.y,
-      data = analysisdat, family = "binomial", weights = estweights)
 
-glmmod1_cell <-
-  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y + CD8PFS + CD4PFS +
-                         marker1*race.y + marker1*age.y,
-      data = analysisdat, family = "binomial", weights = estweights)
+#########################################################################
+# Analysis
+#########################################################################
 
-glmmod2_nocell <-
-  glm(HIVwk28preunbl.y ~ marker2 + race.y + age.y +
-        marker2*race.y + marker2*age.y,
-      data = analysisdat, family = "binomial", weights = estweights)
+# Alter the measured 0 value for one individual
+analysisdat$marker1[analysisdat$marker1 == 0 &
+                      !is.na(analysisdat$marker1)] <- 0.01
 
-glmmod2_cell <-
-  glm(HIVwk28preunbl.y ~ marker2 + race.y + age.y + CD8PFS + CD4PFS +
-        marker2*race.y + marker2*age.y,
-      data = analysisdat, family = "binomial", weights = estweights)
+# Set NA marker values to 0
+analysisdat$marker1[is.na(analysisdat$marker1)] <- 0
+analysisdat$marker2[is.na(analysisdat$marker2)] <- 0
 
 # Estimate IPTW
+# First marker
 denom_mod1 <- lm(marker1 ~ race.y + BMI.y + age.y + bhvrisk.y,
-                 data = analysisdat)
+                 data = analysisdat, weights = estweights)
 p_denom1 <- predict(denom_mod1, type='response')
-dens_denom1 <- dnorm(analysisdat$marker1, p_denom1, summary(denom_mod1)$sigma)
-num_mod1 <- lm(marker1 ~ 1, data = analysisdat)
+dens_denom1 <-
+  dnorm(analysisdat$marker1, p_denom1,
+        sd(residuals(denom_mod1)[analysisdat$marker1 != 0 |
+                                   analysisdat$HIVwk28preunbl.y == 1]))
+num_mod1 <- lm(marker1 ~ 1, data = analysisdat, weights = estweights)
 p_num1 <- predict(num_mod1, type='response')
-dens_num1 <- dnorm(analysisdat$marker1, p_num1, summary(denom_mod1)$sigma)
-analysisdat$w1 <- dens_num1 / dens_denom1
+dens_num1 <-
+  dnorm(analysisdat$marker1, p_num1,
+        sd(residuals(denom_mod1)[analysisdat$marker1 != 0 |
+                                   analysisdat$HIVwk28preunbl.y == 1]))
+analysisdat$w1 <- rep(0, dim(analysisdat)[1])
+analysisdat$w1[analysisdat$marker1 != 0 |
+                 analysisdat$HIVwk28preunbl.y == 1] <-
+  dens_num1[analysisdat$marker1 != 0 |
+              analysisdat$HIVwk28preunbl.y == 1] /
+  dens_denom1[analysisdat$marker1 != 0 |
+                analysisdat$HIVwk28preunbl.y == 1]
 analysisdat$w1[is.na(analysisdat$w1)] <- 0
 
 analysisdat$sw1 <- analysisdat$w1*analysisdat$estweights
 
+# Second marker
 denom_mod2 <- lm(marker2 ~ race.y + BMI.y + age.y + bhvrisk.y,
-                 data = analysisdat)
+                 data = analysisdat, weights = estweights)
 p_denom2 <- predict(denom_mod2, type='response')
-dens_denom2 <- dnorm(analysisdat$marker2, p_denom2, summary(denom_mod2)$sigma)
-num_mod2 <- lm(marker2 ~ 1, data = analysisdat)
+dens_denom2 <-
+  dnorm(analysisdat$marker2, p_denom2,
+        sd(residuals(denom_mod2)[analysisdat$marker2 != 0 |
+                                   analysisdat$HIVwk28preunbl.y == 1]))
+num_mod2 <- lm(marker2 ~ 1, data = analysisdat, weights = estweights)
 p_num2 <- predict(num_mod2, type='response')
-dens_num2 <- dnorm(analysisdat$marker2, p_num2, summary(denom_mod2)$sigma)
-analysisdat$w2 <- dens_num2 / dens_denom2
+dens_num2 <-
+  dnorm(analysisdat$marker2, p_num2,
+        sd(residuals(denom_mod2)[analysisdat$marker2 != 0 |
+                                   analysisdat$HIVwk28preunbl.y == 1]))
+analysisdat$w2 <- rep(0, dim(analysisdat)[1])
+analysisdat$w2[analysisdat$marker2 != 0 |
+                 analysisdat$HIVwk28preunbl.y == 1] <-
+  dens_num2[analysisdat$marker2 != 0 |
+              analysisdat$HIVwk28preunbl.y == 1] /
+  dens_denom2[analysisdat$marker2 != 0 |
+                analysisdat$HIVwk28preunbl.y == 1]
 analysisdat$w2[is.na(analysisdat$w2)] <- 0
 
 analysisdat$sw2 <- analysisdat$w2*analysisdat$estweights
 
-# Which HIV variable to use as outcome?
+# Starting values
+glmmod1 <-
+  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y + CD8PFS + CD4PFS +
+        marker1*race.y + marker1*age.y,
+      data = analysisdat, family = "binomial", weights = sw1)
+
+glmmod2 <-
+  glm(HIVwk28preunbl.y ~ marker2 + race.y + age.y + CD8PFS + CD4PFS +
+        marker2*race.y + marker2*age.y,
+      data = analysisdat, family = "binomial", weights = sw2)
+
+# DR estimating equations
+eefun_dr1 <- function(data, val) {
+  Y <- data$HIVwk28preunbl.y
+  A1star <- data$marker1
+  A1star[is.na(A1star)] <- 0
+  L1 <- data$race.y
+  L2 <- data$age.y
+  L3 <- data$CD8PFS
+  L3[is.na(L3)] <- 0
+  L4 <- data$CD4PFS
+  L4[is.na(L4)] <- 0
+  sw <- data$sw1
+  delta1 <- function(beta1, beta6, beta7) {
+    A1star + sigma_me1*(beta1 + beta6*L1 + beta7*L2)*Y
+  }
+  H <- function(x) {
+    1 / (1 + exp(-x))
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7) {
+    H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+        (beta1 + beta6*L1 + beta7*L2)*
+        delta1(beta1, beta6, beta7) -
+        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me1) / 2)
+  }
+  function(theta) {
+    c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8])),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta1(theta[2], theta[7], theta[8]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L3,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L4,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta1(theta[2], theta[7], theta[8])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta1(theta[2], theta[7], theta[8])*L2,
+      theta[9] -
+        exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
+            theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2) /
+        (1 + exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
+            theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2))
+    )
+  }
+}
+
+eefun_dr2 <- function(data, val) {
+  Y <- data$HIVwk28preunbl.y
+  A2star <- data$marker2
+  A2star[is.na(A2star)] <- 0
+  L1 <- data$race.y
+  L2 <- data$age.y
+  L3 <- data$CD8PFS
+  L3[is.na(L3)] <- 0
+  L4 <- data$CD4PFS
+  L4[is.na(L4)] <- 0
+  sw <- data$sw2
+  delta2 <- function(beta1, beta6, beta7) {
+    A2star + sigma_me2*(beta1 + beta6*L1 + beta7*L2)*Y
+  }
+  H <- function(x) {
+    1 / (1 + exp(-x))
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7) {
+    H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+        (beta1 + beta6*L1 + beta7*L2)*
+        delta2(beta1, beta6, beta7) -
+        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me2) / 2)
+  }
+  function(theta) {
+    c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8])),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta2(theta[2], theta[7], theta[8]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L3,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L4,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta2(theta[2], theta[7], theta[8])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta2(theta[2], theta[7], theta[8])*L2,
+      theta[9] -
+        exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
+          theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2) /
+        (1 + exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
+            theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2))
+    )
+  }
+}
+
+# Calculate DR estimator for 4 ME and a grid of values
+dr_ests1 <- array(NA, dim = c(4, 31))
+dr_ests2 <- array(NA, dim = c(4, 23))
+dr_se1 <- array(NA, dim = c(4, 31))
+dr_se2 <- array(NA, dim = c(4, 23))
+
+for (me in 0:3) {
+
+  sigma_me1 <- 0.1*me
+  sigma_me2 <- 0.1*me
+
+  for (i in seq(0, 3, 0.1)) {
+
+    guess1 <- 0.1
+    if (i > 0) {
+      guess1 <- coef(results_dr1)[9]
+    }
+
+    results_dr1 <-
+      m_estimate(estFUN = eefun_dr1, data = analysisdat,
+                 outer_args = list(i), compute_roots = TRUE,
+                 root_control =
+                   setup_root_control(start = c(coef(glmmod1), guess1)))
+    dr_ests1[(me + 1), i*10 + 1] <- coef(results_dr1)[9]
+    dr_se1[(me + 1), i*10 + 1] <- sqrt(vcov(results_dr1)[9, 9])
+
+  }
+
+  for (i in seq(0, 11, 0.5)) {
+
+    guess2 <- 0.6
+    if (i > 0) {
+      guess2 <- coef(results_dr2)[9]
+    }
+
+    results_dr2 <-
+      m_estimate(estFUN = eefun_dr2, data = analysisdat,
+                 outer_args = list(i), compute_roots = TRUE,
+                 root_control =
+                   setup_root_control(start = c(coef(glmmod2), guess2)))
+    dr_ests2[(me + 1), i*2 + 1] <- coef(results_dr2)[9]
+    dr_se2[(me + 1), i*2 + 1] <- sqrt(vcov(results_dr2)[9, 9])
+
+    if (is.na(coef(results_dr2)[9])) {
+      guess2 <- min(guess2 + rnorm(1, 0, 0.1), 0.02)
+      results_dr2 <-
+        m_estimate(estFUN = eefun_dr2, data = analysisdat,
+                   outer_args = list(i), compute_roots = TRUE,
+                   root_control =
+                     setup_root_control(start = c(coef(glmmod2), guess2)))
+      dr_ests2[(me + 1), (i-4)*5 + 1] <- coef(results_dr2)[9]
+      dr_se2[(me + 1), (i-4)*5 + 1] <- sqrt(vcov(results_dr2)[9, 9])
+    }
+
+  }
+
+}
+
+# Make plots
+par(mfrow = c(2, 4))
+
+# First row is first marker, four plots for four ME
+plot(seq(0, 3, 0.1), dr_ests1[1, ], ylim = c(0, 0.35),
+     main = expression(paste("No ME: ", sigma^2, "=0")), xlab = "ADCP",
+     ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 3, 0.1), dr_ests1[1, ], lwd = 2)
+polygon(x = c(seq(0, 3, 0.1), rev(seq(0, 3, 0.1))),
+        y = c(dr_ests1[1, ] - 1.96*dr_se1[1, ],
+              rev(dr_ests1[1, ] + 1.96*dr_se1[1, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+plot(seq(0, 3, 0.1), dr_ests1[2, ], ylim = c(0, 0.35),
+     main = expression(paste("Mild ME: ", sigma^2, "=0.1")), xlab = "ADCP",
+     ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 3, 0.1), dr_ests1[2, ], lwd = 2)
+polygon(x = c(seq(0, 3, 0.1), rev(seq(0, 3, 0.1))),
+        y = c(dr_ests1[2, ] - 1.96*dr_se1[2, ],
+              rev(dr_ests1[2, ] + 1.96*dr_se1[2, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+plot(seq(0, 3, 0.1), dr_ests1[3, ], ylim = c(0, 0.35),
+     main = expression(paste("Moderate ME: ", sigma^2, "=0.2")),
+     xlab = "ADCP", ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 3, 0.1), dr_ests1[3, ], lwd = 2)
+polygon(x = c(seq(0, 3, 0.1), rev(seq(0, 3, 0.1))),
+        y = c(dr_ests1[3, ] - 1.96*dr_se1[3, ],
+              rev(dr_ests1[3, ] + 1.96*dr_se1[3, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+plot(seq(0, 3, 0.1), dr_ests1[4, ], ylim = c(0, 0.35),
+     main = expression(paste("High ME: ", sigma^2, "=0.3")), xlab = "ADCP",
+     ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 3, 0.1), dr_ests1[4, ], lwd = 2)
+polygon(x = c(seq(0, 3, 0.1), rev(seq(0, 3, 0.1))),
+        y = c(dr_ests1[4, ] - 1.96*dr_se1[4, ],
+              rev(dr_ests1[4, ] + 1.96*dr_se1[4, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+# Second row is second marker, four plots for four ME
+plot(seq(0, 11, 0.5), dr_ests2[1, ], ylim = c(0, 1),
+     main = expression(paste("No ME: ", sigma^2, "=0")), xlab = "RII",
+     ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 11, 0.5), dr_ests2[1, ], lwd = 2)
+polygon(x = c(seq(0, 11, 0.5), rev(seq(0, 11, 0.5))),
+        y = c(dr_ests2[1, ] - 1.96*dr_se2[1, ],
+              rev(dr_ests2[1, ] + 1.96*dr_se2[1, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+plot(seq(0, 11, 0.5), dr_ests2[2, ], ylim = c(0, 1),
+     main = expression(paste("Mild ME: ", sigma^2, "=0.1")), xlab = "RII",
+     ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 11, 0.5), dr_ests2[2, ], lwd = 2)
+polygon(x = c(seq(0, 11, 0.5), rev(seq(0, 11, 0.5))),
+        y = c(dr_ests2[2, ] - 1.96*dr_se2[2, ],
+              rev(dr_ests2[2, ] + 1.96*dr_se2[2, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+plot(seq(0, 11, 0.5), dr_ests2[3, ], ylim = c(0, 1),
+     main = expression(paste("Moderate ME: ", sigma^2, "=0.2")),
+     xlab = "RII", ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 11, 0.5), dr_ests2[3, ], lwd = 2)
+polygon(x = c(seq(0, 11, 0.5), rev(seq(0, 11, 0.5))),
+        y = c(dr_ests2[3, ] - 1.96*dr_se2[3, ],
+              rev(dr_ests2[3, ] + 1.96*dr_se2[3, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+plot(seq(0, 11, 0.5), dr_ests2[4, ], ylim = c(0, 1),
+     main = expression(paste("High ME: ", sigma^2, "=0.3")), xlab = "RII",
+     ylab = "HIV risk at study end", type = "n")
+lines(seq(0, 11, 0.5), dr_ests2[4, ], lwd = 2)
+polygon(x = c(seq(0, 11, 0.5), rev(seq(0, 11, 0.5))),
+        y = c(dr_ests2[4, ] - 1.96*dr_se2[4, ],
+              rev(dr_ests2[4, ] + 1.96*dr_se2[4, ])),
+        col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
+
+
+
+
+
+
+# Ignore below
+
+# Estimating equations for both markers together at fixed ME
+sigma_me1 <- 0.1
+sigma_me2 <- 0.1
+
+# New starting values
+glmmod3 <-
+  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y + CD8PFS + CD4PFS +
+        marker1*race.y + marker1*age.y + marker2 + marker2*race.y +
+        marker2*age.y,
+      data = analysisdat, family = "binomial", weights = sw1*w2)
+
+coefstart <- c(coef(glmmod3)[1:6], coef(glmmod3)[8:9], coef(glmmod3)[7],
+               coef(glmmod3)[10:11])
+
+# Estimator
+eefun_dr3 <- function(data, val1, val2) {
+  Y <- data$HIVwk28preunbl.y
+  A1star <- data$marker1
+  A1star[is.na(A1star)] <- 0
+  A2star <- data$marker2
+  A2star[is.na(A2star)] <- 0
+  L1 <- data$race.y
+  L2 <- data$age.y
+  L3 <- data$CD8PFS
+  L3[is.na(L3)] <- 0
+  L4 <- data$CD4PFS
+  L4[is.na(L4)] <- 0
+  sw <- data$sw1*data$w2
+  delta1 <- function(beta1, beta6, beta7) {
+    A1star + sigma_me1*(beta1 + beta6*L1 + beta7*L2)*Y
+  }
+  delta2 <- function(beta8, beta9, beta10) {
+    A2star + sigma_me2*(beta8 + beta9*L1 + beta10*L2)*Y
+  }
+  H <- function(x) {
+    1 / (1 + exp(-x))
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7, beta8, beta9, beta10) {
+    H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+        (beta1 + beta6*L1 + beta7*L2)*delta1(beta1, beta6, beta7) +
+        (beta8 + beta9*L1 + beta10*L2)*delta2(beta8, beta9, beta10) -
+        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me1 +
+         (beta8 + beta9*L1 + beta10*L2)^2 * sigma_me2) / 2)
+  }
+  function(theta) {
+    c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11])),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta1(theta[2], theta[7], theta[8]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L3,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L4,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta1(theta[2], theta[7], theta[8])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta1(theta[2], theta[7], theta[8])*L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta2(theta[9], theta[10], theta[11]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta2(theta[9], theta[10], theta[11])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta2(theta[9], theta[10], theta[11])*L2,
+      theta[12] -
+        exp(theta[1] + theta[2]*val1 + theta[3]*L1 + theta[4]*L2 +
+            theta[5]*L3 + theta[6]*L4 + theta[7]*val1*L1 +
+            theta[8]*val1*L2 + theta[9]*val2 +
+            theta[10]*val2*L1 + theta[11]*val2*L2) /
+        (1 + exp(theta[1] + theta[2]*val1 + theta[3]*L1 + theta[4]*L2 +
+                 theta[5]*L3 + theta[6]*L4 + theta[7]*val1*L1 +
+                 theta[8]*val1*L2 + theta[9]*val2 +
+                 theta[10]*val2*L1 + theta[11]*val2*L2))
+    )
+  }
+}
+
+eefun_dr3 <- function(data, val1, val2) {
+  Y <- data$HIVwk28preunbl.y
+  A1star <- data$marker1
+  A1star[is.na(A1star)] <- 0
+  A2star <- data$marker2
+  A2star[is.na(A2star)] <- 0
+  L1 <- data$race.y
+  L2 <- data$age.y
+  L3 <- data$CD8PFS
+  L3[is.na(L3)] <- 0
+  L4 <- data$CD4PFS
+  L4[is.na(L4)] <- 0
+  sw <- data$sw1*data$w2
+  delta1 <- function(beta1, beta6, beta7) {
+    A1star + sigma_me1*(beta1 + beta6*L1 + beta7*L2)*Y
+  }
+  delta2 <- function(beta8) {
+    A2star + sigma_me2*(beta8)*Y
+  }
+  H <- function(x) {
+    1 / (1 + exp(-x))
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7, beta8) {
+    H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+        (beta1 + beta6*L1 + beta7*L2)*delta1(beta1, beta6, beta7) +
+        (beta8)*delta2(beta8) -
+        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me1 +
+           (beta8)^2 * sigma_me2) / 2)
+  }
+  function(theta) {
+    c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9])),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        delta1(theta[2], theta[7], theta[8]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        L3,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        L4,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        delta1(theta[2], theta[7], theta[8])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        delta1(theta[2], theta[7], theta[8])*L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9]))*
+        delta2(theta[9]),
+      theta[10] -
+        exp(theta[1] + theta[2]*val1 + theta[3]*L1 + theta[4]*L2 +
+              theta[5]*L3 + theta[6]*L4 + theta[7]*val1*L1 +
+              theta[8]*val1*L2 + theta[9]*val2) /
+        (1 + exp(theta[1] + theta[2]*val1 + theta[3]*L1 + theta[4]*L2 +
+                   theta[5]*L3 + theta[6]*L4 + theta[7]*val1*L1 +
+                   theta[8]*val1*L2 + theta[9]*val2))
+    )
+  }
+}
+
+# Get grid of values for mild ME to make 3D plot
+dr_ests3 <- array(NA, dim = c(16, 21))
+dr_se3 <- array(NA, dim = c(16, 21))
+
+for (i in seq(0, 3, 0.2)) {
+
+  for (j in seq(7, 11, 0.2)) {
+
+    guess3 <- 0.4
+    if (i > 0) {
+      guess3 <- coef(results_dr3)[12]
+    }
+
+    results_dr3 <-
+      m_estimate(estFUN = eefun_dr3, data = analysisdat,
+                 outer_args = list(i, j), compute_roots = TRUE,
+                 root_control =
+                   setup_root_control(start = c(coefstart[1:9], guess3)))
+
+    if (is.na(coef(results_dr3)[12])) {
+      guess3 <- min(guess3 + rnorm(1, 0, 0.1), 0.02)
+      results_dr3 <-
+        m_estimate(estFUN = eefun_dr3, data = analysisdat,
+                   outer_args = list(i, j), compute_roots = TRUE,
+                   root_control =
+                     setup_root_control(start = c(coefstart, guess3)))
+    }
+
+    dr_ests3[i*5 + 1, (i-7)*5 + 1] <- coef(results_dr3)[12]
+    dr_se3[i*5 + 1, (i-7)*5 + 1] <- sqrt(vcov(results_dr3)[12, 12])
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+gform_ests <- rep(NA, length(seq(0, 3, 0.1)))
+cgf <- coef(results_gform1)
+
+for (i in seq(0, 3, 0.1)) {
+
+  gform_ests[i*10 + 1] <-
+    exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 1, 1, i, i)) /
+    (1 + exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 1, 1, i, i)))*
+    mean(analysisdat$race.y)*mean(analysisdat$age.y) +
+    exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 1, 0, i, 0)) /
+    (1 + exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 1, 0, i, 0)))*
+    mean(analysisdat$race.y)*(1 - mean(analysisdat$age.y)) +
+    exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 0, 1, 0, i)) /
+    (1 + exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 0, 1, 0, i)))*
+    (1 - mean(analysisdat$race.y))*mean(analysisdat$age.y) +
+    exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 0, 0, 0, 0)) /
+    (1 + exp(t(coef(results_gform1)[1:8]) %*% c(1, i, 0, 0, 0, 0)))*
+    (1 - mean(analysisdat$race.y))*(1 - mean(analysisdat$age.y))
+
+  t(coef(results_gform1)[1:8]) %*% c(1, i, 1, 1, i, i)
+
+  cgf[1] + cgf[2]*i + cgf[3]*analysisdat
+
+}
+
+# IPW estimator
+
+
+
+# Starting values
+wmod1 <- glm(HIVwk28preunbl.y ~ marker1 + CD4PFS + CD8PFS, weights = sw1,
+             data=analysisdat, family = "binomial")
+wmod2 <- glm(HIVwk28preunbl.y ~ marker2 + CD4PFS + CD8PFS, weights = sw2,
+             data=analysisdat, family = "binomial")
+
+eefun_ipw1 <- function(data) {
+  Y <- data$HIVwk28preunbl.y
+  A1star <- data$marker1
+  A1star[is.na(A1star)] <- 0
+  L3 <- data$CD8PFS
+  L3[is.na(L3)] <- 0
+  L4 <- data$CD4PFS
+  L4[is.na(L4)] <- 0
+  sw <- data$sw1
+  delta1 <- function(beta1) {
+    A1star + beta1*sigma_me1*Y
+  }
+  H <- function(x) {
+    1 / (1 + exp(-x))
+  }
+  condexp <- function(beta0, beta1, beta2, beta3) {
+    H(beta0 + beta1*delta1(beta1) + beta2*L3 + beta3*L4 -
+        (beta1^2 * sigma_me1) / 2)
+  }
+  function(theta) {
+    c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4])),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4]))*
+        delta1(theta[2]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4]))*
+        L3,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4]))*
+        L4
+    )
+  }
+}
+
+results_ipw_csme1 <- m_estimate(estFUN = eefun_ipw1, data = analysisdat,
+                                root_control =
+                                  setup_root_control(start = coef(wmod)))
+
+# DR estimator
+eefun_dr1 <- function(data) {
+  Y <- data$HIVwk28preunbl.y
+  A1star <- data$marker1
+  A1star[is.na(A1star)] <- 0
+  L1 <- data$race.y
+  L2 <- data$age.y
+  L3 <- data$CD8PFS
+  L3[is.na(L3)] <- 0
+  L4 <- data$CD4PFS
+  L4[is.na(L4)] <- 0
+  sw <- data$sw1
+  delta1 <- function(beta1, beta6, beta7) {
+    A1star + sigma_me1*(beta1 + beta6*L1 + beta7*L2)*Y
+  }
+  H <- function(x) {
+    1 / (1 + exp(-x))
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7) {
+    H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+        (beta1 + beta6*L1 + beta7*L2)*
+        delta1(beta1, beta6, beta7) -
+        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me1) / 2)
+  }
+  function(theta) {
+    c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8])),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta1(theta[2], theta[7], theta[8]),
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L2,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L3,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        L4,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta1(theta[2], theta[7], theta[8])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8]))*
+        delta1(theta[2], theta[7], theta[8])*L2
+    )
+  }
+}
+
+results_dr1 <-
+  m_estimate(estFUN = eefun_dr1, data = analysisdat,
+             compute_roots = TRUE,
+             root_control =
+               setup_root_control(start = c(coef(glmmod1))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # IPW LR no ME for original model
 testmodipw <- glm(HIVwk28preunbl.y ~ marker1,
@@ -142,7 +777,6 @@ testmoddr <- glm(HIVwk28preunbl.y ~ marker2*age.y + marker2*race.y +
 # Application for marker 1 and 2 separately
 # Need to adjust for var est in EE stack
 # Four EE stacks coeesponding to four analyses
-library(geex)
 
 
 # First EE stack
