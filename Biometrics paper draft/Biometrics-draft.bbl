@@ -17,7 +17,7 @@ Braun, D., Gorfine, M., Parmigiani, G., Arvold, N.~D., Dominici, F., and
 \bibitem[\protect\citeauthoryear{Carroll, Ruppert, Stefanski, and
   Crainiceanu}{Carroll et~al.}{2006}]{carroll2006}
 Carroll, R.~J., Ruppert, D., Stefanski, L.~A., and Crainiceanu, C.~M. (2006).
-\newblock {\em Measurement error in nonlinear models: a modern perspective}.
+\newblock {\em Measurement {Error in Nonlinear Models: A Modern Perspective}}.
 \newblock CRC press.
 
 \bibitem[\protect\citeauthoryear{Cole, Jacobson, Tien, Kingsley, Chmiel, and
@@ -25,7 +25,7 @@ Carroll, R.~J., Ruppert, D., Stefanski, L.~A., and Crainiceanu, C.~M. (2006).
 Cole, S.~R., Jacobson, L.~P., Tien, P.~C., Kingsley, L., Chmiel, J.~S., and
   Anastos, K. (2010).
 \newblock Using marginal structural measurement-error models to estimate the
-  long-term effect of antiretroviral therapy on incident aids or death.
+  long-term effect of antiretroviral therapy on incident {AIDS} or death.
 \newblock {\em American Journal of Epidemiology} {\bf 171,} 113--122.
 
 \bibitem[\protect\citeauthoryear{Dagalp}{Dagalp}{2001}]{dagalp2001}
@@ -40,8 +40,8 @@ Dagalp, R.~E. (2001).
 Decamp, A.~C., Rolland, M., Edlefsen, P.~T., Sanders-Buell, E., Hall, B.,
   Magaret, C.~A., Fiore-Gartland, A.~J., Juraska, M., Carpp, L.~N., Karuna,
   S.~T., et~al. (2017).
-\newblock Sieve analysis of breakthrough hiv-1 sequences in hvtn 505 identifies
-  vaccine pressure targeting the cd4 binding site of env-gp120.
+\newblock Sieve analysis of breakthrough {HIV-1} sequences in {HVTN} 505
+  identifies vaccine pressure targeting the cd4 binding site of env-gp120.
 \newblock {\em PloS One} {\bf 12,} e0185959.
 
 \bibitem[\protect\citeauthoryear{Edwards, Cole, Westreich, Crane, Eron,
@@ -60,7 +60,7 @@ Fong, Y., Shen, X., Ashley, V.~C., Deal, A., Seaton, K.~E., Yu, C., Grant,
   S.~P., Ferrari, G., deCamp, A.~C., Bailer, R.~T., et~al. (2018).
 \newblock Modification of the association between t-cell immune responses and
   human immunodeficiency virus type 1 infection risk by vaccine-induced
-  antibody responses in the hvtn 505 trial.
+  antibody responses in the {HVTN} 505 trial.
 \newblock {\em The Journal of Infectious Diseases} {\bf 217,} 1280--1288.
 
 \bibitem[\protect\citeauthoryear{Hammer, Sobieszczyk, Janes, Karuna, Mulligan,
@@ -69,7 +69,7 @@ Fong, Y., Shen, X., Ashley, V.~C., Deal, A., Seaton, K.~E., Yu, C., Grant,
 Hammer, S.~M., Sobieszczyk, M.~E., Janes, H., Karuna, S.~T., Mulligan, M.~J.,
   Grove, D., Koblin, B.~A., Buchbinder, S.~P., Keefer, M.~C., Tomaras, G.~D.,
   et~al. (2013).
-\newblock Efficacy trial of a dna/rad5 hiv-1 preventive vaccine.
+\newblock Efficacy trial of a dna/rad5 {HIV-1} preventive vaccine.
 \newblock {\em New England Journal of Medicine} {\bf 369,} 2083--2092.
 
 \bibitem[\protect\citeauthoryear{Hern{\'a}n, Brumback, and Robins}{Hern{\'a}n
@@ -109,8 +109,9 @@ Hong, H., Rudolph, K.~E., and Stuart, E.~A. (2017).
   et~al.}{2017}]{janes2017}
 Janes, H.~E., Cohen, K.~W., Frahm, N., De~Rosa, S.~C., Sanchez, B., Hural, J.,
   Magaret, C.~A., Karuna, S., Bentley, C., Gottardo, R., et~al. (2017).
-\newblock Higher t-cell responses induced by dna/rad5 hiv-1 preventive vaccine
-  are associated with lower hiv-1 infection risk in an efficacy trial.
+\newblock Higher t-cell responses induced by dna/rad5 {HIV-1} preventive
+  vaccine are associated with lower {HIV-1} infection risk in an efficacy
+  trial.
 \newblock {\em The Journal of Infectious Diseases} {\bf 215,} 1376--1385.
 
 \bibitem[\protect\citeauthoryear{Kendall}{Kendall}{2015}]{kendall2015}
@@ -169,9 +170,9 @@ McCaffrey, D.~F., Lockwood, J., and Setodji, C.~M. (2013).
 \newblock {\em Biometrika} {\bf 100,} 671--680.
 
 \bibitem[\protect\citeauthoryear{McCullagh and Nelder}{McCullagh and
-  Nelder}{2018}]{mccullagh2018}
-McCullagh, P. and Nelder, J.~A. (2018).
-\newblock {\em Generalized linear models}.
+  Nelder}{1989}]{mccullagh1989}
+McCullagh, P. and Nelder, J.~A. (1989).
+\newblock {\em Generalized {Linear Models}}.
 \newblock Routledge.
 
 \bibitem[\protect\citeauthoryear{Naimi, Moodie, Auger, and Kaufman}{Naimi
@@ -193,7 +194,7 @@ Nakamura, T. (1990).
 Neidich, S.~D., Fong, Y., Li, S.~S., Geraghty, D.~E., Williamson, B.~D., Young,
   W.~C., Goodman, D., Seaton, K.~E., Shen, X., Sawant, S., et~al. (2019).
 \newblock Antibody fc effector functions and igg3 associate with decreased
-  hiv-1 risk.
+  {HIV-1} risk.
 \newblock {\em Journal of Clinical Investigation} {\bf 129,} 4838--4849.
 
 \bibitem[\protect\citeauthoryear{Neugebauer and van~der Laan}{Neugebauer and
@@ -231,7 +232,7 @@ Robins, J.~M., Rotnitzky, A., and Zhao, L.~P. (1994).
 \bibitem[\protect\citeauthoryear{Saul and Hudgens}{Saul and
   Hudgens}{2020}]{saul2017}
 Saul, B. and Hudgens, M. (2020).
-\newblock The calculus of m-estimation in r with geex.
+\newblock The calculus of {M-Estimation in R} with geex.
 \newblock {\em Journal of Statistical Software, Articles} {\bf 92,} 1--15.
 
 \bibitem[\protect\citeauthoryear{Shu and Yi}{Shu and Yi}{2019}]{shu2019}
@@ -244,7 +245,7 @@ Shu, D. and Yi, G.~Y. (2019).
 \bibitem[\protect\citeauthoryear{Stefanski and Boos}{Stefanski and
   Boos}{2002}]{stefanski2002}
 Stefanski, L.~A. and Boos, D.~D. (2002).
-\newblock The calculus of m-estimation.
+\newblock The calculus of {M-estimation}.
 \newblock {\em The American Statistician} {\bf 56,} 29--38.
 
 \bibitem[\protect\citeauthoryear{Stefanski and Carroll}{Stefanski and
@@ -258,7 +259,7 @@ Stefanski, L.~A. and Carroll, R.~J. (1987).
   VanderWeele}{2012}]{tchetgen2012}
 Tchetgen, E. J.~T. and VanderWeele, T.~J. (2012).
 \newblock On causal inference in the presence of interference.
-\newblock {\em Statistical methods in medical research} {\bf 21,} 55--75.
+\newblock {\em Statistical Methods in Medical Research} {\bf 21,} 55--75.
 
 \bibitem[\protect\citeauthoryear{Tsiatis and Ma}{Tsiatis and
   Ma}{2004}]{tsiatis2004}

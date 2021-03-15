@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  7 MAR 2021 17:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  14 MAR 2021 23:07
 entering extended mode
 **./Biometrics-draft.tex
 (Biometrics-draft.tex
@@ -629,15 +629,12 @@ Overfull \hbox (4.61693pt too wide) has occurred while \output is active
  []
 
 [4]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 5
  []
 
 [5]
-Underfull \vbox (badness 3482) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
@@ -655,14 +652,21 @@ Overfull \hbox (4.61693pt too wide) has occurred while \output is active
  []
 
 [8]
-Overfull \hbox (22.95326pt too wide) detected at line 363
+Overfull \hbox (2.62614pt too wide) detected at line 350
+[]\OML/cmm/m/it/12  []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Y[]; \OML/cmm/b/it/12 L
+[]\OML/cmm/m/it/12 ; \OML/cmm/b/it/12 A[]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 []
+\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 []) = []
+ []
+
+
+Overfull \hbox (22.95326pt too wide) detected at line 360
 \OML/cmm/m/it/12  []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Y[]; \OML/cmm/b/it/12 L[]
 \OML/cmm/m/it/12 ; \OML/cmm/b/it/12 A[]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 ) = 
 [] \OML/cmm/m/it/12 ;
  []
 
 
-Underfull \vbox (badness 1960) has occurred while \output is active []
+Underfull \vbox (badness 2617) has occurred while \output is active []
 
 
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
@@ -680,15 +684,15 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [11]
-\openout4 = `Biometrics-draft.ttt'.
-
- (Biometrics-draft.ttt)
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 12
  []
 
 [12]
-Underfull \vbox (badness 3118) has occurred while \output is active []
+\openout4 = `Biometrics-draft.ttt'.
+
+ (Biometrics-draft.ttt)
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
@@ -709,7 +713,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [15]
-Underfull \vbox (badness 3118) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
@@ -721,12 +725,15 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 17
  []
 
-[17] (Biometrics-draft.bbl
+[17]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 18
  []
 
-[18]
+[18] (Biometrics-draft.bbl
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 19
  []
@@ -761,7 +768,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [23] (Biometrics-draft.fff
-<Paper1_Fig1.png, id=341, 624.08156pt x 444.91219pt>
+<Paper1_Fig1.png, id=340, 624.08156pt x 444.91219pt>
 File: Paper1_Fig1.png Graphic file (type png)
 <use Paper1_Fig1.png>
 Package pdftex.def Info: Paper1_Fig1.png  used on input line 3.
@@ -772,7 +779,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [24 <./Paper1_Fig1.png>]
-<fig2.png, id=347, 740.7675pt x 386.19281pt>
+<fig2.png, id=346, 740.7675pt x 386.19281pt>
 File: fig2.png Graphic file (type png)
 <use fig2.png>
 Package pdftex.def Info: fig2.png  used on input line 11.
@@ -783,11 +790,11 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [25 <./fig2.png>]
-<Figure2.png, id=353, 894.34125pt x 499.8675pt>
-File: Figure2.png Graphic file (type png)
-<use Figure2.png>
-Package pdftex.def Info: Figure2.png  used on input line 19.
-(pdftex.def)             Requested size: 426.39255pt x 238.3243pt.
+<fig3.png, id=352, 481.8pt x 273.27094pt>
+File: fig3.png Graphic file (type png)
+<use fig3.png>
+Package pdftex.def Info: fig3.png  used on input line 19.
+(pdftex.def)             Requested size: 426.39255pt x 241.851pt.
 )
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 26
@@ -798,7 +805,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 
 
 
- <./Figure2.png>] (Biometrics-draft.ttt
+ <./fig3.png>] (Biometrics-draft.ttt
 
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 1.
@@ -829,23 +836,23 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [29]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 547.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 547.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 544.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 544.
  (Biometrics-draft.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 547.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 547.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 544.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 544.
 Package rerunfilecheck Info: File `Biometrics-draft.out' has not changed.
-(rerunfilecheck)             Checksum: A2CBF6EE8883B428AB8F05668325A87B;840.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 547.
+(rerunfilecheck)             Checksum: 70529E24FC33B6303763F83AFB2F5355;840.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 544.
  ) 
 Here is how much of TeX's memory you used:
  8185 strings out of 492902
- 115542 string characters out of 3133541
- 210199 words of memory out of 3000000
+ 115527 string characters out of 3133541
+ 211315 words of memory out of 3000000
  11826 multiletter control sequences out of 15000+200000
  51797 words of font info for 118 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,9n,34p,1911b,477s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 35i,9n,34p,1876b,469s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><C:/P
 rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmbsy7.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program File
@@ -870,9 +877,9 @@ iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
 e1/public/amsfonts/symbols/msam10.pfb>
-Output written on Biometrics-draft.pdf (30 pages, 500759 bytes).
+Output written on Biometrics-draft.pdf (30 pages, 497686 bytes).
 PDF statistics:
- 475 PDF objects out of 1000 (max. 8388607)
+ 474 PDF objects out of 1000 (max. 8388607)
  96 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,7 +1,7 @@
 \begin{table}[]
     \centering
     %\footnotesize
-    \caption{Results from the first simulation study. Bias reflects 100 times the average bias across simulated data sets for each method. ASE is 100 times the average of estimated standard errors. ESE is 100 times the standard deviation of parameter estimates. Cov is the empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer.}
+    \caption{Results from the first simulation study. Bias: 100 times the average bias across simulated data sets for each method; ASE: 100 times the average of estimated standard errors; ESE: 100 times the standard deviation of parameter estimates; Cov: Empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer.}
     \begin{tabular}{lrrrr}
     \hline
          Estimator & Bias & ASE & ESE & Coverage \\
@@ -19,7 +19,7 @@ G-formula CSME & 0.5 & 4.0 & 4.1 & 95\% \\
  
 \begin{table}[]
     \footnotesize
-    \caption{Results from the second simulation study. Bias, ASE, ESE, and Coverage reflect the same quantities described in Table 1.}
+    \caption{Results from the second simulation study. Bias, ASE, ESE, and Coverage defined as in Table 1.}
     \begin{center}
     \begin{tabular}{lrrrrrrrrrrrr}
     \hline
@@ -40,7 +40,7 @@ IPW CSME & 1.1 & 14.9 & 15.0 & 96\% & -0.6 & 22.2 & 21.3 & 94\% & -0.5 & 23.0 & 
 \begin{table}[]
     \centering
     %\footnotesize
-    \caption{Results from the second simulation study. Bias, ASE, ESE, and Coverage reflect the same quantities described in Table 1.}
+    \caption{Results from the third simulation study. Bias, ASE, ESE, and Coverage defined as in Table 1. PS means that the propensity score model is correctly specified; OR means that the outcome regression is correctly specified.}
     \begin{tabular}{lcrrrr}
     \hline
          Estimator & Correct Specifications & Bias & ASE & ESE & Coverage \\
