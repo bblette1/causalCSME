@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\title{Web Appendix for ``Addressing concurrent confounding and exposure measurement error using a conditional score approach''}
+\title{Web Appendix for ``Addressing Confounding and Exposure Measurement Error Using Conditional Score Functions''}
 \author{Bryan S. Blette, Peter B. Gilbert, Michael G. Hudgens}
 \date{}
 
@@ -87,44 +87,42 @@ In Web Appendix A, the large sample properties of the proposed estimators discus
 
 \subsubsection{Large sample properties}
 
-Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSME estimator is an M-estimator and the g-formula can be written in the form of an unbiased estimating equation (EE). Thus, the proposed g-formula CSME estimator can be written as $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \phi, \psi_{1}, ..., \psi_{m})$ and:
+Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSME estimator is an M-estimator and the g-formula can be written in the form of an unbiased estimating equation (EE). Thus, the proposed g-formula CSME estimator can be written as $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{GFDR}) = 0$, where $\Theta_{GFDR} = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}) \})$ and:
 \begin{equation*}
-    \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
+    \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{GFDR}) =
     \begin{bmatrix}
        \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
         \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
-        \beta_{a_{1}l}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
-        \vdots \\
-        \beta_{a_{m}l}\bm{l}_{i}^{T} + \beta_{a_{m}} - \gamma_{m} \\
+        g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{l}_{i}\beta_{l} +
+        \bm{a}\beta_{al}\bm{l}_{i}^{T}) - E \{ Y(\bm{a}) \}
     \end{bmatrix}
 \end{equation*}
 
-Each of the final $m$ EEs in the stack is an algebraic simplification of the g-formula in this context, and the EE for an arbitrary parameter $\psi_{k}$ can be shown to have expectation 0 as follows. First note that under the three identification assumptions of causal consistency, conditional exchangeability, and positivity, $E\{ Y(\bm{a}) \} = \frac{1}{n}\sum_{i} E(Y | \bm{A} = \bm{a}, \bm{L}_{i})$ and under the CSME statistical assumptions and notation, $\hat{E}(Y | \bm{A} = \bm{a}, \bm{L}_{i}) = \beta_{0} + \bm{a}\beta_{a} + \bm{l}_{i}\beta_{l} + \bm{a}\beta_{al}\bm{l}_{i}^{T}$. Then the estimating function for $\psi_{k}$ is unbiased, since
+The parameter of interest $E \{ Y(\bm{a}) \}$ is in the last estimating equation of the stack, and the proof relies on (i) the usual g-formula proof based on the causal assumptions made in Section 3.1 of the paper and (ii) that the CSME estimator $\hat{E}(Y_{i} | \bm{A}_{i} = \bm{a}, \bm{L}_{i})$ was previously shown to be consistent~\citep{carroll2006}:
 
 \begin{align*}
-E_{0}(\beta_{a_{k}l}\bm{L}^{T} + \beta_{a_{k}} - \psi_{k}) &= E_{0}(\beta_{a_{k}l}\bm{L}^{T} + \beta_{a_{k}} - [E\{ Y(a_{k}, \bm{a}_{(-k)})\} - E\{ Y(a_{k} - 1, \bm{a}_{(-k)})\} ]) \\
-&=E_{0}\bigg[ \beta_{a_{k}l}\bm{L}^{T} + \beta_{a_{k}} - \bigg \{ \frac{1}{n} \sum_{i} (\beta_{0} + \bm{a}\beta_{a} + \bm{l}_{i}\beta_{l} + \bm{a}\beta_{al}\bm{l}_{i}^{T}) \\
-&- \frac{1}{n} \sum_{i} (\beta_{0} + \bm{a}\beta_{a} - \beta_{a_{k}} + \bm{l}_{i}\beta_{l} + \bm{a}\beta_{al}\bm{l}_{i}^{T} - \beta_{a_{k}l}\bm{l}_{i}^{T}) \bigg \} \bigg] \\
-&=E_{0} \bigg \{ \beta_{a_{k}l}\bm{L}^{T} + \beta_{a_{k}} - \frac{1}{n}\sum_{i} (\beta_{a_{k}} + \beta_{a_{k}l}\bm{l}_{i}^{T}) \bigg \} \\
-&=E_{0} \bigg( \beta_{a_{k}l}\bm{L}^{T} - \frac{1}{n}\sum_{i}\beta_{a_{k}l}\bm{l}_{i}^{T} \bigg) \\
-&=\beta_{a_{k}l}E_{0}(\bm{L}^{T}) - \beta_{a_{k}l}E_{0}(\bm{L}^{T}) \\
+E[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{l}_{i}\beta_{l} +
+        \bm{a}\beta_{al}\bm{l}_{i}^{T}) - E \{ Y(\bm{a}) \}] &= E \{ g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{l}_{i}\beta_{l} +
+        \bm{a}\beta_{al}\bm{l}_{i}^{T}) \} - E \{ Y(\bm{a}) \} \\
+&= E \{ \hat{E}(Y_{i} | \bm{A}_{i} = \bm{a}, \bm{L}_{i}) \} - E[E \{ Y(\bm{a}) | \bm{L} \}] \\
+&= E \{ E(Y_{i} | \bm{A}_{i} = \bm{a}, \bm{L}_{i}) \} - E[E \{ Y(\bm{a}) | \bm{A} = \bm{a}, \bm{L} \}] \\
+&= E \{ E(Y_{i} | \bm{A}_{i} = \bm{a}, \bm{L}_{i}) \} - E\{ E(Y | \bm{A} = \bm{a}, \bm{L})\} \\
 &=0
 \end{align*}
-where $\bm{a} = (a_{k}, \bm{a}_{(-k)})$ are arbitrary constants and $E_{0}$ refers to taking the expectation under the true parameter value.
 
-Denote $\hat{\Theta}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma, \hat{\Theta}) = 0$. Then by the proof above $\sqrt{n}(\hat{\Theta} - \Theta) \sim N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
+So the estimating function for the parameter $E \{ Y(\bm{a}) \}$ is unbiased. Denote $\hat{\Theta}_{GFDR}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GFDR}) = 0$. Then by the proof above $\sqrt{n}(\hat{\Theta}_{GFDR} - \Theta_{GFDR}) \sim N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
 
 \begin{equation*}
-\hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta^{T}} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma, \hat{\Theta})
+\hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta_{GFDR}^{T}} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GFDR})
 \end{equation*}
 \begin{equation*}
-\hat{B} = \frac{1}{n} \sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma, \hat{\Theta}) \psi^{T}_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma, \hat{\Theta})
+\hat{B} = \frac{1}{n} \sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GFDR}) \psi^{T}_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GFDR})
 \end{equation*}
 In the R code implementing the methods, this sandwich variance estimation is accomplished using the R package geex~\citep{saul2017}.
 
 \subsubsection{Relationship to classical causal estimators}
 
-It has been noted (see \citet{carroll2006}) that the CSME estimating equations reduce to the score equations for a GLM when the measurement error covariance matrix $\Sigma = 0_{m \times m}$. Thus under no measurement error, the procedure described above reduces to a stack of estimating equations corresponding to the common practice of performing the g-formula while specifying a GLM for the outcome regression, making it a special case of the proposed estimator.
+It has been noted (see \citet{carroll2006}) that the CSME estimating equations reduce to the score equations for a GLM when the measurement error covariance matrix $\Sigma_{me} = 0_{m \times m}$. Thus under no measurement error, the procedure described above reduces to a stack of estimating equations corresponding to the common practice of performing the g-formula while specifying a GLM for the outcome regression, making it a special case of the proposed estimator.
 
 \subsection{IPW CSME estimator}
 
