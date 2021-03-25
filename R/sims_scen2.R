@@ -5,20 +5,20 @@ library(survey)
 
 nsims <- 1000
 n <- 800
-beta1 <- 0.3
-beta2 <- -0.5
+beta1 <- 0.4
+beta2 <- -0.6
 beta3 <- -0.4
-beta4 <- 0.6
-beta5 <- -0.3
-beta6 <- -0.6
+beta4 <- 0.7
+beta5 <- -0.6
+beta6 <- -0.9
 lambda <- 3
-sigma_me1 <- 0.81
-sigma_me3 <- 0.25
+sigma_me1 <- 0.36
+sigma_me3 <- 0.16
 
 simulator <- function(trial, beta1) {
 
   L <- rexp(n, lambda)
-  A1 <- rnorm(n, 4 + 0.8*L, 1.1)
+  A1 <- rnorm(n, 4 + 0.9*L, 1.1)
   A2 <- rnorm(n, 1.4 + 0.5*L, 0.6)
   A3 <- rnorm(n, 2.5, 0.7)
   Y_prob <- exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3 + beta4*L +
@@ -515,8 +515,8 @@ simulator <- function(trial, beta1) {
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1)),
                      betas = rep(beta1, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
-combo_i <- combos[(i-1000), ]
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
+combo_i <- combos[(i), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, betas))
