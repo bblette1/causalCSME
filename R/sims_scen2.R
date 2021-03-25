@@ -13,7 +13,7 @@ beta5 <- -0.6
 beta6 <- -0.9
 lambda <- 3
 sigma_me1 <- 0.36
-sigma_me3 <- 0.16
+sigma_me3 <- 0.25
 
 simulator <- function(trial, beta1) {
 
