@@ -2,6 +2,7 @@
 rm(list = ls())
 library(dplyr)
 library(geex)
+library(ggplot2)
 
 # Build application data set
 load("C:/Users/bblette1/Downloads/HVTN505_2019-08-08/HVTN505/data/dat.505.rda")
@@ -369,9 +370,61 @@ polygon(x = c(seq(0, 11, 0.5), rev(seq(0, 11, 0.5))),
               rev(dr_ests2[4, ] + 1.96*dr_se2[4, ])),
         col =  adjustcolor("gray", alpha.f = 0.4), border = NA)
 
+# Alternative plot, more of a lattice structure
+melist <- c(expression(paste("No ME: ", sigma^2, "=0")),
+            expression(paste("Low ME: ", sigma^2, "=0.1")),
+            expression(paste("Moderate ME: ", sigma^2, "=0.2")),
+            expression(paste("High ME: ", sigma^2, "=0.3")))
 
+melist <- c("No ME: sigma^2 = 0", "Low ME: sigma^2 = 0.1",
+            "Moderate ME: sigma^2 = 0.2", "High ME: sigma^2 = 0.3")
 
+latdat <- data.frame(vals = c(rep(seq(0, 3, 0.1), 4),
+                              rep(seq(0, 11, 0.5), 4)),
+                     Risk = c(dr_ests1[1, ], dr_ests1[2, ],
+                              dr_ests1[3, ], dr_ests1[4, ],
+                              dr_ests2[1, ], dr_ests2[2, ],
+                              dr_ests2[3, ], dr_ests2[4, ]),
+                     Risk_low = c(dr_ests1[1, ] - 1.96*dr_se1[1, ],
+                                  dr_ests1[2, ] - 1.96*dr_se1[2, ],
+                                  dr_ests1[3, ] - 1.96*dr_se1[3, ],
+                                  dr_ests1[4, ] - 1.96*dr_se1[4, ],
+                                  dr_ests2[1, ] - 1.96*dr_se2[1, ],
+                                  dr_ests2[2, ] - 1.96*dr_se2[2, ],
+                                  dr_ests2[3, ] - 1.96*dr_se2[3, ],
+                                  dr_ests2[4, ] - 1.96*dr_se2[4, ]),
+                     Risk_upp = c(dr_ests1[1, ] + 1.96*dr_se1[1, ],
+                                  dr_ests1[2, ] + 1.96*dr_se1[2, ],
+                                  dr_ests1[3, ] + 1.96*dr_se1[3, ],
+                                  dr_ests1[4, ] + 1.96*dr_se1[4, ],
+                                  dr_ests2[1, ] + 1.96*dr_se2[1, ],
+                                  dr_ests2[2, ] + 1.96*dr_se2[2, ],
+                                  dr_ests2[3, ] + 1.96*dr_se2[3, ],
+                                  dr_ests2[4, ] + 1.96*dr_se2[4, ]),
+                     ME = c(rep((0:3)/10, each = 31),
+                            rep((0:3)/10, each = 23)),
+                     Exposure = c(rep("ADCP", 124), rep("RII", 92)))
 
+# New facet label names for ME variable
+me.labs <- c(expression(paste("No ME: ", sigma^2, "=0")),
+              expression(paste("Low ME: ", sigma^2, "=0.1")),
+              expression(paste("Moderate ME: ", sigma^2, "=0.2")),
+              expression(paste("High ME: ", sigma^2, "=0.3")))
+names(me.labs) <- c("0", "0.1", "0.2", "0.3")
+
+# New facet label names for Exposure variable
+exp.labs <- c("ADCP", expression(paste("R", as.character(as.roman(2)))))
+names(exp.labs) <- c("ADCP", "RII")
+
+ggplot(latdat, aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(ME ~ Exposure, scales = "free",
+             labeller = label_bquote(sigma^2 == .(ME))) +
+             #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(-0.07, 0.93)) +
+  theme_bw()
 
 
 # Ignore below
