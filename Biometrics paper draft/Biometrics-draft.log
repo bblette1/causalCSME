@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  28 MAR 2021 21:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  28 MAR 2021 22:32
 entering extended mode
 **./Biometrics-draft.tex
 (Biometrics-draft.tex
@@ -780,18 +780,18 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [24 <./DAG2_better.png>]
-<fig2.png, id=349, 740.7675pt x 386.19281pt>
-File: fig2.png Graphic file (type png)
-<use fig2.png>
-Package pdftex.def Info: fig2.png  used on input line 11.
-(pdftex.def)             Requested size: 433.62pt x 226.06624pt.
+<Paper1-fig2.pdf, id=349, 469.755pt x 303.1325pt>
+File: Paper1-fig2.pdf Graphic file (type pdf)
+<use Paper1-fig2.pdf>
+Package pdftex.def Info: Paper1-fig2.pdf  used on input line 11.
+(pdftex.def)             Requested size: 433.62pt x 279.81499pt.
 
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 25
  []
 
-[25 <./fig2.png>]
-<fig3.png, id=355, 481.8pt x 273.27094pt>
+[25 <./Paper1-fig2.pdf>]
+<fig3.png, id=359, 481.8pt x 273.27094pt>
 File: fig3.png Graphic file (type png)
 <use fig3.png>
 Package pdftex.def Info: fig3.png  used on input line 19.
@@ -848,8 +848,8 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 542.
  ) 
 Here is how much of TeX's memory you used:
  8185 strings out of 492902
- 115527 string characters out of 3133541
- 211078 words of memory out of 3000000
+ 115586 string characters out of 3133541
+ 211149 words of memory out of 3000000
  11826 multiletter control sequences out of 15000+200000
  51797 words of font info for 118 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -878,9 +878,9 @@ iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
 e1/public/amsfonts/symbols/msam10.pfb>
-Output written on Biometrics-draft.pdf (30 pages, 469295 bytes).
+Output written on Biometrics-draft.pdf (30 pages, 469820 bytes).
 PDF statistics:
- 477 PDF objects out of 1000 (max. 8388607)
+ 481 PDF objects out of 1000 (max. 8388607)
  96 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 
