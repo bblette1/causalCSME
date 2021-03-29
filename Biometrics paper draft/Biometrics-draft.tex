@@ -290,18 +290,15 @@ The CSME approach leverages the fact that $\bm{\Delta} = \bm{A}^{*} + Y(\Sigma_{
         \phi - \{ Y_{i} - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}
     \end{bmatrix}
 \end{equation}
-where $\text{E}(Y | \bm{L}, \bm{\Delta}) = \partial \mathcal{D}_{*} / \partial \eta_{*}$, $\text{Var}(Y | \bm{L}, \bm{\Delta}) = \phi \partial^{2} \mathcal{D}_{*} / \partial \eta^{2}_{*}$. This procedure can be extended to handle interaction terms~\citep{dagalp2001} where now $\eta = \beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l} + \bm{a}\beta_{al}\bm{l}^{T}$, $\beta_{al}$ is an $m \times p$ matrix of interaction parameters, $\bm{\Delta} = \bm{A}^{*} + Y\{ \Sigma_{me}(\beta_{a} + \beta_{al}\bm{L}^{T}) \}^{T}/\phi$, and appropriate elements of $\beta_{al}$ can be constrained to zero such that only relevant interactions are included in the model. Then one can derive estimating equations of the same form as (2), but replacing $(1, \bm{L}, \bm{\Delta})^{T}$ with $(1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T}$ where $\bm{L} \otimes \Delta$ is a row vector containing for all $r, k$ the product of the $k^{th}$ element of $L$ and the $r^{th}$ element of $\bm{\Delta}$ if and only if the (r, k) element of $\beta_{al}$ is not constrained to be zero.
-
-
-Here $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \text{vec}(\beta_{al}), \phi)$, where $\text{vec}$ maps the elements of the interaction parameter matrix reading left to right then top to bottom to a row vector, excluding those constrained to zero. Define $\bm{L}_{i} \otimes \Delta_{i}$ as a vector of length $\dim(\text{vec}(\beta_{al}))$ containing the product of the $k^{th}$ element of $L_{i}$ and the $r^{th}$ element of $\bm{\Delta}_{i}$ if and only if the (r, k) element of $\beta_{al}$ is not constrained to be zero.
+where $\text{E}(Y | \bm{L}, \bm{\Delta}) = \partial \mathcal{D}_{*} / \partial \eta_{*}$, $\text{Var}(Y | \bm{L}, \bm{\Delta}) = \phi \partial^{2} \mathcal{D}_{*} / \partial \eta^{2}_{*}$. This procedure can be extended to handle interaction terms~\citep{dagalp2001} where now $\eta = \beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l} + \bm{a}\beta_{al}\bm{l}^{T}$, $\beta_{al}$ is an $m \times p$ matrix of interaction parameters, $\bm{\Delta} = \bm{A}^{*} + Y\{ \Sigma_{me}(\beta_{a} + \beta_{al}\bm{L}^{T}) \}^{T}/\phi$, and appropriate elements of $\beta_{al}$ can be constrained to zero such that only relevant interactions are included in the model. Then one can derive estimating equations of the same form as (2), but replacing $(1, \bm{L}, \bm{\Delta})^{T}$ with $(1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T}$ where $\bm{L} \otimes \bm{\Delta}$ is a row vector containing the product of the $k^{th}$ element of $\bm{L}$ and the $r^{th}$ element of $\bm{\Delta}$ for all $r, k$ if and only if the $(r, k)$ element of $\beta_{al}$ is not constrained to be zero.
 
 Next, three methods will be proposed which combine the CSME approach with causal inference techniques in order to adjust for confounding and measurement error simultaneously. The proposed methods rely on the CSME modeling assumptions stated above as well as a standard set of assumptions used in causal inference: (i) causal consistency, $Y = Y(\bm{a})$ when $\bm{A} = \bm{a}$; (ii) conditional exchangeability, $Y(\bm{a}) \perp \!\!\! \perp \bm{A} | \bm{L}$; and (iii) positivity, $f(\bm{a} | \bm{l}) > 0$ for all $\bm{l}$ such that $dF_{\bm{L}}(\bm{l}) > 0$, where $F_{\bm{L}}$ is the cumulative distribution function of $\bm{L}$. As represented in the DAG in Figure~\ref{fig:one}(a), the exposure measurement error is assumed non-differential with respect to the outcome. Finally, assume that the outcome and covariates are not measured with error and that there is no model mis-specification unless otherwise stated.
 
 \subsection{G-formula CSME Estimator}
 
-\sloppy The first proposed method combines the g-formula with the CSME method. When there is no measurement error, the g-formula estimator is written as $\hat{E}\{ Y(\bm{a}) \} = \frac{1}{n} \sum_{i=1}^{n} \hat{\text{E}}(Y_{i} | \bm{A} = \bm{a}, \bm{L}_{i} = l_{i})$ where the predicted mean outcomes $\hat{\text{E}}(Y_{i} | \bm{A} = \bm{a}, \bm{L}_{i})$ are typically estimated using a GLM or other popular models. To address exposure measurement error, the proposed g-formula CSME estimator takes the same form, but instead estimates these predicted mean outcomes from a CSME model with relevant covariates and interaction terms in the model specification. This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{GFDR}) = 0$, where $\Theta_{GFDR} = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}) \})$ and
+\sloppy The first proposed method combines the g-formula with the CSME method. When there is no measurement error, the g-formula estimator is written as $\hat{E}\{ Y(\bm{a}) \} = \frac{1}{n} \sum_{i=1}^{n} \hat{\text{E}}(Y_{i} | \bm{A} = \bm{a}, \bm{L}_{i} = l_{i})$ where the predicted mean outcomes $\hat{\text{E}}(Y_{i} | \bm{A} = \bm{a}, \bm{L}_{i})$ are typically estimated using a GLM or other popular models. To address exposure measurement error, the proposed g-formula CSME estimator takes the same form, but instead estimates these predicted mean outcomes from a CSME model with relevant covariates and interaction terms in the model specification. This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{GF}) = 0$, where $\Theta_{GF} = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}) \})$ and
 \begin{equation}
-    \psi_{GF-CSME}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{GFDR}) =
+    \psi_{GF-CSME}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{GF}) =
     \begin{bmatrix}
        \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
         \phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \} \\
@@ -334,9 +331,9 @@ In practice, the weights $SW$ are usually not known and must be estimated. For t
 
 Both g-formula and IPW methods rely on model specifications that may not be correct in practice. The g-formula provides consistent estimation of potential outcome means only when the outcome model with exposures and confounders is correctly specified. Likewise, IPW estimators are consistent only when the propensity score model is correctly specified. In contrast, doubly-robust (DR) estimators entail specifying both propensity and outcome models, but remain consistent if one is misspecified and the other is not (\citealp*{robins1994}; \citealp{lunceford2004,bang2005}).
 
-A DR estimator for the additive measurement error setting can be written similarly to the estimator described in \citet{hirano2001}. Namely, one can perform the g-formula using a weighted outcome regression where the weights are the inverse probability weights given in equation (5). This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{GFDR}) = 0$, where
+A DR estimator for the additive measurement error setting can be written similarly to the estimator described in \citet{hirano2001}. Namely, one can perform the g-formula using a weighted outcome regression where the weights are the inverse probability weights given in equation (5). This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = \Theta_{GF}$ and
 \begin{equation}
-    \psi_{DR-CSME}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{GFDR}) =
+    \psi_{DR-CSME}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
     \begin{bmatrix}
        SW\{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
         SW[\phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}] \\
@@ -344,7 +341,7 @@ A DR estimator for the additive measurement error setting can be written similar
         \bm{a}^{*}\beta_{al}\bm{l}^{T}) - E \{ Y(\bm{a}) \}
     \end{bmatrix}
 \end{equation}
-The $\beta$ parameters are contained in the conditional expectation and variance terms as before, and the stabilized weights $SW$ are unknown, they can be estimated as described for the IPW CSME estimator. As for the g-formula CSME estimator, the proposed DR CSME estimator can be used across a grid of values $\bm{a}$ of interest to estimate a dose-response surface.
+The $\beta$ parameters are contained in the conditional expectation and variance terms as before, and if the stabilized weights $SW$ are unknown, they can be estimated as described for the IPW CSME estimator. As for the g-formula CSME estimator, the proposed DR CSME estimator can be used across a grid of values $\bm{a}$ of interest to estimate a dose-response surface.
 
 An alternative DR estimator, similar to those described in \citet{robins2000b} and \citet{neugebauer2005}, can also be considered and is given by the solution to the set of estimating equations $\sum_{i=1}^{n} \psi_{DR-CSME-alt}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
 \begin{equation*}
@@ -471,8 +468,8 @@ In this section, the data is analyzed making the same Binomial family distributi
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=5.9in]{fig3.png}
-\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSME estimator, as well as their respective shaded confidence regions. From left to right, each panel reflects increasing user-specified variances of measurement error. The variances of 0, 0.1, 0.2, and 0.3 correspond to proportions of the observed within individual exposure variance of approximately 0, 1/6, 1/3, and 1/2.}
+\includegraphics[width=5.6in]{fig3.pdf}
+\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSME estimator, as well as their respective shaded confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}$. The variances of 0, 0.1, 0.2, and 0.3 correspond to proportions of the observed exposure variances (among vaccinees) of approximately 0, 1/6, 1/3, and 1/2.}
 \label{fig:three}
 \end{figure}
 
