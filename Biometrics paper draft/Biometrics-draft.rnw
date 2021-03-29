@@ -57,6 +57,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 %\usepackage{natbib}
+%\usepackage{subcaption}
 
 %  The rotating package allows you to have tables displayed in landscape
 %  mode.  The rotating package is NOT included in this distribution, but
@@ -256,8 +257,8 @@ where $g$ is a link function for an exponential family density, e.g., $g(\cdot) 
 
 \begin{figure}
 \centering
-\includegraphics[width=6in]{Paper1_Fig1.png}
-\caption{Assumed directed acyclic graph (DAG) structure, with variables defined in section 2 and $U$ corresponding to measurement error. (a) A general DAG where $\bm{A}$ is a vector of exposures, some of which may be mismeasured (indicated by the arrow to $\bm{A}^{*}$) and some of which may be subject to confounding bias (indicated by the arrows from $\bm{L}$ to $\bm{A}$ and $Y$). (b) A DAG for a specific exposure vector with four different types of exposures: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed methods.}
+\fbox{\includegraphics[width=\linewidth]{DAG2_better.png}}
+\caption{An example directed acyclic graph (DAG), with variables defined in section 2 and $U$ variables corresponding to measurement error. This DAG represents a scenario with $m=4$ exposures, one each of the following: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed methods.}
 \label{fig:one}
 \end{figure}
 
