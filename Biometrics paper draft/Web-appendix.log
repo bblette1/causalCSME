@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  30 MAR 2021 22:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  31 MAR 2021 10:10
 entering extended mode
 **./Web-appendix.tex
 (Web-appendix.tex
@@ -527,42 +527,39 @@ Package pdftex.def Info: app_fig1.pdf  used on input line 265.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [9] [10 <./app_fig1.pdf>]
-Overfull \hbox (11.81395pt too wide) in paragraph at lines 305--306
- [][] 
- []
-
-[11]
-Overfull \hbox (11.81395pt too wide) in paragraph at lines 329--330
- [][] 
- []
-
-[12] (Web-appendix.bbl [13]) [14] (Web-appendix.aux) ) 
+<app_fig2.pdf, id=53, 469.755pt x 303.1325pt>
+File: app_fig2.pdf Graphic file (type pdf)
+<use app_fig2.pdf>
+Package pdftex.def Info: app_fig2.pdf  used on input line 293.
+(pdftex.def)             Requested size: 433.62pt x 279.81499pt.
+ [11] [12 <./app_fig2.pdf>] [13] (Web-appendix.bbl
+[14]) [15] (Web-appendix.aux) ) 
 Here is how much of TeX's memory you used:
- 5444 strings out of 492902
- 79157 string characters out of 3133541
- 151032 words of memory out of 3000000
- 9218 multiletter control sequences out of 15000+200000
+ 5449 strings out of 492902
+ 79260 string characters out of 3133541
+ 150032 words of memory out of 3000000
+ 9222 multiletter control sequences out of 15000+200000
  45323 words of font info for 97 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,13n,39p,1730b,282s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmmi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Pro
-gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cms
-y8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Web-appendix.pdf (14 pages, 239971 bytes).
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
+/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi
+12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C
+:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Program Files/
+MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on Web-appendix.pdf (15 pages, 248031 bytes).
 PDF statistics:
- 119 PDF objects out of 1000 (max. 8388607)
+ 128 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 10 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 15 words of extra memory for PDF output out of 10000 (max. 10000000)
 
