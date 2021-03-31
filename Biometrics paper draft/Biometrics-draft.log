@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  29 MAR 2021 18:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  31 MAR 2021 12:08
 entering extended mode
 **./Biometrics-draft.tex
 (Biometrics-draft.tex
@@ -637,7 +637,7 @@ Overfull \hbox (4.61693pt too wide) has occurred while \output is active
  []
 
 [5]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 6641) has occurred while \output is active []
 
 
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
@@ -769,7 +769,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [23] (Biometrics-draft.fff
-<DAG2_better.png, id=343, 757.32938pt x 209.28188pt>
+<DAG2_better.png, id=338, 757.32938pt x 209.28188pt>
 File: DAG2_better.png Graphic file (type png)
 <use DAG2_better.png>
 Package pdftex.def Info: DAG2_better.png  used on input line 3.
@@ -785,7 +785,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [24 <./DAG2_better.png>]
-<Paper1-fig2.pdf, id=349, 469.755pt x 303.1325pt>
+<Paper1-fig2.pdf, id=344, 469.755pt x 303.1325pt>
 File: Paper1-fig2.pdf Graphic file (type pdf)
 <use Paper1-fig2.pdf>
 Package pdftex.def Info: Paper1-fig2.pdf  used on input line 11.
@@ -796,7 +796,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [25 <./Paper1-fig2.pdf>]
-<fig3.pdf, id=359, 397.485pt x 505.89pt>
+<fig3.pdf, id=355, 397.485pt x 505.89pt>
 File: fig3.pdf Graphic file (type pdf)
 <use fig3.pdf>
 Package pdftex.def Info: fig3.pdf  used on input line 19.
@@ -883,9 +883,9 @@ iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
 e1/public/amsfonts/symbols/msam10.pfb>
-Output written on Biometrics-draft.pdf (30 pages, 473106 bytes).
+Output written on Biometrics-draft.pdf (30 pages, 472380 bytes).
 PDF statistics:
- 489 PDF objects out of 1000 (max. 8388607)
+ 485 PDF objects out of 1000 (max. 8388607)
  96 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 

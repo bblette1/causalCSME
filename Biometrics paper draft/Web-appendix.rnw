@@ -162,7 +162,7 @@ This is exactly the score function vector for a GLM weighted by $SW$. Thus, an I
 
 \subsubsection{Large Sample Properties}
 
-Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = \Theta_{GF}$ and
+Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. This estimator is a solution to the estimating equation \newline $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = \Theta_{GF}$ and
 \begin{equation*}
     \psi_{DR-CSME}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
     \begin{bmatrix}
@@ -172,6 +172,8 @@ Once again, consistency and asymptotic normality of the proposed estimator is pr
         \bm{a}^{*}\beta_{al}\bm{l}^{T}) - E \{ Y(\bm{a}) \}
     \end{bmatrix}
 \end{equation*}
+
+Last thing to add:
 
 First, suppose that the outcome regression is correctly specified. Then the proof can follow the same form as in the g-formula CSME proof above as long as outcome predictions from the IP-weighted CSME model converge in expectation to outcome predictions from the non-weighted CSME model.
 
@@ -195,7 +197,7 @@ Once again under no measurement error, the CSME equations reduce to the score eq
 
 \subsection{Uniqueness of EE solutions}
 
-Each of the proofs above relies on there being a unique solution to each set of estimating equations. It has been noted in prior work~\citep{stefanski1987} that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice. In the various simulations of this paper, multiple solutions were encountered with similar rarity, at most 1 or 2 times per 2000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should watch for rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
+Each of the proofs above relies on there being a unique solution to each set of estimating equations. It has been noted in prior work~\citep{stefanski1987} that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice. In the various simulations of this paper, multiple solutions or estimator divergence were encountered with similar rarity, at most 1 or 2 times per 2000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should watch for rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
 
 \section{Web Appendix B: Accounting for Two-Phase Sampling}
 
