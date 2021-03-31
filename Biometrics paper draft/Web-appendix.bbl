@@ -9,8 +9,16 @@ Buzas, J. and Stefanski, L. (1996).
 \bibitem[\protect\citeauthoryear{Carroll, Ruppert, Stefanski, and
   Crainiceanu}{Carroll et~al.}{2006}]{carroll2006}
 Carroll, R.~J., Ruppert, D., Stefanski, L.~A., and Crainiceanu, C.~M. (2006).
-\newblock {\em Measurement error in nonlinear models: a modern perspective}.
+\newblock {\em Measurement {Error in Nonlinear Models: A Modern Perspective}}.
 \newblock CRC press.
+
+\bibitem[\protect\citeauthoryear{Hirano and Imbens}{Hirano and
+  Imbens}{2001}]{hirano2001}
+Hirano, K. and Imbens, G.~W. (2001).
+\newblock Estimation of causal effects using propensity score weighting: An
+  application to data on right heart catheterization.
+\newblock {\em Health Services and Outcomes Research Methodology} {\bf 2,}
+  259--278.
 
 \bibitem[\protect\citeauthoryear{Li, Palta, and Shao}{Li et~al.}{2004}]{li2004}
 Li, L., Palta, M., and Shao, J. (2004).
@@ -39,13 +47,13 @@ Rose, S. and van~der Laan, M.~J. (2011).
 \bibitem[\protect\citeauthoryear{Saul and Hudgens}{Saul and
   Hudgens}{2020}]{saul2017}
 Saul, B. and Hudgens, M. (2020).
-\newblock The calculus of m-estimation in r with geex.
+\newblock The calculus of {M-Estimation in R} with geex.
 \newblock {\em Journal of Statistical Software, Articles} {\bf 92,} 1--15.
 
 \bibitem[\protect\citeauthoryear{Stefanski and Boos}{Stefanski and
   Boos}{2002}]{stefanski2002}
 Stefanski, L.~A. and Boos, D.~D. (2002).
-\newblock The calculus of m-estimation.
+\newblock The calculus of {M-estimation}.
 \newblock {\em The American Statistician} {\bf 56,} 29--38.
 
 \bibitem[\protect\citeauthoryear{Stefanski and Carroll}{Stefanski and

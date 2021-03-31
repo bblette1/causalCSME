@@ -164,7 +164,7 @@ This is exactly the score function vector for a GLM weighted by $SW$. Thus, an I
 \subsubsection{Large Sample Properties}
 
 Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. This estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = \Theta_{GF}$ and
-\begin{equation}
+\begin{equation*}
     \psi_{DR-CSME}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
     \begin{bmatrix}
        SW\{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
@@ -172,79 +172,27 @@ Once again, consistency and asymptotic normality of the proposed estimator is pr
         g^{-1}(\beta_{0} + \bm{a}^{*}\beta_{a} + \bm{l}\beta_{l} +
         \bm{a}^{*}\beta_{al}\bm{l}^{T}) - E \{ Y(\bm{a}) \}
     \end{bmatrix}
-\end{equation}
-
-First, suppose that the outcome regression is correctly specified. Need to take expectation and show weighted CSME is equivalent to CSME in expectation...?
-
-Then suppose that the propensity model is correctly specified.
-
-
-
-
-
-
-
-
-
-
-
-
-The estimating function of the DR estimator has the form
-
-\begin{equation}
-\frac{h(\bm{A})}{f(\bm{A} | \bm{L})} [\{Y - E(Y | \bm{\Delta})\}\bm{\Delta} - Q(\bm{A}, \bm{L})] + \int_{\bm{a}} h(\bm{a})Q(\bm{A} = \bm{a}, \bm{L})d\mu (\bm{a})
-\end{equation}
-where $f(\bm{A}|\bm{L})$ and $h(\bm{A})$ are defined as before and $Q(\bm{A}, \bm{L})$ is a function of $\bm{A}$ and $\bm{L}$ that often represents the outcome regression. One must show that the expected value of the estimating function at the true parameter value $\gamma_{0}$ is equal to 0 if either the propensity model or outcome regression model is correctly specified.
-
-First, suppose that the outcome regression model is correctly specified, denoted $Q(\bm{A}, \bm{L}) = Q_{0}(\bm{A}, \bm{L}) = E[Y | A, L] - \gamma_{0}(1, \bm{a})^{T}$. Let $E_{0}$ denote taking the expectation under true parameter $\gamma_{0}$, then
-
-\begin{align*}
-&E \bigg[\frac{h(A)}{f(A | L)}[ \{ Y - E(Y | L, \Delta) \}\Delta - Q_{0}(\Delta, L)] + \int_{a} h(a)Q_{0}(A = a, L)d\mu (a) \bigg] \\
-&= E \bigg[\frac{h(A)}{f(A | L)}[\{ Y - E(Y | L, \Delta) \}\Delta - Q_{0}(A, L)] \bigg] + E \bigg[\int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, L]d\mu (a) \bigg] \\
-&= E \left \{ E \bigg[\frac{h(A)}{g(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] | A, L \bigg] \right \} + E \left \{ E \bigg[\int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, L]d\mu (a) | V \bigg] \right \} \\
-&= E \left \{ \frac{h(A)}{g(A | L)}[Q_{0}(A, L) - Q_{0}(A, L)] \right \} + E \left \{ \int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, V]d\mu (a) \right \} \\
-&= E \left \{ \int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, V]d\mu (a) \right \} \\
-&= E \left \{ \int_{a} h(a)E[Y^{A} - E[Y^{A} | V] | A = a, V]d\mu (a) \right \} \\
-&= E \left \{ \int_{a} h(a)(E[Y^{a} | V] - E[Y^{a} |V])d\mu (a) \right \} \\
-&= 0
-\end{align*}
-
-\begin{align*}
-&E \bigg[\frac{h(A)}{f(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] + \int_{a} h(a)Q_{0}(A = a, L)d\mu (a) \bigg] \\
-&= E \bigg[\frac{h(A)}{f(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] \bigg] + E \bigg[\int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, L]d\mu (a) \bigg] \\
-&= E \left \{ E \bigg[\frac{h(A)}{g(A | L)}[\epsilon(\beta_{0}) - Q_{0}(A, L)] | A, L \bigg] \right \} + E \left \{ E \bigg[\int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, L]d\mu (a) | V \bigg] \right \} \\
-&= E \left \{ \frac{h(A)}{g(A | L)}[Q_{0}(A, L) - Q_{0}(A, L)] \right \} + E \left \{ \int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, V]d\mu (a) \right \} \\
-&= E \left \{ \int_{a} h(a)E[\epsilon(\beta_{0}) | A = a, V]d\mu (a) \right \} \\
-&= E \left \{ \int_{a} h(a)E[Y^{A} - E[Y^{A} | V] | A = a, V]d\mu (a) \right \} \\
-&= E \left \{ \int_{a} h(a)(E[Y^{a} | V] - E[Y^{a} |V])d\mu (a) \right \} \\
-&= 0
-\end{align*}
-
-
-Now suppose the outcome regression is potentially misspecified. We show the estimator is unbiased as long as the propensity score model is correctly specified, denoted $g(A|L) = g_{0}(A|L)$.
-
-\begin{align*}
-&E \bigg[\frac{h(A)}{f_{0}(A | L)} \bigg[ \{ Y - E(Y | \bm{\Delta})\} \Delta_{k} - Q(A, L) \bigg] + \int_{a} h(a)Q(A = a, L)d\mu (a) \bigg] \\
-&= E \bigg[\frac{h(A)}{f_{0}(A | L)}\{ Y - E(Y | \bm{\Delta})\} \Delta_{k} \bigg] - E \bigg[\frac{h(A)}{f_{0}(A | L)}Q(A, L) \bigg] + E \bigg[ \int_{a} h(a)Q(A = a, L)d\mu (a) \bigg]
-\end{align*}
-
-Since the left term is an unbiased estimating function for $\beta$ as shown earlier, it suffices to show that
-
-\begin{equation*}
-\int_{a} E \bigg[ h(a)Q(A = a, L) \bigg] d\mu (a) - E \bigg[\frac{h(A)}{f_{0}(A | L)}Q(A, L) \bigg] = 0
 \end{equation*}
 
-To see this, note that
+First, suppose that the outcome regression is correctly specified. Then the proof can follow the same form as in the g-formula CSME proof above as long as outcome predictions from the IP-weighted CSME model converge in expectation to outcome predictions from the non-weighted CSME model.
 
 \begin{align*}
-E \bigg[\frac{h(A)}{g_{0}(A | L)}Q(A, L) \bigg] &= E \left \{ E \bigg[\frac{h(A)}{g_{0}(A | L)}Q(A, L) | L \bigg] \right \} \\
-&= E \left \{ \int_{a} \frac{h(a)}{g_{0}(a | L)}Q(A = a, L) g_{0}(a | L) d\mu (a) \right \} \\
-&= \int_{a} E \bigg[ h(a)Q(A = a, L) \bigg] d\mu (a)
+E[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l} +
+        \bm{a}\beta_{al}\bm{l}^{T}) - E \{ Y(\bm{a}) \}] &= E \{ g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l} +
+        \bm{a}\beta_{al}\bm{l}^{T}) \} - E \{ Y(\bm{a}) \} \\
+&= E \{ \hat{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} - E[E \{ Y(\bm{a}) | \bm{L} \}] \\
+&= E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \} - E[E \{ Y(\bm{a}) | \bm{A} = \bm{a}, \bm{L} \}] \\
+&= E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \} - E\{ E(Y | \bm{A} = \bm{a}, \bm{L})\} \\
+&=0
 \end{align*}
+
+How to show outcome predictions from the IP-weighted CSME model converge in expectation to outcome predictions from the non-weighted CSME model? Why would this be true? Maybe this is not true, and the structure above needs to be quite different.
+
+Then suppose that the propensity model is correctly specified. Essentially need to show that the estimator works regardless of the outcome model specification. We know that it works when only $A$ is in the outcome model based on the proof for the IPW CSME estimator in the previous section, unless the last EE here messes that up in some way.
 
 \subsubsection{Relationship to classical causal estimators}
 
-Insert description, under no measurement error it reduces to the DR estimator from \citet{neugebauer2005}.
+Once again under no measurement error, the CSME equations reduce to the score equations of a GLM. Thus the proposed DR CSME estimator will reduce to the DR estimator described in \citet{hirano2001} where the specified outcome regression is a GLM.
 
 \subsection{Uniqueness of EE solutions}
 
