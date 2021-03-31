@@ -17,6 +17,6 @@
 \begin{figure}[h!]
 \centering
 \includegraphics[width=5.6in]{fig3.pdf}
-\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSME estimator, as well as their respective shaded confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}$. The variances of 0, 0.1, 0.2, and 0.3 correspond to proportions of the observed exposure variances (among vaccinees) of approximately 0, 1/6, 1/3, and 1/2.}
+\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSME estimator, as well as their respective shaded confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}$. The variances of 0, 0.1, 0.2, and 0.3 correspond to proportions of the observed exposure variances (among vaccinees with immune responses) of approximately 0, 1/6, 1/3, and 1/2.}
 \label{fig:three}
 \end{figure}
