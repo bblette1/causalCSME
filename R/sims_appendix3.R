@@ -517,8 +517,8 @@ simulator <- function(trial, beta1) {
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1)),
                      betas = rep(beta1, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
-combo_i <- combos[(i-1000), ]
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
+combo_i <- combos[(i), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, betas))
