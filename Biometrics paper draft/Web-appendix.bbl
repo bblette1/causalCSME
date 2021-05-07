@@ -23,7 +23,14 @@ Hirano, K. and Imbens, G.~W. (2001).
 \bibitem[\protect\citeauthoryear{Li, Palta, and Shao}{Li et~al.}{2004}]{li2004}
 Li, L., Palta, M., and Shao, J. (2004).
 \newblock A measurement error model with a poisson distributed surrogate.
-\newblock {\em Statistics in medicine} {\bf 23,} 2527--2536.
+\newblock {\em Statistics in Medicine} {\bf 23,} 2527--2536.
+
+\bibitem[\protect\citeauthoryear{Naimi, Moodie, Auger, and Kaufman}{Naimi
+  et~al.}{2014}]{naimi2014}
+Naimi, A.~I., Moodie, E.~E., Auger, N., and Kaufman, J.~S. (2014).
+\newblock Constructing inverse probability weights for continuous exposures: a
+  comparison of methods.
+\newblock {\em Epidemiology} {\bf 25,} 292--299.
 
 \bibitem[\protect\citeauthoryear{Nakamura}{Nakamura}{1990}]{nakamura1990}
 Nakamura, T. (1990).
@@ -37,6 +44,13 @@ Neugebauer, R. and van~der Laan, M. (2005).
 \newblock Why prefer double robust estimators in causal inference?
 \newblock {\em Journal of Statistical Planning and Inference} {\bf 129,}
   405--426.
+
+\bibitem[\protect\citeauthoryear{Robins, Sued, Lei-Gomez, and Rotnitzky}{Robins
+  et~al.}{2007}]{robins2007}
+Robins, J., Sued, M., Lei-Gomez, Q., and Rotnitzky, A. (2007).
+\newblock Comment: Performance of double-robust estimators when ``inverse
+  probability'' weights are highly variable.
+\newblock {\em Statistical Science} {\bf 22,} 544--559.
 
 \bibitem[\protect\citeauthoryear{Rose and van~der Laan}{Rose and van~der
   Laan}{2011}]{rose2011}
