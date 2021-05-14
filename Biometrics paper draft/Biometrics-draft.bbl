@@ -114,6 +114,13 @@ Janes, H.~E., Cohen, K.~W., Frahm, N., De~Rosa, S.~C., Sanchez, B., Hural, J.,
   trial.
 \newblock {\em The Journal of Infectious Diseases} {\bf 215,} 1376--1385.
 
+\bibitem[\protect\citeauthoryear{Kang and Schafer}{Kang and
+  Schafer}{2007}]{kang2007}
+Kang, J.~D. and Schafer, J.~L. (2007).
+\newblock Demystifying double robustness: A comparison of alternative
+  strategies for estimating a population mean from incomplete data.
+\newblock {\em Statistical Science} {\bf 22,} 523--539.
+
 \bibitem[\protect\citeauthoryear{Kendall}{Kendall}{2015}]{kendall2015}
 Kendall, B.~E. (2015).
 \newblock A statistical symphony: instrumental variables reveal causality and
@@ -274,6 +281,12 @@ Vansteelandt, S., Babanezhad, M., and Goetghebeur, E. (2009).
 \newblock Correcting instrumental variables estimators for systematic
   measurement error.
 \newblock {\em Statistica Sinica} {\bf 19,} 1223--1246.
+
+\bibitem[\protect\citeauthoryear{Vansteelandt and Keiding}{Vansteelandt and
+  Keiding}{2011}]{vansteelandt2011}
+Vansteelandt, S. and Keiding, N. (2011).
+\newblock Invited commentary: G-computation - lost in translation?
+\newblock {\em American Journal of Epidemiology} {\bf 173,} 739--742.
 
 \bibitem[\protect\citeauthoryear{Wang, Scharfstein, Tan, and MacKenzie}{Wang
   et~al.}{2009}]{wang2009}

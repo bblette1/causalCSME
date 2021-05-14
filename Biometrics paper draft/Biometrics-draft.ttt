@@ -8,9 +8,9 @@
          \hline
          %\hhline{|=|=|=|=|=|=|}
 Regression & -51.5 & 18.3 & 18.3 & 19\% \\
-CSME & -21.8 & 28.4 & 28.6 & 87\% \\
+CSM & -21.8 & 28.4 & 28.6 & 87\% \\
 G-formula & -3.9 & 2.6 & 2.6 & 67\% \\
-G-formula CSME & 0.5 & 4.0 & 4.1 & 95\% \\
+G-formula CSM & 0.5 & 4.0 & 4.1 & 95\% \\
          \hline
     \end{tabular}
     \label{tab:one}
@@ -25,17 +25,17 @@ G-formula CSME & 0.5 & 4.0 & 4.1 & 95\% \\
         Parameter & Estimator & Bias & ASE & ESE & Cov \\
          \hline
 $\gamma_{1}$ & Regression & 5.8 & 13.6 & 13.3 & 93\% \\
-$\gamma_{1}$ & CSME & 22.0 & 19.2 & 18.7 & 80\% \\
+$\gamma_{1}$ & CSM & 22.0 & 19.2 & 18.7 & 80\% \\
 $\gamma_{1}$ & IPW & -9.7 & 9.1 & 9.0 & 80\% \\
-$\gamma_{1}$ & IPW CSME & 0.3 & 12.5 & 12.3 & 95\% \\[4pt]
+$\gamma_{1}$ & IPW CSM & 0.3 & 12.5 & 12.3 & 95\% \\[4pt]
 $\gamma_{2}$ & Regression & 10.4 & 27.9 & 27.4 & 92\% \\
-$\gamma_{2}$ & CSME & 9.2 & 28.9 & 27.8 & 92\% \\
+$\gamma_{2}$ & CSM & 9.2 & 28.9 & 27.8 & 92\% \\
 $\gamma_{2}$ & IPW & 0.3 & 19.8 & 19.4 & 94\% \\
-$\gamma_{2}$ & IPW CSME & -0.4 & 20.1 & 19.7 & 95\% \\[4pt]
+$\gamma_{2}$ & IPW CSM & -0.4 & 20.1 & 19.7 & 95\% \\[4pt]
 $\gamma_{3}$ & Regression & 11.7 & 13.3 & 13.0 & 84\% \\
-$\gamma_{3}$ & CSME & -3.9 & 21.1 & 20.5 & 95\% \\
+$\gamma_{3}$ & CSM & -3.9 & 21.1 & 20.5 & 95\% \\
 $\gamma_{3}$ & IPW & 13.8 & 13.3 & 12.9 & 80\% \\
-$\gamma_{3}$ & IPW CSME & -0.3 & 20.7 & 20.1 & 95\% \\
+$\gamma_{3}$ & IPW CSM & -0.3 & 20.7 & 20.1 & 95\% \\
          \hline
     \end{tabular}
     \end{center}
@@ -52,15 +52,15 @@ $\gamma_{3}$ & IPW CSME & -0.3 & 20.7 & 20.1 & 95\% \\
          Estimator & Correct Specifications & Bias & ASE & ESE & Coverage \\
          \hline
          %\hhline{|=|=|=|=|=|=|}
-G-formula CSME & PS & -6.6 & 1.9 & 1.9 & 8\% \\
-IPW CSME & PS & 0.0 & 3.2 & 3.1 & 95\% \\
-DR CSME & PS & 0.0 & 2.6 & 2.6 & 94\% \\[4pt]
-G-formula CSME & OR & 0.0 & 1.7 & 1.7 & 94\% \\
-IPW CSME & OR & -6.3 & 2.0 & 2.0 & 12\% \\
-DR CSME & OR & 0.1 & 1.7 & 1.7 & 95\% \\[4pt]
-G-formula CSME & PS and OR & 0.0 & 1.7 & 1.7 & 94\% \\
-IPW CSME & PS and OR & 0.0 & 3.2 & 3.1 & 95\% \\
-DR CSME & PS and OR & 0.1 & 1.9 & 1.9 & 94\% \\
+G-formula CSM & PS & -6.6 & 1.9 & 1.9 & 8\% \\
+IPW CSM & PS & 0.0 & 3.2 & 3.1 & 95\% \\
+DR CSM & PS & 0.0 & 2.6 & 2.6 & 94\% \\[4pt]
+G-formula CSM & OR & 0.0 & 1.7 & 1.7 & 94\% \\
+IPW CSM & OR & -6.3 & 2.0 & 2.0 & 12\% \\
+DR CSM & OR & 0.1 & 1.7 & 1.7 & 95\% \\[4pt]
+G-formula CSM & PS and OR & 0.0 & 1.7 & 1.7 & 94\% \\
+IPW CSM & PS and OR & 0.0 & 3.2 & 3.1 & 95\% \\
+DR CSM & PS and OR & 0.1 & 1.9 & 1.9 & 94\% \\
          \hline
     \end{tabular}
     \label{tab:three}
