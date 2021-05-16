@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  7 MAY 2021 11:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  16 MAY 2021 13:12
 entering extended mode
 **./Biometrics-draft.tex
 (Biometrics-draft.tex
@@ -647,19 +647,22 @@ Overfull \hbox (4.61693pt too wide) has occurred while \output is active
  []
 
 [7]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 8
  []
 
 [8]
-Overfull \hbox (20.83128pt too wide) detected at line 359
+Overfull \hbox (25.58134pt too wide) detected at line 359
 \OML/cmm/m/it/12  []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Y; \OML/cmm/b/it/12 L\OML
 /cmm/m/it/12 ; \OML/cmm/b/it/12 A[]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 []) = []
  \OML/cmm/m/it/12 ;
  []
 
 
-Underfull \vbox (badness 5288) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
@@ -688,7 +691,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3118) has occurred while \output is active []
 
 
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
@@ -696,7 +699,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [13]
-Underfull \vbox (badness 3118) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
@@ -704,15 +707,12 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [14]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 15
  []
 
 [15]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3118) has occurred while \output is active []
 
 
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
@@ -775,7 +775,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [24] (Biometrics-draft.fff
-<DAG2_better.png, id=354, 757.32938pt x 209.28188pt>
+<DAG2_better.png, id=353, 757.32938pt x 209.28188pt>
 File: DAG2_better.png Graphic file (type png)
 <use DAG2_better.png>
 Package pdftex.def Info: DAG2_better.png  used on input line 3.
@@ -791,7 +791,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [25 <./DAG2_better.png>]
-<Paper1-fig2.pdf, id=359, 469.755pt x 303.1325pt>
+<Paper1-fig2.pdf, id=358, 469.755pt x 303.1325pt>
 File: Paper1-fig2.pdf Graphic file (type pdf)
 <use Paper1-fig2.pdf>
 Package pdftex.def Info: Paper1-fig2.pdf  used on input line 11.
@@ -802,7 +802,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [26 <./Paper1-fig2.pdf>]
-<fig3.pdf, id=369, 397.485pt x 505.89pt>
+<fig3.pdf, id=368, 397.485pt x 505.89pt>
 File: fig3.pdf Graphic file (type pdf)
 <use fig3.pdf>
 Package pdftex.def Info: fig3.pdf  used on input line 19.
@@ -889,9 +889,9 @@ Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/symbols/msam10.pfb>
-Output written on Biometrics-draft.pdf (31 pages, 468619 bytes).
+Output written on Biometrics-draft.pdf (31 pages, 467847 bytes).
 PDF statistics:
- 500 PDF objects out of 1000 (max. 8388607)
+ 499 PDF objects out of 1000 (max. 8388607)
  100 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 
