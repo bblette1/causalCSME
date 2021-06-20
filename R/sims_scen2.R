@@ -18,6 +18,7 @@ sigma_me3 <- 0.25
 simulator <- function(trial, beta1) {
 
   L <- rexp(n, lambda)
+  # A2 and A3 switch names in the manuscript
   A1 <- rnorm(n, 4 + 0.9*L, 1.1)
   A2 <- rnorm(n, 1.4 + 0.5*L, 0.6)
   A3 <- rnorm(n, 2.5, 0.7)
