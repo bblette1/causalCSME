@@ -16,9 +16,29 @@ fulldat <- merge(dat.505, primarydat, by = "ptid", all = T)
 fulldat$marker1 <- log(fulldat$ADCP1)
 fulldat$marker2 <- fulldat$R2aConSgp140CFI
 
-# Simple imputation of missing confounder, marker2 0 value
+# Treat behavior risk as binary variable
+fulldat$bhv_bin.y <- 1*(fulldat$bhvrisk.y > 0)
+
+# Simple imputation of missing confounders, marker2 0 value
 set.seed(1234)
-fulldat$BMI.y[is.na(fulldat$BMI.y)] <- median(fulldat$BMI.y, na.rm = T)
+
+bmimod <- lm(BMI.y ~ HIVall.y + age.y + bhvrisk.y + race.y, data = fulldat)
+bmi_imp_dat <- data.frame(HIVall.y = fulldat$HIVall.y[is.na(fulldat$BMI.y)],
+                          age.y = fulldat$age.y[is.na(fulldat$BMI.y)],
+                          bhvrisk.y = fulldat$bhvrisk.y[is.na(fulldat$BMI.y)],
+                          race.y = fulldat$race.y[is.na(fulldat$BMI.y)])
+fulldat$BMI.y[is.na(fulldat$BMI.y)] <- predict(bmimod, bmi_imp_dat)
+
+bhvmod <- glm(bhv_bin.y ~ HIVall.y + age.y + BMI.y + race.y, data = fulldat,
+              family = binomial)
+bhv_imp_dat <-
+  data.frame(HIVall.y = fulldat$HIVall.y[is.na(fulldat$bhv_bin.y)],
+             age.y = fulldat$age.y[is.na(fulldat$bhv_bin.y)],
+             BMI.y = fulldat$BMI.y[is.na(fulldat$bhv_bin.y)],
+             race.y = fulldat$race.y[is.na(fulldat$bhv_bin.y)])
+fulldat$bhv_bin.y[is.na(fulldat$bhv_bin.y)] <-
+  1*(predict(bhvmod, bhv_imp_dat, type = "response") > 0.5)
+
 imputemax <- min(fulldat$marker2[fulldat$marker2 > 0], na.rm = T)
 fulldat$marker2[fulldat$marker2 == 0 & !is.na(fulldat$marker2) &
                 fulldat$trt.y == 1] <- runif(1, 0, imputemax)
@@ -34,7 +54,7 @@ fulldat$CD8PFS <- fulldat$CD8_ANYVRCENV_PolyfunctionalityScore_score_bin
 analysisdat <- fulldat %>%
   filter(trt.y == 1) %>%
   select(HIVall.y, HIVwk28preunbl.y, marker1, marker2,
-         race.y, BMI.y, age.y, bhvrisk.y, ADCP1_bin, CD4PFS, CD8PFS)
+         race.y, BMI.y, age.y, bhv_bin.y, ADCP1_bin, CD4PFS, CD8PFS)
 
 # Probability selected by treatment
 # Weights based on HIV at week 28, not end of study
@@ -60,7 +80,7 @@ analysisdat$marker2[is.na(analysisdat$marker2)] <- 0
 
 # Estimate IPTW
 # First marker
-denom_mod1 <- lm(marker1 ~ race.y + BMI.y + age.y + bhvrisk.y,
+denom_mod1 <- lm(marker1 ~ race.y + BMI.y + age.y + bhv_bin.y,
                  data = analysisdat, weights = estweights)
 p_denom1 <- predict(denom_mod1, type='response')
 dens_denom1 <-
@@ -85,7 +105,7 @@ analysisdat$w1[is.na(analysisdat$w1)] <- 0
 analysisdat$sw1 <- analysisdat$w1*analysisdat$estweights
 
 # Second marker
-denom_mod2 <- lm(marker2 ~ race.y + BMI.y + age.y + bhvrisk.y,
+denom_mod2 <- lm(marker2 ~ race.y + BMI.y + age.y + bhv_bin.y,
                  data = analysisdat, weights = estweights)
 p_denom2 <- predict(denom_mod2, type='response')
 dens_denom2 <-
@@ -111,13 +131,13 @@ analysisdat$sw2 <- analysisdat$w2*analysisdat$estweights
 
 # Starting values
 glmmod1 <-
-  glm(HIVwk28preunbl.y ~ marker1 + race.y + age.y + CD8PFS + CD4PFS +
-        marker1*race.y + marker1*age.y,
+  glm(HIVwk28preunbl.y ~ marker1 + bhv_bin.y + age.y + race.y + BMI.y +
+        CD8PFS + CD4PFS + marker1*bhv_bin.y + marker1*age.y,
       data = analysisdat, family = "binomial", weights = sw1)
 
 glmmod2 <-
-  glm(HIVwk28preunbl.y ~ marker2 + race.y + age.y + CD8PFS + CD4PFS +
-        marker2*race.y + marker2*age.y,
+  glm(HIVwk28preunbl.y ~ marker2 + bhv_bin.y + age.y + race.y + BMI.y +
+        CD8PFS + CD4PFS + marker2*bhv_bin.y + marker2*age.y,
       data = analysisdat, family = "binomial", weights = sw2)
 
 # DR estimating equations
@@ -125,55 +145,65 @@ eefun_dr1 <- function(data, val) {
   Y <- data$HIVwk28preunbl.y
   A1star <- data$marker1
   A1star[is.na(A1star)] <- 0
-  L1 <- data$race.y
+  L1 <- data$bhv_bin.y
   L2 <- data$age.y
-  L3 <- data$CD8PFS
-  L3[is.na(L3)] <- 0
-  L4 <- data$CD4PFS
-  L4[is.na(L4)] <- 0
+  L3 <- data$race.y
+  L4 <- data$BMI.y
+  L5 <- data$CD8PFS
+  L5[is.na(L5)] <- 0
+  L6 <- data$CD4PFS
+  L6[is.na(L6)] <- 0
   sw <- data$sw1
-  delta1 <- function(beta1, beta6, beta7) {
-    A1star + sigma_me1*(beta1 + beta6*L1 + beta7*L2)*Y
+  delta1 <- function(beta1, beta8, beta9) {
+    A1star + sigma_me1*(beta1 + beta8*L1 + beta9*L2)*Y
   }
   H <- function(x) {
     1 / (1 + exp(-x))
   }
   condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
-                      beta7) {
+                      beta7, beta8, beta9) {
     H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
-        (beta1 + beta6*L1 + beta7*L2)*
-        delta1(beta1, beta6, beta7) -
-        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me1) / 2)
+        beta6*L5 + beta7*L6 +
+        (beta1 + beta8*L1 + beta9*L2)*delta1(beta1, beta8, beta9) -
+        ((beta1 + beta8*L1 + beta9*L2)^2 * sigma_me1) / 2)
   }
   function(theta) {
     c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8])),
+                      theta[6], theta[7], theta[8], theta[9], theta[10])),
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
-        delta1(theta[2], theta[7], theta[8]),
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        delta1(theta[2], theta[9], theta[10]),
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L1,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L2,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L3,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L4,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
-        delta1(theta[2], theta[7], theta[8])*L1,
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        L5,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
-        delta1(theta[2], theta[7], theta[8])*L2,
-      theta[9] -
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        L6,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        delta1(theta[2], theta[9], theta[10])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        delta1(theta[2], theta[9], theta[10])*L2,
+      theta[11] -
         exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
-            theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2) /
+            theta[5]*L3 + theta[6]*L4 + theta[7]*L5 + theta[8]*L6 +
+            theta[9]*val*L1 + theta[10]*val*L2) /
         (1 + exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
-            theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2))
+            theta[5]*L3 + theta[6]*L4 + theta[7]*L5 + theta[8]*L6 +
+            theta[9]*val*L1 + theta[10]*val*L2))
     )
   }
 }
@@ -182,64 +212,75 @@ eefun_dr2 <- function(data, val) {
   Y <- data$HIVwk28preunbl.y
   A2star <- data$marker2
   A2star[is.na(A2star)] <- 0
-  L1 <- data$race.y
+  L1 <- data$bhv_bin.y
   L2 <- data$age.y
-  L3 <- data$CD8PFS
-  L3[is.na(L3)] <- 0
-  L4 <- data$CD4PFS
-  L4[is.na(L4)] <- 0
+  L3 <- data$race.y
+  L4 <- data$BMI.y
+  L5 <- data$CD8PFS
+  L5[is.na(L5)] <- 0
+  L6 <- data$CD4PFS
+  L6[is.na(L6)] <- 0
   sw <- data$sw2
-  delta2 <- function(beta1, beta6, beta7) {
-    A2star + sigma_me2*(beta1 + beta6*L1 + beta7*L2)*Y
+  delta2 <- function(beta1, beta8, beta9) {
+    A2star + sigma_me2*(beta1 + beta8*L1 + beta9*L2)*Y
   }
   H <- function(x) {
     1 / (1 + exp(-x))
   }
   condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
-                      beta7) {
+                      beta7, beta8, beta9) {
     H(beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
-        (beta1 + beta6*L1 + beta7*L2)*
-        delta2(beta1, beta6, beta7) -
-        ((beta1 + beta6*L1 + beta7*L2)^2 * sigma_me2) / 2)
+        beta6*L5 + beta7*L6 +
+        (beta1 + beta8*L1 + beta9*L2)*delta2(beta1, beta8, beta9) -
+        ((beta1 + beta8*L1 + beta9*L2)^2 * sigma_me2) / 2)
   }
   function(theta) {
     c(sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8])),
+                      theta[6], theta[7], theta[8], theta[9], theta[10])),
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
-        delta2(theta[2], theta[7], theta[8]),
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        delta2(theta[2], theta[9], theta[10]),
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L1,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L2,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L3,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
         L4,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
-        delta2(theta[2], theta[7], theta[8])*L1,
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        L5,
       sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
-                      theta[6], theta[7], theta[8]))*
-        delta2(theta[2], theta[7], theta[8])*L2,
-      theta[9] -
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        L6,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        delta2(theta[2], theta[9], theta[10])*L1,
+      sw*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10]))*
+        delta2(theta[2], theta[9], theta[10])*L2,
+      theta[11] -
         exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
-          theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2) /
+              theta[5]*L3 + theta[6]*L4 + theta[7]*L5 + theta[8]*L6 +
+              theta[9]*val*L1 + theta[10]*val*L2) /
         (1 + exp(theta[1] + theta[2]*val + theta[3]*L1 + theta[4]*L2 +
-            theta[5]*L3 + theta[6]*L4 + theta[7]*val*L1 + theta[8]*val*L2))
+                   theta[5]*L3 + theta[6]*L4 + theta[7]*L5 + theta[8]*L6 +
+                   theta[9]*val*L1 + theta[10]*val*L2))
     )
   }
 }
 
+
 # Calculate DR estimator for 4 ME and a grid of values
 dr_ests1 <- array(NA, dim = c(4, 31))
-dr_ests2 <- array(NA, dim = c(4, 23))
+dr_ests2 <- array(NA, dim = c(4, 21))
 dr_se1 <- array(NA, dim = c(4, 31))
-dr_se2 <- array(NA, dim = c(4, 23))
+dr_se2 <- array(NA, dim = c(4, 21))
 
 for (me in 0:3) {
 
@@ -250,7 +291,7 @@ for (me in 0:3) {
 
     guess1 <- 0.1
     if (i > 0) {
-      guess1 <- coef(results_dr1)[9]
+      guess1 <- coef(results_dr1)[11]
     }
 
     results_dr1 <-
@@ -258,16 +299,16 @@ for (me in 0:3) {
                  outer_args = list(i), compute_roots = TRUE,
                  root_control =
                    setup_root_control(start = c(coef(glmmod1), guess1)))
-    dr_ests1[(me + 1), i*10 + 1] <- coef(results_dr1)[9]
-    dr_se1[(me + 1), i*10 + 1] <- sqrt(vcov(results_dr1)[9, 9])
+    dr_ests1[(me + 1), i*10 + 1] <- coef(results_dr1)[11]
+    dr_se1[(me + 1), i*10 + 1] <- sqrt(vcov(results_dr1)[11, 11])
 
   }
 
-  for (i in seq(0, 11, 0.5)) {
+  for (i in seq(7, 11, 0.2)) {
 
-    guess2 <- 0.6
-    if (i > 0) {
-      guess2 <- coef(results_dr2)[9]
+    guess2 <- 0.1
+    if (i > 7) {
+      guess2 <- coef(results_dr2)[11]
     }
 
     results_dr2 <-
@@ -275,18 +316,18 @@ for (me in 0:3) {
                  outer_args = list(i), compute_roots = TRUE,
                  root_control =
                    setup_root_control(start = c(coef(glmmod2), guess2)))
-    dr_ests2[(me + 1), i*2 + 1] <- coef(results_dr2)[9]
-    dr_se2[(me + 1), i*2 + 1] <- sqrt(vcov(results_dr2)[9, 9])
+    dr_ests2[(me + 1), (i-7)*5 + 1] <- coef(results_dr2)[11]
+    dr_se2[(me + 1), (i-7)*5 + 1] <- sqrt(vcov(results_dr2)[11, 11])
 
-    if (is.na(coef(results_dr2)[9])) {
+    if (is.na(coef(results_dr2)[11])) {
       guess2 <- min(guess2 + rnorm(1, 0, 0.1), 0.02)
       results_dr2 <-
         m_estimate(estFUN = eefun_dr2, data = analysisdat,
                    outer_args = list(i), compute_roots = TRUE,
                    root_control =
                      setup_root_control(start = c(coef(glmmod2), guess2)))
-      dr_ests2[(me + 1), (i-4)*5 + 1] <- coef(results_dr2)[9]
-      dr_se2[(me + 1), (i-4)*5 + 1] <- sqrt(vcov(results_dr2)[9, 9])
+      dr_ests2[(me + 1), (i-7)*5 + 1] <- coef(results_dr2)[11]
+      dr_se2[(me + 1), (i-7)*5 + 1] <- sqrt(vcov(results_dr2)[11, 11])
     }
 
   }
