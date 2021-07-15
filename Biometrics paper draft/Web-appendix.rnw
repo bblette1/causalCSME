@@ -1,6 +1,5 @@
 \documentclass[12pt]{article}
-\title{Web Appendix for ``Addressing Confounding and Exposure Measurement Error Using Conditional Score Functions''}
-\author{Bryan S. Blette, Peter B. Gilbert, Michael G. Hudgens}
+\title{Supporting Information for ``Addressing Confounding and Exposure Measurement Error Using Conditional Score Functions'' by Bryan S. Blette, Peter B. Gilbert, and Michael G. Hudgens}
 \date{}
 
 \usepackage{amsmath}
@@ -31,8 +30,8 @@
 \vskip8pt\refstepcounter{tblcap}
 \centering\parbox[c]{\textwidth}{
 \centerlast\noindent\mbox{\noindent\centerlast
- Appendix Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
-\fontsize{9}{11}\selectfont \mbox{#2}}
+ Web Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
+\fontsize{12}{13}\selectfont \mbox{#2}}
 
 \long\def\tblcaptionnotes#1#2#3{
 \sbox{\tabbox}{#2}
@@ -42,8 +41,8 @@
 \vskip8pt\refstepcounter{tblcap}
 \centering\parbox[c]{\textwidth}{
 \centerlast\noindent\mbox{\noindent\centerlast
- Appendix Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
-\fontsize{9}{11}\selectfont \mbox{#2}\\[5pt]
+ Web Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
+\fontsize{12}{13}\selectfont \mbox{#2}\\[5pt]
 \parbox[@{}l]{\tabnoteslen}{\fontsize{8}{10}\selectfont #3}
 }
 
@@ -54,7 +53,7 @@
 \centering\parbox[c]{48pc}{
 \centerlast{\noindent\mbox{\noindent\centerlast
  Table \thetblcap.}\hskip4.5pt  {\it #1}}}\\[7.75pt]
-\fontsize{9}{11}\selectfont \mbox{#2}}
+\fontsize{12}{13}\selectfont \mbox{#2}}
 
 \long\def\lantblcaptionnotes#1#2#3{
 \sbox{\tabbox}{#2}
@@ -66,12 +65,14 @@
 \centering\parbox[c]{48pc}{
 \centerlast\noindent\mbox{\noindent\centerlast
  Table \thetblcap.}\hskip4.5pt  {\it #1}}\\[7.75pt]
-\fontsize{9}{11}\selectfont \mbox{#2}\\[5pt]
+\fontsize{12}{13}\selectfont \mbox{#2}\\[5pt]
 \hspace*{4pt}\parbox[@{}l]{\tabnoteslen}{\fontsize{8}{10}\selectfont #3}
 }
 
 \def\tblhead#1{\hline\\[-9pt]#1\\\hline\\[-9.75pt]}
 \def\lastline{\\\hline}
+
+\renewcommand{\figurename}{Web Figure}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -80,13 +81,13 @@
 
 \section{Web Appendix A: Large Sample Properties}
 
-In Web Appendix A, the large sample properties of the proposed estimators discussed in section 3.6 of the paper are proven.
+In Web Appendix A, the large sample properties of the proposed estimators discussed in section 3 of the paper are proven.
 
 \subsection{G-formula CSM estimator}
 
 \subsubsection{Large sample properties}
 
-Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSM estimator is an M-estimator and the g-formula can be written in the form of an unbiased estimating equation. Thus, the proposed g-formula CSM estimator can be written as $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{GF}) = 0$, where $\Theta_{GF} = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}) \})$ and:
+Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSM estimator is an M-estimator and the g-formula can be written in the form of an unbiased estimating equation. Thus, the proposed g-formula CSM estimator can be written as \newline $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{GF}) = 0$, where $\Theta_{GF} = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, E \{ Y(\bm{a}) \})$ and:
 \begin{equation*}
     \psi_{GF-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{GF}) =
     \begin{bmatrix}
@@ -129,7 +130,7 @@ It has been noted (see \citet{carroll2006}) that the CSM estimating equations re
 
 Consistency and asymptotic normality of the IPW CSM estimator are proven as above, using M-estimator theory. The partial M-estimator~\citep{stefanski2002} corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta_{IPW}) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \bm{\Delta}_{i}])\bm{\Delta}_{i}^{T} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y, \bm{Z}, \bm{L}, \bm{A}^{*}, \Theta_{IPW})$ is equal to 0. Although $\bm{\Delta} = (\Delta_{1}, ..., \Delta_{m})$ is a vector of length $m$, the estimator form is the same for each row of the estimating equation stack and without loss of generality, the estimating function is proven to be unbiased for $SW(Y - E[Y | \bm{\Delta}])\Delta_{k}$ for an arbitrary $1 \leq k \leq m$.
 
-First consider the estimator as written, where it is weighted by the true propensity weights which aren't typically known in practice. Let $SW = \frac{h(\bm{A})}{f(\bm{A} | \bm{L})}$ such that the numerator is any function of $\bm{A}$ and the denominator is a conditional density of exposures given confounders. Furthermore, suppose that the denominator density equals the true conditional density, denoted $f(\bm{A} | \bm{L}) = f_{0}(\bm{A} | \bm{L})$. Let $E_{0}$ notation refer to taking the expectation under the true causal parameter vector from the MSM, which is nested within $E(Y | \bm{\Delta})$. In a slight abuse of notation, let $\Delta_{k}$ be the random variable corresponding to the $k^{th}$ element of the random vector $\bm{\Delta}$, rather than the vector $\bm{\Delta}$ for individual $k$ which is instead notated as bold $\bm{\Delta}_{k}$ in the manuscript.
+First consider a similar but infeasible estimator, with the same form but where it is weighted by the true propensity weights. Let $SW = \frac{h(\bm{A})}{f(\bm{A} | \bm{L})}$ such that the numerator is any function of $\bm{A}$ and the denominator is a conditional density of exposures given confounders. Furthermore, suppose that the denominator density equals the true conditional density, denoted $f(\bm{A} | \bm{L}) = f_{0}(\bm{A} | \bm{L})$. Let $E_{0}$ notation refer to taking the expectation under the true causal parameter vector from the MSM, which is nested within $E(Y | \bm{\Delta})$. In a slight abuse of notation, let $\Delta_{k}$ be the random variable corresponding to the $k^{th}$ element of the random vector $\bm{\Delta}$, rather than the vector $\bm{\Delta}$ for individual $k$ which is instead notated as bold $\bm{\Delta}_{k}$ in the manuscript.
 
 \begin{align*}
 E_{0} \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\} \Delta_{k} \bigg] &= E_{0} \left( E \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y^{\bm{A}} - E(Y^{\bm{A}} | \bm{\Delta}) \} \Delta_{k} | \bm{L} \bigg] \right) \\
@@ -141,9 +142,9 @@ E_{0} \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\}
 &= \int_{\bm{a}} E_{0} \left \{ h(\bm{a})\Delta_{k} ( E[Y^{\bm{a}} | \bm{\Delta}] - E[Y^{\bm{a}} | \bm{\Delta}] ) \right \} d\mu (\bm{a}) \\
 &= 0
 \end{align*}
-where $d\mu (\bm{a})$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
+where $d\mu (\bm{a})$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the infeasible estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
 
-From here there are two jumps to the corresponding estimator when weights are estimated. The first is that one needs to estimate the treatment weights from some kind of model, even if no treatments were mismeasured. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified, because then this estimator will equal the estimator described above plus an $o_{p}(1)$ term. The second jump was alluded to in Section 3.3 of the paper, that one can use weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure has a linear relationship with the confounders, i.e., with simplified scalar notation, $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but previous explorations of this topic suggest that the measurement error will likely only introduce mild issues~\citep{carroll2006}.
+From here there are two jumps to the corresponding estimator in the paper where weights are estimated. The first is that one needs to estimate the treatment weights from some kind of model, even if no treatments were mismeasured. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified, because then this estimator will equal the estimator described above plus an $o_{p}(1)$ term. The second jump was alluded to in Section 3.3 of the paper, that one can use weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure has a linear relationship with the confounders, i.e., with simplified scalar notation, $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but previous explorations of this topic suggest that the measurement error will likely only introduce mild issues~\citep{carroll2006}.
 
 \subsubsection{Relationship to classical causal estimators}
 
@@ -193,27 +194,9 @@ The simple IPW method is implemented by weighting each of the proposed estimatin
 
 \subsection{Two-phase sampling simulations}
 
-The structure of the first simulation study described in Section 4 of the paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done for a sample size of $n=2000$ under three scenarios, with sub-cohorts of size $5\%$, $10\%$ and $25\%$. The results of 2000 simulation runs are presented in Appendix Figure 1 and Appendix Table 1, with Bias, ASE, ESE, and Coverage defined as in Table 1 of the paper.
-
-\begin{figure}
-\centering
-\includegraphics[width=6in]{app_fig1.pdf}
-\caption{Estimated dose-response curve bias for the DR CSM method compared across three sub-cohort sizes. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$.}
-\end{figure}
+The structure of the first simulation study described in Section 4 of the paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done for a sample size of $n=2000$ under three scenarios, with sub-cohorts of size $5\%$, $10\%$ and $25\%$. The results of 2000 simulation runs are presented in Web Figure 1 and Web Table 1.
 
 The methods seem to perform well as they did in the full-sampling simulation provided in the paper, although there is some bias and under-coverage when the sub-cohorts are smaller, likely due to a low effective sample size. In addition, the estimators failed to converge in some of the small sub-cohort settings. However, the DR CSM estimator with sampling weights converged in all analyses presented in Section 5 of the paper.
-
-\begin{table}[h]
-\tblcaption{Simulation study for case-cohort design}
-{\tabcolsep=6.25pt
-\begin{tabular}{@{}lcrrrr@{}}
-\tblhead{Sub-cohort Size & Bias & ASE & ESE & Coverage & Percent failed to converge}
-5\% & 4.1 & 8.7 & 7.1 & 84\% & 6\% \\
-10\% & 2.4 & 6.3 & 5.6 & 90\% & 2\% \\
-25\% & 0.9 & 4.1 & 3.9 & 94\% & 0\%
-\lastline
-\end{tabular}}
-\end{table}
 
 \section{Web Appendix C: Additional Simulations}
 
@@ -221,24 +204,46 @@ In this section, the methods are studied under two assumption violations: (i) wh
 
 \subsection{Under positivity violation}
 
-To evaluate the proposed g-formula CSM method under positivity violation, the general structure of the first simulation study from Section 4 of the paper is replicated almost exactly. A moderate positivity violation is created by changing how the treatment $A_{1}$ is generated from $\mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.6)$ to $\mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.35)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with different covariate values, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in Appendix Figure 2 and Appendix Table 3, following the same format as Table 1 and Figure 2 in the paper.
-
-\begin{figure}
-\centering
-\includegraphics[width=6in]{app_fig2.pdf}
-\caption{Estimated dose-response curve bias for each of the four methods. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$.}
-\end{figure}
+To evaluate the proposed g-formula CSM method under positivity violation, the general structure of the first simulation study from Section 4 of the paper is replicated almost exactly. A moderate positivity violation is created by changing how the treatment $A_{1}$ is generated from $\mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.6)$ to $\mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.35)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with different covariate values, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in Web Figure 2 and Web Table 2, following the same format as Table 1 and Figure 2 in the paper.
 
 The results overall look similar to that in Table 1 of the paper. There is some bias and undercoverage for the proposed g-formula CSM methods, but the proposed method still generally performs better than the comparator methods in this scenario. Performance is weaker at the extremes of the exposure support, which is expected given that there is very little data at the extremes with the new data generating mechanism and not fully due to the positivity violation. A reasonable range to evaluate the methods would be from 0.5 to 3.5 in these simulations.
 
 Positivity violations become more likely with more treatment variables and with treatment variables that are continuous or take on many values. In these settings positivity should receive just as much scrutiny as the conditional exchangeability assumption. If positivity is implausible, it may be possible to define an estimator in our setting similar to that described in \citet{neugebauer2005} which was robust to their analogous "experimental treatment assumption".
 
+\subsection{Under non-additive measurement error}
+
+Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the second simulation study from Section 4 of the paper is replicated, but the simulation of mismeasured treatment $A^{*}_{3}$ is changed such that it follows a multiplicative error model simulated as $A_{3}^{*} = A_{3} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.1)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 4 of the paper, and the $A^{*}_{3}$ distribution under this additive ME assumption is similar to the distribution under the true multiplicative ME generative model. The results are presented in Web Table 3. The proposed IPW CSM method continued to perform well for treatments $A_{1}$ and $A_{2}$ for which the assumptions hold, but exhibited strong bias for the $A_{3}$ effect. Practitioners of the proposed methods should be cautious that if classical additive measurement error models do not hold for their exposures, they may get worse results than even standard regression models.
+
+\section{Web Appendix D: More complex model specifications for the IPW CSM estimator}
+
+The proposed IPW CSM estimator assumes a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
+
+Finally, while conditional score functions are somewhat limited in scope in terms of model specification, the related method of corrected score functions has been extended to problems of additive but non-normal measurement error~\citep{buzas1996} and to non-additive measurement models in certain cases (\citealp{nakamura1990}; \citealp*{li2004}). Describing how to use such corrected score functions to estimate causal parameters could be the focus of future work in this area.
+
+\newpage
+\begin{Large}
+
 \begin{table}[h]
-\tblcaption{Simulation study under positivity violation}
+\tblcaption{Simulation study for case-cohort design. Bias: 100 times the average bias across simulated data sets for each method; ASE: 100 times the average of estimated standard errors; ESE: 100 times the standard deviation of parameter estimates; Cov: Empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer. \% FTC: Percent of simulations which failed to converge, rounded to the nearest integer.}
+{\tabcolsep=6.25pt
+\begin{tabular}{@{}lcrrrr@{}}
+\tblhead{Sub-cohort Size & Bias & ASE & ESE & Cov & \% FTC}
+5\% & 4.1 & 8.7 & 7.1 & 84\% & 6\% \\
+10\% & 2.4 & 6.3 & 5.6 & 90\% & 2\% \\
+25\% & 0.9 & 4.1 & 3.9 & 94\% & 0\%
+\lastline
+\end{tabular}}
+\end{table}
+
+\end{Large}
+\newpage
+
+\begin{table}[h]
+\tblcaption{Simulation study under positivity violation. Bias, ASE, ESE, and Cov defined as in Web Table 1.}
 %\caption*{Appendix Table 1: Simulation study under positivity violation}
 {\tabcolsep=4.25pt
 \begin{tabular}{@{}lrrrr@{}}
-\tblhead{Estimator & Bias & ASE & ESE & Coverage}
+\tblhead{Estimator & Bias & ASE & ESE & Cov}
 Regression & -69.8 & 21.5 & 21.8 & 11\% \\
 CSM & -17.0 & 80.3 & 68.5 & 95\% \\
 G-formula & -6.3 & 3.0 & 3.0 & 44\% \\
@@ -247,16 +252,14 @@ G-formula CSM & 2.2 & 9.3 & 9.1 & 92\%
 \end{tabular}}
 \end{table}
 
-\subsection{Under non-additive measurement error}
-
-Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the second simulation study from Section 4 of the paper is replicated, but the simulation of mismeasured treatment $A^{*}_{3}$ is changed such that it follows a multiplicative error model simulated as $A_{3}^{*} = A_{3} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.1)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 4 of the paper, and the $A^{*}_{3}$ distribution under this additive ME assumption is similar to the distribution under the true multiplicative ME generative model. The results are presented in Appendix Table 4. The proposed IPW CSM method continued to perform well for treatments $A_{1}$ and $A_{2}$ for which the assumptions hold, but exhibited strong bias for the $A_{3}$ effect. Practitioners of the proposed methods should be cautious that if classical additive measurement error models do not hold for their exposures, they may get worse results than even standard regression models.
+\newpage
 
 \begin{table}[h]
-\tblcaption{Simulation study under non-additive measurement error}
+\tblcaption{Simulation study under non-additive measurement error. Bias, ASE, ESE, and Cov defined as in Web Table 1.}
 {\tabcolsep=4.25pt
 \begin{tabular}{@{}lrrrrrrrrrrrr@{}}
 \tblhead{ & $\psi_{1}$ &&&& $\psi_{2}$ &&&& $\psi_{3}$ &&& \\
-Estimator & Bias & ASE & ESE & Coverage & Bias & ASE & ESE & Coverage & Bias & ASE & ESE & Coverage}
+Estimator & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov}
 Regression & 4.9 & 14.0 & 13.3 & 93\% & 10.3 & 28.0 & 27.7 & 93\% & 1.9 & 15.8 & 15.4 & 94\% \\
 CSM & 21.7 & 20.0 & 19.3 & 82\% & 8.7 & 29.4 & 28.4 & 93\% & -35.0 & 33.5 & 32.7 & 86\% \\
 IPW & -9.9 & 9.1 & 9.0 & 79\% & 0.0 & 20.0 & 19.7 & 94\% & 4.7 & 15.9 & 15.5 & 93\% \\
@@ -265,11 +268,24 @@ IPW CSM & 0.6 & 13.0 & 12.7 & 95\% & -0.9 & 20.4 & 20.1 & 95\% & -29.0 & 33.0 & 
 \end{tabular}}
 \end{table}
 
-\section{Web Appendix D: More complex model specifications for the IPW CSM estimator}
+\newpage
 
-The proposed IPW CSM estimator assumes a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
+\begin{figure}
+\centering
+\includegraphics[width=6in]{app_fig1.pdf}
+\caption{Estimated dose-response curve bias for the DR CSM method compared across three sub-cohort sizes. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$.}
+\end{figure}
 
-Finally, while conditional score functions are somewhat limited in scope in terms of model specification, the related method of corrected score functions has been extended to problems of additive but non-normal measurement error~\citep{buzas1996} and to non-additive measurement models in certain cases (\citealp{nakamura1990}; \citealp*{li2004}). Describing how to use such corrected score functions to estimate causal parameters could be the focus of future work in this area.
+\newpage
+
+\begin{figure}
+\centering
+\includegraphics[width=6in]{app_fig2.pdf}
+\caption{Estimated dose-response curve bias for each of the four methods under positivity violation. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$.}
+\end{figure}
+
+\clearpage
+\newpage
 
 \bibliographystyle{biom}
 \bibliography{refs}

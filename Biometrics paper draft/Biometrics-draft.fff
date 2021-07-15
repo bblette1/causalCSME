@@ -8,15 +8,15 @@
  
 \begin{figure}
 \centering
-\includegraphics[width=6in]{Paper1-fig2.pdf}
-\caption{Estimated dose-response curve bias for each of the four methods compared in the first simulation study. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$. For the sample size of 800 used in each simulation iteration, a typical support for the exposure would cover the interval from 0 to 4, with most values lying between 0.5 and 3.5.}
+\includegraphics[width=6in]{paper1-fig2-grey.pdf}
+\caption{Estimated dose-response curve bias for each of the four methods compared in the first simulation study. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$. The gray horizontal line corresponds to zero bias.}
 \label{fig:two}
 \end{figure}
 \efloatseparator
  
 \begin{figure}[h!]
 \centering
-\includegraphics[width=5.6in]{fig3.pdf}
-\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSM estimator, as well as their respective shaded confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}$. The variances of 0, 0.1, 0.2, and 0.3 correspond to proportions of the observed exposure variances (among vaccinees with immune responses) of approximately 0, 1/6, 1/3, and 1/2.}
+\includegraphics[width=5.6in]{fig3-updated.pdf}
+\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSM estimator, as well as their respective shaded confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}_{me}$ corresponding to proportions of 0, 1/6, 1/4, and 1/3 of $\sigma^{2}$, the estimated total exposure variances among vaccinees with immune responses. Lower confidence limits that were estimated to be negative were truncated at 0.}
 \label{fig:three}
 \end{figure}

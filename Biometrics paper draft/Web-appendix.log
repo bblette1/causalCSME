@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  16 MAY 2021 13:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  28 JUN 2021 21:30
 entering extended mode
 **./Web-appendix.tex
 (Web-appendix.tex
@@ -369,25 +369,25 @@ File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )))) (Web-appendix.aux)
 \openout1 = `Web-appendix.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 77.
-LaTeX Font Info:    ... okay on input line 77.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 77.
-LaTeX Font Info:    ... okay on input line 77.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 77.
-LaTeX Font Info:    ... okay on input line 77.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 77.
-LaTeX Font Info:    ... okay on input line 77.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 77.
-LaTeX Font Info:    ... okay on input line 77.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 77.
-LaTeX Font Info:    ... okay on input line 77.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 77.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 77.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 78.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 78.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    ... okay on input line 78.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
@@ -484,60 +484,55 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
 (Web-appendix-concordance.tex)
-Overfull \hbox (50.22273pt too wide) in paragraph at lines 90--91
-\T1/aer/m/n/12 Thus, the pro-posed g-formula CSM es-ti-ma-tor can be writ-ten a
-s $[][] \OML/cmm/m/it/12  []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 Y[]; \OML/cmm/b/i
-t/12 L[]\OML/cmm/m/it/12 ; \OML/cmm/b/it/12 A[]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/
-12 []\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 []) =
- []
+
+LaTeX Warning: No \author given.
 
 [1
 
 {C:/Users/bblette1/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Overfull \hbox (21.84209pt too wide) detected at line 111
+Overfull \hbox (21.84209pt too wide) detected at line 112
 []
  []
 
-[2] [3] [4] [5] [6] [7]
-<app_fig1.pdf, id=38, 469.755pt x 303.1325pt>
+[2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13]
+<app_fig1.pdf, id=58, 469.755pt x 303.1325pt>
 File: app_fig1.pdf Graphic file (type pdf)
 <use app_fig1.pdf>
-Package pdftex.def Info: app_fig1.pdf  used on input line 201.
+Package pdftex.def Info: app_fig1.pdf  used on input line 276.
 (pdftex.def)             Requested size: 433.62pt x 279.81499pt.
- [8 <./app_fig1.pdf>]
-<app_fig2.pdf, id=49, 469.755pt x 303.1325pt>
+<app_fig2.pdf, id=59, 469.755pt x 303.1325pt>
 File: app_fig2.pdf Graphic file (type pdf)
 <use app_fig2.pdf>
-Package pdftex.def Info: app_fig2.pdf  used on input line 229.
+Package pdftex.def Info: app_fig2.pdf  used on input line 284.
 (pdftex.def)             Requested size: 433.62pt x 279.81499pt.
- [9] [10 <./app_fig2.pdf>] [11]
-(Web-appendix.bbl [12] [13]) [14] (Web-appendix.aux) ) 
+ [14 <./app_fig1.pdf>]
+[15 <./app_fig2.pdf>] (Web-appendix.bbl [16
+
+]) [17] (Web-appendix.aux) ) 
 Here is how much of TeX's memory you used:
- 5458 strings out of 492902
- 79419 string characters out of 3133541
- 149222 words of memory out of 3000000
- 9231 multiletter control sequences out of 15000+200000
- 45323 words of font info for 97 fonts, out of 3000000 for 9000
+ 5432 strings out of 492902
+ 79184 string characters out of 3133541
+ 146251 words of memory out of 3000000
+ 9220 multiletter control sequences out of 15000+200000
+ 39321 words of font info for 81 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,13n,39p,1730b,282s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmmi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Pro
-gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cms
-y8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Web-appendix.pdf (14 pages, 245256 bytes).
+ 41i,13n,39p,1744b,282s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.
+pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+msy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on Web-appendix.pdf (17 pages, 226123 bytes).
 PDF statistics:
- 125 PDF objects out of 1000 (max. 8388607)
+ 126 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 

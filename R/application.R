@@ -80,51 +80,47 @@ analysisdat$marker2[is.na(analysisdat$marker2)] <- 0
 
 # Estimate IPTW
 # First marker
-denom_mod1 <- lm(marker1 ~ race.y + BMI.y + age.y + bhv_bin.y,
+denom_mod1 <- lm(marker1 ~ race.y + BMI.y + age.y + bhv_bin.y +
+                   CD4PFS + CD8PFS,
                  data = analysisdat, weights = estweights)
 p_denom1 <- predict(denom_mod1, type='response')
 dens_denom1 <-
-  dnorm(analysisdat$marker1, p_denom1,
-        sd(residuals(denom_mod1)[analysisdat$marker1 != 0 |
-                                   analysisdat$HIVwk28preunbl.y == 1]))
+  dnorm(analysisdat$marker1[analysisdat$estweights > 0],
+        p_denom1,
+        sd(residuals(denom_mod1)))
+
 num_mod1 <- lm(marker1 ~ 1, data = analysisdat, weights = estweights)
 p_num1 <- predict(num_mod1, type='response')
 dens_num1 <-
-  dnorm(analysisdat$marker1, p_num1,
-        sd(residuals(denom_mod1)[analysisdat$marker1 != 0 |
-                                   analysisdat$HIVwk28preunbl.y == 1]))
+  dnorm(analysisdat$marker1[analysisdat$estweights > 0],
+        p_num1[analysisdat$estweights > 0],
+        sd(residuals(num_mod1)[analysisdat$estweights > 0]))
+
 analysisdat$w1 <- rep(0, dim(analysisdat)[1])
-analysisdat$w1[analysisdat$marker1 != 0 |
-                 analysisdat$HIVwk28preunbl.y == 1] <-
-  dens_num1[analysisdat$marker1 != 0 |
-              analysisdat$HIVwk28preunbl.y == 1] /
-  dens_denom1[analysisdat$marker1 != 0 |
-                analysisdat$HIVwk28preunbl.y == 1]
+analysisdat$w1[analysisdat$estweights > 0] <- dens_num1 / dens_denom1
 analysisdat$w1[is.na(analysisdat$w1)] <- 0
 
 analysisdat$sw1 <- analysisdat$w1*analysisdat$estweights
 
 # Second marker
-denom_mod2 <- lm(marker2 ~ race.y + BMI.y + age.y + bhv_bin.y,
+denom_mod2 <- lm(marker2 ~ race.y + BMI.y + age.y + bhv_bin.y +
+                   CD4PFS + CD8PFS,
                  data = analysisdat, weights = estweights)
 p_denom2 <- predict(denom_mod2, type='response')
 dens_denom2 <-
-  dnorm(analysisdat$marker2, p_denom2,
-        sd(residuals(denom_mod2)[analysisdat$marker2 != 0 |
-                                   analysisdat$HIVwk28preunbl.y == 1]))
+  dnorm(analysisdat$marker2[analysisdat$estweights > 0],
+        p_denom2,
+        sd(residuals(denom_mod2)))
+
 num_mod2 <- lm(marker2 ~ 1, data = analysisdat, weights = estweights)
 p_num2 <- predict(num_mod2, type='response')
 dens_num2 <-
-  dnorm(analysisdat$marker2, p_num2,
-        sd(residuals(denom_mod2)[analysisdat$marker2 != 0 |
-                                   analysisdat$HIVwk28preunbl.y == 1]))
+  dnorm(analysisdat$marker2[analysisdat$estweights > 0],
+        p_num2[analysisdat$estweights > 0],
+        sd(residuals(num_mod2)[analysisdat$estweights > 0]))
+
 analysisdat$w2 <- rep(0, dim(analysisdat)[1])
-analysisdat$w2[analysisdat$marker2 != 0 |
-                 analysisdat$HIVwk28preunbl.y == 1] <-
-  dens_num2[analysisdat$marker2 != 0 |
-              analysisdat$HIVwk28preunbl.y == 1] /
-  dens_denom2[analysisdat$marker2 != 0 |
-                analysisdat$HIVwk28preunbl.y == 1]
+analysisdat$w2[analysisdat$estweights > 0] <- dens_num2 / dens_denom2
 analysisdat$w2[is.na(analysisdat$w2)] <- 0
 
 analysisdat$sw2 <- analysisdat$w2*analysisdat$estweights
@@ -277,58 +273,51 @@ eefun_dr2 <- function(data, val) {
 
 
 # Calculate DR estimator for 4 ME and a grid of values
-dr_ests1 <- array(NA, dim = c(4, 31))
-dr_ests2 <- array(NA, dim = c(4, 21))
-dr_se1 <- array(NA, dim = c(4, 31))
-dr_se2 <- array(NA, dim = c(4, 21))
+me_list <- c(0, 1/6, 1/4, 1/3)
+m1vals <- seq(0.5, 3, 0.1)
+m2vals <- seq(7, 11, 0.2)
 
-for (me in 0:3) {
+dr_ests1 <- array(NA, dim = c(4, length(m1vals)))
+dr_ests2 <- array(NA, dim = c(4, length(m2vals)))
+dr_se1 <- array(NA, dim = c(4, length(m1vals)))
+dr_se2 <- array(NA, dim = c(4, length(m2vals)))
 
-  sigma_me1 <- 0.1*me
-  sigma_me2 <- 0.1*me
+for (me in 1:4) {
 
-  for (i in seq(0, 3, 0.1)) {
+  sigma_me1 <- var(analysisdat$marker1[analysisdat$marker1 > 0.5])*me_list[me]
+  sigma_me2 <- var(analysisdat$marker2[analysisdat$marker2 > 7])*me_list[me]
 
-    guess1 <- 0.1
-    if (i > 0) {
-      guess1 <- coef(results_dr1)[11]
+  for (i in 1:length(m1vals)) {
+
+    startvec <- c(coef(glmmod1), 0.05)
+    if (i > 1) {
+      startvec <- coef(results_dr1)
     }
 
     results_dr1 <-
       m_estimate(estFUN = eefun_dr1, data = analysisdat,
-                 outer_args = list(i), compute_roots = TRUE,
+                 outer_args = list(m1vals[i]), compute_roots = TRUE,
                  root_control =
-                   setup_root_control(start = c(coef(glmmod1), guess1)))
-    dr_ests1[(me + 1), i*10 + 1] <- coef(results_dr1)[11]
-    dr_se1[(me + 1), i*10 + 1] <- sqrt(vcov(results_dr1)[11, 11])
+                   setup_root_control(start = startvec))
+    dr_ests1[me, i] <- coef(results_dr1)[11]
+    dr_se1[me, i] <- sqrt(vcov(results_dr1)[11, 11])
 
   }
 
-  for (i in seq(7, 11, 0.2)) {
+  for (i in 1:length(m2vals)) {
 
-    guess2 <- 0.1
-    if (i > 7) {
-      guess2 <- coef(results_dr2)[11]
+    startvec <- c(coef(glmmod2), 0.1)
+    if (i > 1) {
+      startvec <- coef(results_dr2)
     }
 
     results_dr2 <-
       m_estimate(estFUN = eefun_dr2, data = analysisdat,
-                 outer_args = list(i), compute_roots = TRUE,
+                 outer_args = list(m2vals[i]), compute_roots = TRUE,
                  root_control =
-                   setup_root_control(start = c(coef(glmmod2), guess2)))
-    dr_ests2[(me + 1), (i-7)*5 + 1] <- coef(results_dr2)[11]
-    dr_se2[(me + 1), (i-7)*5 + 1] <- sqrt(vcov(results_dr2)[11, 11])
-
-    if (is.na(coef(results_dr2)[11])) {
-      guess2 <- min(guess2 + rnorm(1, 0, 0.1), 0.02)
-      results_dr2 <-
-        m_estimate(estFUN = eefun_dr2, data = analysisdat,
-                   outer_args = list(i), compute_roots = TRUE,
-                   root_control =
-                     setup_root_control(start = c(coef(glmmod2), guess2)))
-      dr_ests2[(me + 1), (i-7)*5 + 1] <- coef(results_dr2)[11]
-      dr_se2[(me + 1), (i-7)*5 + 1] <- sqrt(vcov(results_dr2)[11, 11])
-    }
+                   setup_root_control(start = startvec))
+    dr_ests2[me, i] <- coef(results_dr2)[11]
+    dr_se2[me, i] <- sqrt(vcov(results_dr2)[11, 11])
 
   }
 
@@ -413,15 +402,15 @@ polygon(x = c(seq(0, 11, 0.5), rev(seq(0, 11, 0.5))),
 
 # Alternative plot, more of a lattice structure
 melist <- c(expression(paste("No ME: ", sigma^2, "=0")),
-            expression(paste("Low ME: ", sigma^2, "=0.1")),
+            expression(paste("Low ME: ", sigma[me], "=", sigma^2, "/6")),
             expression(paste("Moderate ME: ", sigma^2, "=0.2")),
             expression(paste("High ME: ", sigma^2, "=0.3")))
 
 melist <- c("No ME: sigma^2 = 0", "Low ME: sigma^2 = 0.1",
             "Moderate ME: sigma^2 = 0.2", "High ME: sigma^2 = 0.3")
 
-latdat <- data.frame(vals = c(rep(seq(0, 3, 0.1), 4),
-                              rep(seq(0, 11, 0.5), 4)),
+latdat <- data.frame(vals = c(rep(seq(0.5, 3, 0.1), 4),
+                              rep(seq(7, 11, 0.2), 4)),
                      Risk = c(dr_ests1[1, ], dr_ests1[2, ],
                               dr_ests1[3, ], dr_ests1[4, ],
                               dr_ests2[1, ], dr_ests2[2, ],
@@ -442,9 +431,11 @@ latdat <- data.frame(vals = c(rep(seq(0, 3, 0.1), 4),
                                   dr_ests2[2, ] + 1.96*dr_se2[2, ],
                                   dr_ests2[3, ] + 1.96*dr_se2[3, ],
                                   dr_ests2[4, ] + 1.96*dr_se2[4, ]),
-                     ME = c(rep((0:3)/10, each = 31),
-                            rep((0:3)/10, each = 23)),
-                     Exposure = c(rep("ADCP", 124), rep("RII", 92)))
+                     ME = c(rep(round(me_list, 3), each = 26),
+                            rep(round(me_list, 3), each = 21)),
+                     Exposure = c(rep("ADCP", 104), rep("RII", 84)))
+
+latdat$Risk_low[latdat$Risk_low < 0] <- 0
 
 # New facet label names for ME variable
 me.labs <- c(expression(paste("No ME: ", sigma^2, "=0")),
@@ -460,15 +451,24 @@ names(exp.labs) <- c("ADCP", "RII")
 ggplot(latdat, aes(x = vals, y = Risk)) +
   geom_line() +
   facet_grid(ME ~ Exposure, scales = "free",
-             labeller = label_bquote(sigma^2 == .(ME))) +
+             labeller = label_bquote(sigma[me]^2 == .(ME) * sigma^2)) +
              #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
   geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
   xlab("Exposure values") + ylab("HIV risk at study end") +
-  ylim(c(-0.07, 0.93)) +
+  ylim(c(0, 0.35)) +
   theme_bw()
 
 
+
+
+
 # Ignore below
+
+
+
+
+
+
 
 # Estimating equations for both markers together at fixed ME
 sigma_me1 <- 0.1
