@@ -125,9 +125,9 @@ Kang, J.~D. and Schafer, J.~L. (2007).
 Kendall, B.~E. (2015).
 \newblock A statistical symphony: instrumental variables reveal causality and
   control measurement error.
-\newblock In G.A.~Fox, S. N.-Y. and Sosa, V., editors, {\em Ecological
-  Statistics: Contemporary Theory and Application}, chapter~7. Oxford
-  University Press.
+\newblock In Fox, G., Negrete-Yankelevich, S., and Sosa, V., editors, {\em
+  Ecological Statistics: Contemporary Theory and Application}, chapter~7.
+  Oxford University Press.
 
 \bibitem[\protect\citeauthoryear{Kuroki and Pearl}{Kuroki and
   Pearl}{2014}]{kuroki2014}
@@ -204,13 +204,6 @@ Neidich, S.~D., Fong, Y., Li, S.~S., Geraghty, D.~E., Williamson, B.~D., Young,
   {HIV-1} risk.
 \newblock {\em Journal of Clinical Investigation} {\bf 129,} 4838--4849.
 
-\bibitem[\protect\citeauthoryear{Neugebauer and van~der Laan}{Neugebauer and
-  van~der Laan}{2005}]{neugebauer2005}
-Neugebauer, R. and van~der Laan, M. (2005).
-\newblock Why prefer double robust estimators in causal inference?
-\newblock {\em Journal of Statistical Planning and Inference} {\bf 129,}
-  405--426.
-
 \bibitem[\protect\citeauthoryear{Perez-Heydrich, Hudgens, Halloran, Clemens,
   Ali, and Emch}{Perez-Heydrich et~al.}{2014}]{perez2014}
 Perez-Heydrich, C., Hudgens, M.~G., Halloran, M.~E., Clemens, J.~D., Ali, M.,
@@ -218,15 +211,6 @@ Perez-Heydrich, C., Hudgens, M.~G., Halloran, M.~E., Clemens, J.~D., Ali, M.,
 \newblock Assessing effects of cholera vaccination in the presence of
   interference.
 \newblock {\em Biometrics} {\bf 70,} 731--741.
-
-\bibitem[\protect\citeauthoryear{Robins}{Robins}{2000}]{robins2000b}
-Robins, J.~M. (2000).
-\newblock Marginal structural models versus structural nested models as tools
-  for causal inference.
-\newblock In Halloran, M. and Berry, D., editors, {\em Statistical Models in
-  Epidemiology, the Environment, and Clinical Trials. The IMA Volumes in
-  Mathematics and its Applications, vol 116.}, pages 95--133. Springer, New
-  York, NY.
 
 \bibitem[\protect\citeauthoryear{Robins, Rotnitzky, and Zhao}{Robins
   et~al.}{1994}]{robins1994}

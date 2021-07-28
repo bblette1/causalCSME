@@ -52,17 +52,20 @@ Robins, J., Sued, M., Lei-Gomez, Q., and Rotnitzky, A. (2007).
   probability'' weights are highly variable.
 \newblock {\em Statistical Science} {\bf 22,} 544--559.
 
+\bibitem[\protect\citeauthoryear{Robins}{Robins}{2000}]{robins2000b}
+Robins, J.~M. (2000).
+\newblock Marginal structural models versus structural nested models as tools
+  for causal inference.
+\newblock In Halloran, M. and Berry, D., editors, {\em Statistical Models in
+  Epidemiology, the Environment, and Clinical Trials. The IMA Volumes in
+  Mathematics and its Applications, vol 116.}, pages 95--133. Springer, New
+  York, NY.
+
 \bibitem[\protect\citeauthoryear{Rose and van~der Laan}{Rose and van~der
   Laan}{2011}]{rose2011}
 Rose, S. and van~der Laan, M.~J. (2011).
 \newblock A targeted maximum likelihood estimator for two-stage designs.
 \newblock {\em The International Journal of Biostatistics} {\bf 7,}.
-
-\bibitem[\protect\citeauthoryear{Saul and Hudgens}{Saul and
-  Hudgens}{2020}]{saul2017}
-Saul, B. and Hudgens, M. (2020).
-\newblock The calculus of {M-Estimation in R} with geex.
-\newblock {\em Journal of Statistical Software, Articles} {\bf 92,} 1--15.
 
 \bibitem[\protect\citeauthoryear{Stefanski and Boos}{Stefanski and
   Boos}{2002}]{stefanski2002}
