@@ -73,6 +73,7 @@
 \def\lastline{\\\hline}
 
 \renewcommand{\figurename}{Web Figure}
+\renewcommand{\thesection}{\Alph{section}}
 
 \usepackage{Sweave}
 \begin{document}
@@ -80,9 +81,9 @@
 
 \maketitle
 
-\section{Web Appendix A: Large Sample Properties}
+\section{Large Sample Properties}
 
-In Web Appendix A, the large sample properties of the proposed estimators discussed in section 3 of the main paper are proven.
+In Web Appendix A, the large sample properties of the proposed estimators discussed in Section 3 of the main paper are proven.
 
 \subsection{G-formula CSM estimator}
 
@@ -179,7 +180,7 @@ $dF(\bm{a})$ is the numerator of the stabilized weights, $d\mu (\bm{a})$ is a Le
 
 Each of the proofs above relies on there being a unique solution to each set of estimating equations. Prior work has shown that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice~\citep{stefanski1987}. In the various simulations of this paper, multiple solutions or estimator divergence were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should be aware of rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
 
-\section{Web Appendix B: Two-Phase Sampling}
+\section{Two-Phase Sampling}
 
 \subsection{Two-phase sampling method}
 
@@ -193,7 +194,7 @@ The structure of the first simulation study described in Section 4 of the main p
 
 The methods seem to perform well as they did in the full-sampling simulation provided in the main paper, although there is some bias and under-coverage when the sub-cohorts are smaller, likely due to a low effective sample size. In addition, the estimators failed to converge in some of the small sub-cohort settings. However, the DR CSM estimator with sampling weights converged in all analyses presented in Section 5 of the main paper.
 
-\section{Web Appendix C: Additional Simulations}
+\section{Additional Simulations}
 
 In this section, additional simulations are presented under two assumption violations: (i) when positivity doesn't hold and (ii) when measurement error doesn't follow a classical additive model.
 
@@ -209,7 +210,7 @@ Positivity violations become more likely with more treatment variables and with 
 
 Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the second simulation study from Section 4 of the main paper is replicated, but the simulation of mismeasured treatment $A^{*}_{3}$ is changed such that it follows a multiplicative error model simulated as $A_{3}^{*} = A_{3} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.1)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 4 of the main paper, and the $A^{*}_{3}$ distribution under this additive ME assumption is similar to the distribution under the true multiplicative ME generative model. The results are presented in Web Table 3. The proposed IPW CSM method continued to perform well for treatments $A_{1}$ and $A_{2}$ for which the assumptions hold, but exhibited strong bias for the $A_{3}$ effect. Practitioners of the proposed methods should be cautious that if classical additive measurement error models do not hold for their exposures, they may get worse results than even standard regression models.
 
-\section{Web Appendix D: More complex model specifications for the IPW CSM estimator}
+\section{More complex model specifications for the IPW CSM estimator}
 
 The proposed IPW CSM estimator assumes a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
 
