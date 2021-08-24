@@ -34,14 +34,14 @@ Dagalp, R.~E. (2001).
   interaction terms.
 \newblock {\em Doctoral Dissertation, North Carolina State University} .
 
-\bibitem[\protect\citeauthoryear{Decamp, Rolland, Edlefsen, Sanders-Buell,
-  Hall, Magaret, Fiore-Gartland, Juraska, Carpp, Karuna, et~al\mbox{.}}{Decamp
-  et~al.}{2017}]{decamp2017}
-Decamp, A.~C., Rolland, M., Edlefsen, P.~T., Sanders-Buell, E., Hall, B.,
+\bibitem[\protect\citeauthoryear{{Decamp}, Rolland, Edlefsen, Sanders-Buell,
+  Hall, Magaret, Fiore-Gartland, Juraska, Carpp, Karuna,
+  et~al\mbox{.}}{{Decamp} et~al.}{2017}]{decamp2017}
+{Decamp}, A.~C., Rolland, M., Edlefsen, P.~T., Sanders-Buell, E., Hall, B.,
   Magaret, C.~A., Fiore-Gartland, A.~J., Juraska, M., Carpp, L.~N., Karuna,
   S.~T., et~al. (2017).
 \newblock Sieve analysis of breakthrough {HIV-1} sequences in {HVTN} 505
-  identifies vaccine pressure targeting the cd4 binding site of env-gp120.
+  identifies vaccine pressure targeting the {CD4} binding site of {Env-gp120}.
 \newblock {\em PloS One} {\bf 12,} e0185959.
 
 \bibitem[\protect\citeauthoryear{Edwards, Cole, Westreich, Crane, Eron,
@@ -52,13 +52,13 @@ Edwards, J.~K., Cole, S.~R., Westreich, D., Crane, H., Eron, J.~J., Mathews,
   (2015).
 \newblock Multiple imputation to account for measurement error in marginal
   structural models.
-\newblock {\em Epidemiology (Cambridge, Mass.)} {\bf 26,} 645--652.
+\newblock {\em Epidemiology} {\bf 26,} 645--652.
 
 \bibitem[\protect\citeauthoryear{Fong, Shen, Ashley, Deal, Seaton, Yu, Grant,
-  Ferrari, deCamp, Bailer, et~al\mbox{.}}{Fong et~al.}{2018}]{fong2018}
+  Ferrari, {deCamp}, Bailer, et~al\mbox{.}}{Fong et~al.}{2018}]{fong2018}
 Fong, Y., Shen, X., Ashley, V.~C., Deal, A., Seaton, K.~E., Yu, C., Grant,
-  S.~P., Ferrari, G., deCamp, A.~C., Bailer, R.~T., et~al. (2018).
-\newblock Modification of the association between t-cell immune responses and
+  S.~P., Ferrari, G., {deCamp}, A.~C., Bailer, R.~T., et~al. (2018).
+\newblock Modification of the association between {T-cell} immune responses and
   human immunodeficiency virus type 1 infection risk by vaccine-induced
   antibody responses in the {HVTN} 505 trial.
 \newblock {\em The Journal of Infectious Diseases} {\bf 217,} 1280--1288.
@@ -69,7 +69,7 @@ Fong, Y., Shen, X., Ashley, V.~C., Deal, A., Seaton, K.~E., Yu, C., Grant,
 Hammer, S.~M., Sobieszczyk, M.~E., Janes, H., Karuna, S.~T., Mulligan, M.~J.,
   Grove, D., Koblin, B.~A., Buchbinder, S.~P., Keefer, M.~C., Tomaras, G.~D.,
   et~al. (2013).
-\newblock Efficacy trial of a dna/rad5 {HIV-1} preventive vaccine.
+\newblock Efficacy trial of a {DNA/rAd5} {HIV-1} preventive vaccine.
 \newblock {\em New England Journal of Medicine} {\bf 369,} 2083--2092.
 
 \bibitem[\protect\citeauthoryear{Hern{\'a}n, Brumback, and Robins}{Hern{\'a}n
@@ -79,14 +79,6 @@ Hern{\'a}n, M.~A., Brumback, B., and Robins, J.~M. (2001).
   nonrandomized treatments.
 \newblock {\em Journal of the American Statistical Association} {\bf 96,}
   440--448.
-
-\bibitem[\protect\citeauthoryear{Hirano and Imbens}{Hirano and
-  Imbens}{2001}]{hirano2001}
-Hirano, K. and Imbens, G.~W. (2001).
-\newblock Estimation of causal effects using propensity score weighting: An
-  application to data on right heart catheterization.
-\newblock {\em Health Services and Outcomes Research Methodology} {\bf 2,}
-  259--278.
 
 \bibitem[\protect\citeauthoryear{Hirano and Imbens}{Hirano and
   Imbens}{2004}]{hirano2004}
@@ -109,7 +101,7 @@ Hong, H., Rudolph, K.~E., and Stuart, E.~A. (2017).
   et~al.}{2017}]{janes2017}
 Janes, H.~E., Cohen, K.~W., Frahm, N., De~Rosa, S.~C., Sanchez, B., Hural, J.,
   Magaret, C.~A., Karuna, S., Bentley, C., Gottardo, R., et~al. (2017).
-\newblock Higher t-cell responses induced by {DNA/rAd5 HIV-1} preventive
+\newblock Higher {T-cell} responses induced by {DNA/rAd5 HIV-1} preventive
   vaccine are associated with lower {HIV-1} infection risk in an efficacy
   trial.
 \newblock {\em The Journal of Infectious Diseases} {\bf 215,} 1376--1385.
@@ -200,7 +192,7 @@ Nakamura, T. (1990).
   et~al.}{2019}]{neidich2019}
 Neidich, S.~D., Fong, Y., Li, S.~S., Geraghty, D.~E., Williamson, B.~D., Young,
   W.~C., Goodman, D., Seaton, K.~E., Shen, X., Sawant, S., et~al. (2019).
-\newblock Antibody {Fc} effector functions and igg3 associate with decreased
+\newblock Antibody {Fc} effector functions and {IgG3} associate with decreased
   {HIV-1} risk.
 \newblock {\em Journal of Clinical Investigation} {\bf 129,} 4838--4849.
 
@@ -224,7 +216,7 @@ Robins, J.~M., Rotnitzky, A., and Zhao, L.~P. (1994).
   Hudgens}{2020}]{saul2017}
 Saul, B. and Hudgens, M. (2020).
 \newblock The calculus of {M-Estimation in R} with geex.
-\newblock {\em Journal of Statistical Software, Articles} {\bf 92,} 1--15.
+\newblock {\em Journal of Statistical Software} {\bf 92,} 1--15.
 
 \bibitem[\protect\citeauthoryear{Shu and Yi}{Shu and Yi}{2019}]{shu2019}
 Shu, D. and Yi, G.~Y. (2019).

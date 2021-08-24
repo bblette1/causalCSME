@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  18 AUG 2021 10:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  23 AUG 2021 22:26
 entering extended mode
 **./Biometrics-draft.tex
 (Biometrics-draft.tex
@@ -767,7 +767,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [22] (Biometrics-draft.fff
-<DAG2_better.png, id=334, 757.32938pt x 209.28188pt>
+<DAG2_better.png, id=338, 757.32938pt x 209.28188pt>
 File: DAG2_better.png Graphic file (type png)
 <use DAG2_better.png>
 Package pdftex.def Info: DAG2_better.png  used on input line 3.
@@ -783,7 +783,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [23 <./DAG2_better.png>]
-<paper1-fig2-grey.pdf, id=339, 469.755pt x 303.1325pt>
+<paper1-fig2-grey.pdf, id=343, 469.755pt x 303.1325pt>
 File: paper1-fig2-grey.pdf Graphic file (type pdf)
 <use paper1-fig2-grey.pdf>
 Package pdftex.def Info: paper1-fig2-grey.pdf  used on input line 11.
@@ -794,7 +794,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [24 <./paper1-fig2-grey.pdf>]
-<fig3-updated2.pdf, id=350, 361.35pt x 505.89pt>
+<fig3-updated2.pdf, id=354, 361.35pt x 505.89pt>
 File: fig3-updated2.pdf Graphic file (type pdf)
 <use fig3-updated2.pdf>
 Package pdftex.def Info: fig3-updated2.pdf  used on input line 19.
@@ -852,13 +852,13 @@ Package rerunfilecheck Info: File `Biometrics-draft.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 535.
  ) 
 Here is how much of TeX's memory you used:
- 8454 strings out of 492902
- 118546 string characters out of 3133541
- 211614 words of memory out of 3000000
- 12086 multiletter control sequences out of 15000+200000
+ 8450 strings out of 492902
+ 118477 string characters out of 3133541
+ 211566 words of memory out of 3000000
+ 12083 multiletter control sequences out of 15000+200000
  52590 words of font info for 123 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,10n,34p,1858b,473s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 35i,10n,34p,1858b,471s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><C:/P
 rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmbsy7.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program File
@@ -881,9 +881,9 @@ sy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 
 2.9/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on Biometrics-draft.pdf (29 pages, 446484 bytes).
+Output written on Biometrics-draft.pdf (29 pages, 447432 bytes).
 PDF statistics:
- 473 PDF objects out of 1000 (max. 8388607)
- 95 named destinations out of 1000 (max. 500000)
+ 477 PDF objects out of 1000 (max. 8388607)
+ 94 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 
