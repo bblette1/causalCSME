@@ -89,11 +89,11 @@ In Web Appendix A, the large sample properties of the proposed estimators discus
 
 \subsubsection{Large sample properties}
 
-Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSM estimator is an M-estimator and the g-formula can be written as a solution to an unbiased estimating equation. Thus, the proposed g-formula CSM estimator is an M-estimator with the form given in equation (3).
+Consistency and asymptotic normality of the g-formula estimator are proven using standard estimating equation theory~\citep{stefanski2002}. The original CSM estimator is an M-estimator and the g-formula can be written as a solution to an unbiased estimating equation. Thus, the proposed g-formula CSM estimator is an M-estimator with the estimating equation vector given in equation (3).
 
-The parameter of interest $E \{ Y(\bm{a}) \}$ is in the last estimating equation of the stack, and the proof relies on (i) the usual g-formula proof based on the causal assumptions made in Section 2 of the main paper and (ii) that the CSM estimating equations were previously shown to be unbiased~\citep{carroll2006}: $E[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) \}] = E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \} = E[E \{ Y(\bm{a}) | \bm{L} \}] = E \{ Y(\bm{a}) \}$
+The parameter of interest $E \{ Y(\bm{a}) \}$ appears in the last estimating equation of the stack, and the proof of consistency and asymptotic normality of the g-formula CSM estimator relies on (i) the usual g-formula proof based on the causal assumptions made in Section 2 of the main paper and (ii) that the CSM estimating equations were previously shown to be unbiased~\citep{carroll2006}. In particular, (ii) means that $E[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) \}] = E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \}$ and then (i) is used to show $E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \} = E[E \{ Y(\bm{a}) | \bm{L} \}] = E \{ Y(\bm{a}) \}$.
 
-So the estimating function for the parameter $E \{ Y(\bm{a}) \}$ is unbiased. Denote $\hat{\Theta}_{GF}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF}) = 0$. Then by the proof above $\sqrt{n}(\hat{\Theta}_{GF} - \Theta_{GF}) \rightarrow_{d} N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
+So the estimating function for the parameter $E \{ Y(\bm{a}) \}$ is unbiased. Denote $\hat{\Theta}_{GF}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF}) = 0$. Then under certain regularity conditions $\sqrt{n}(\hat{\Theta}_{GF} - \Theta_{GF}) \rightarrow_{d} N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
 
 \begin{equation*}
 \hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta_{GF}^{T}} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF})
@@ -104,29 +104,29 @@ So the estimating function for the parameter $E \{ Y(\bm{a}) \}$ is unbiased. De
 
 \subsubsection{Relationship to classical causal estimators}
 
-The CSM estimating equations reduce to the score equations for a GLM when the measurement error covariance matrix $\Sigma_{me} = 0_{m \times m}$~\citep{carroll2006}. Thus under no measurement error, the procedure described above reduces to solving a stack of estimating equations corresponding to the common practice of using the g-formula while specifying a GLM for the outcome regression, making this common procedure a special case of the proposed estimator.
+The CSM estimating equations reduce to the score equations for a generalized linear model (GLM) when the measurement error covariance matrix $\Sigma_{me} = 0_{m \times m}$~\citep{carroll2006}. Thus under no measurement error, the procedure described above reduces to solving a stack of estimating equations corresponding to the common practice of using the g-formula while specifying a GLM for the outcome regression, making this common procedure a special case of the proposed estimator.
 
 \subsection{IPW CSM estimator}
 
 \subsubsection{Large sample properties}
 
-Consistency and asymptotic normality of the IPW CSM estimator are proven as above, using M-estimator theory. The estimating equation corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \bm{Z}_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta_{IPW}) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \bm{\Delta}_{i}])\bm{\Delta}_{i}^{T} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y, \bm{Z}, \bm{L}, \bm{A}^{*}, \Theta_{IPW})$ is equal to 0. Although $\bm{\Delta} = (\Delta_{1}, ..., \Delta_{m})$ is a vector of length $m$, the estimator form is the same for each row of the estimating equation stack and without loss of generality, the estimating function is proven to be unbiased for $SW(Y - E[Y | \bm{\Delta}])\Delta_{k}$ for an arbitrary $1 \leq k \leq m$.
+Consistency and asymptotic normality of the IPW CSM estimator are proven as above, using M-estimator theory. The estimating equation corresponding to the parameters of interest is $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{IPW}) = \sum_{i=1}^{n} SW_{i}(Y_{i} - E[Y_{i} | \bm{\Delta}_{i}])\bm{\Delta}_{i}^{T} = 0$. It suffices to show that the expectation of the estimating function $\psi(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{IPW})$ is equal to 0. Although $\bm{\Delta} = (\Delta_{1}, ..., \Delta_{m})$ is a vector of length $m$, the estimator form is the same for each row of the estimating equation stack and without loss of generality, the estimating function is proven to be unbiased for $SW(Y - E[Y | \bm{\Delta}])\Delta_{k}$ for an arbitrary $1 \leq k \leq m$.
 
-For simplicity, suppose the exposure vector consists of only continuous-valued exposures. First consider a similar but infeasible estimator, with the same form but where it is weighted by the true propensity weights. Let the components of the numerator of $SW$ corresponding to continuous exposures be any valid density function of $\bm{A}$ denoted as $h(\bm{A})$ and let the denominator of $SW$ correspond to the true conditional density of exposures given confounders, denoted $f_{0}(\bm{A} | \bm{L})$. In a slight abuse of notation, let $\Delta_{k}$ be the random variable corresponding to the $k^{th}$ element of the random vector $\bm{\Delta}$, rather than the vector $\bm{\Delta}$ for individual $k$ which is instead notated as bold $\bm{\Delta}_{k}$ in the manuscript.
+For simplicity, suppose the exposure vector consists of only continuous-valued exposures. First consider a similar but infeasible estimator, with the same form but where it is weighted by the true propensity weights. Let the components of the numerator of $SW$ corresponding to continuous exposures be any valid density function of $\bm{A}$ and let the denominator of $SW$ correspond to the true conditional density of exposures given confounders, denoted $dF(\bm{A} | \bm{L}) = dF_{0}(\bm{A} | \bm{L})$. Let $\Delta_{k}$ be the random variable corresponding to the $k^{th}$ element of the random vector $\bm{\Delta}$. Then it follows that
 
 \begin{align*}
-E \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\} \Delta_{k} \bigg] &= E_{0} \left( E \bigg[\frac{h(\bm{A})}{f_{0}(\bm{A} | \bm{L})} \{ Y^{\bm{A}} - E(Y^{\bm{A}} | \bm{\Delta}) \} \Delta_{k} | \bm{L} \bigg] \right) \\
-&= E \left [ \int_{\bm{a}} \frac{h(\bm{a})}{f_{0}(\bm{a} | \bm{L})}\{ Y^{\bm{a}} - E(Y^{\bm{a}} | \bm{\Delta}) \} \Delta_{k} f_{0}(\bm{a} | \bm{L}) d\mu (\bm{a}) \right ] \\
-&= E \left \{ \int_{\bm{a}} h(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} d\mu (\bm{a}) \right \} \\
-&= \int_{\bm{a}} \left \{ h(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} \right \} d\mu (\bm{a}) \\
-&= \int_{\bm{a}} \left \{ E \bigg[ h(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} | \bm{\Delta} \bigg] \right \} d\mu (\bm{a}) \\
-&= \int_{\bm{a}} \left \{ h(\bm{a})\Delta_{k} E \bigg[ (Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}]) | \bm{\Delta} \bigg] \right \} d\mu (\bm{a}) \\
-&= \int_{\bm{a}} \left \{ h(\bm{a})\Delta_{k} ( E[Y^{\bm{a}} | \bm{\Delta}] - E[Y^{\bm{a}} | \bm{\Delta}] ) \right \} d\mu (\bm{a}) \\
+E \bigg[\frac{dF(\bm{A})}{dF_{0}(\bm{A} | \bm{L})} \{ Y - E(Y | \bm{\Delta})\} \Delta_{k} \bigg] &= E \left( E \bigg[\frac{dF(\bm{A})}{dF_{0}(\bm{A} | \bm{L})} \{ Y^{\bm{A}} - E(Y^{\bm{A}} | \bm{\Delta}) \} \Delta_{k} | \bm{L} \bigg] \right) \\
+&= E \left [ \int_{\bm{a}} \frac{dF(\bm{a})}{dF_{0}(\bm{a} | \bm{L})}\{ Y^{\bm{a}} - E(Y^{\bm{a}} | \bm{\Delta}) \} \Delta_{k} dF_{0}(\bm{a} | \bm{L}) d\bm{a} \right ] \\
+&= E \left \{ \int_{\bm{a}} dF(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} d\bm{a} \right \} \\
+&= \int_{\bm{a}} E \left \{ dF(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} \right \} d\bm{a} \\
+&= \int_{\bm{a}} \left \{ E \bigg[ dF(\bm{a})(Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}])\Delta_{k} | \bm{\Delta} \bigg] \right \} d\bm{a} \\
+&= \int_{\bm{a}} \left \{ dF(\bm{a})\Delta_{k} E \bigg[ (Y^{\bm{a}} - E[Y^{\bm{a}} | \bm{\Delta}]) | \bm{\Delta} \bigg] \right \} d\bm{a}\\
+&= \int_{\bm{a}} \left \{ dF(\bm{a})\Delta_{k} ( E[Y^{\bm{a}} | \bm{\Delta}] - E[Y^{\bm{a}} | \bm{\Delta}] ) \right \} d\bm{a} \\
 &= 0
 \end{align*}
-where $d\mu (\bm{a})$ is defined as the Lebesgue measure. The first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the infeasible estimator is consistent and asymptotically normal by standard M-estimator theory. The asymptotic variance is given by the usual sandwich estimator as described in the previous section.
+where the first equality uses causal consistency, the second equality uses conditional exchangeability, and positivity is needed for the integral to be well-defined. Thus the infeasible estimator is consistent and asymptotically normal by standard M-estimator theory. The estimator of the asymptotic variance is given by the usual sandwich estimator as described in the previous section.
 
-From here there are two steps to the corresponding estimator in the main paper where weights are estimated. The first is that one needs to estimate the treatment weights from some kind of model, even if no treatments were mismeasured. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified, because then this estimator will equal the estimator described above plus an $o_{p}(1)$ term. The second step was alluded to in Section 3.3 of the main paper, that one can use weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure has a linear relationship with the confounders, i.e., with simplified scalar notation, $A = \bm{L} \alpha + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \alpha + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\alpha$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but previous explorations of this topic suggest that the measurement error will likely only introduce mild issues~\citep{carroll2006}.
+From here there are two steps to the corresponding estimator in the main paper where weights are estimated. The first is that one needs to estimate the treatment weights from some kind of model, even if no treatments were mismeasured. This substitution is well known to result in a consistent estimator as long as the propensity score model is correctly specified, because then this estimator will equal the infeasible estimator plus an $o_{p}(1)$ term~\citep{rosenbaum1987}. The second step, alluded to in Section 3.3 of the main paper, entails using weights estimated from a propensity model that is fit using the mismeasured exposures. This will not necessarily affect the consistency of the CSM IPW estimator. For example, suppose the exposures are independent given $\bm{L}$ and that each exposure has a linear relationship with the confounders, i.e., with simplified scalar notation, $A = \bm{L} \zeta + \epsilon_{ps}$. Then under additive measurement error, each mismeasured observed exposure also has a linear relationship with the confounders given by: $A^{*} = \bm{L} \zeta + \epsilon_{ps} + \epsilon_{me}$. So if linear propensity models are fit using the mismeasured exposures (noting that $\bm{A}^{*}$ is a collider on the only path connecting $\epsilon_{me}$ and $\bm{L}$), one would still get consistent estimates of the propensity model parameters $\zeta$ (and subsequently the weights), albeit with more variability. Therefore the proposed estimator would still be consistent. When exposures have non-linear, complex relationships with confounders, consistency may not be guaranteed, but previous explorations of this topic suggest that the measurement error will likely only introduce minimal bias~\citep{carroll2006}.
 
 \subsubsection{Relationship to classical causal estimators}
 
@@ -135,6 +135,7 @@ When the measurement error covariance matrix $\Sigma_{me} = \textbf{0}_{m \times
 \begin{equation*}
     \psi(Y, \bm{L}, \bm{A}^{*}, \Theta_{IPW}) =
     \begin{bmatrix}
+      \psi_{PS}(\bm{L}, \bm{A}^{*}, \zeta) \\
        SW\{ Y - E(Y | \bm{A}^{*}) \} (1, \bm{A}^{*})^{T} \\
        SW \left [ \phi - \frac{ \{Y - E(Y | \bm{A}^{*}) \}^{2}}{Var(Y | \bm{A}^{*}) / \phi} \right ]
     \end{bmatrix}
@@ -145,24 +146,46 @@ This is exactly the score function vector for a GLM weighted by $SW$. Thus, an I
 
 \subsubsection{Large Sample Properties}
 
-Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. This estimator is a solution to the estimating equation \newline $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = \Theta_{GF}$ and
+Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. Recall from Section 3.4 that this estimator is a solution to the estimating equation \newline $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = ($\zeta$, \Theta_{GF})$ and
 \begin{equation*}
     \psi_{DR-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
     \begin{bmatrix}
+        \psi_{PS}(\bm{L}, \bm{A}^{*}, \zeta) \\
        SW\{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
         SW[\phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}] \\
-        g^{-1}(\beta_{0} + \bm{a}^{*}\beta_{a} + \bm{l}\beta_{l} +
-        \bm{a}^{*}\beta_{al}\bm{l}^{T}) - E \{ Y(\bm{a}) \}
+        g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} +
+        \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}
     \end{bmatrix}
 \end{equation*}
 
-First, suppose that the propensity score models are correctly specified. This effectively means that we are fitting the outcome regression in a pseudo-population where the effect of treatment on the outcome is no longer confounded. This means that integrating out $\bm{L}$ in the standardization step will have no effect, and the DR CSM estimator will be asymptotically equivalent to the IPW estimator, which was previously shown to be consistent and asymptotically normal when the propensity models are correctly specified.
+First, suppose that the outcome regression is correctly specified. Then $E\{ g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) \} = E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \} = E[E \{ Y(\bm{a}) | \bm{L} \}] = E \{ Y(\bm{a}) \}$ such that $E[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$.
 
-Now, suppose that the outcome regression is correctly specified. Then the proof follows the same form as the g-formula CSM proof since the outcome predictions from the IP-weighted CSM model converge in expectation to outcome predictions from the non-weighted CSM model regardless of whether the propensity model is correctly specified. However, the $\hat{\beta}$ estimated by the DR CSM estimator when the propensity model is mis-specified may be a particularly inefficient estimator of the true $\beta$ outcome model parameters. \citet{robins2007} considered this a notable weakness of this type of DR estimator, but also concluded that this DR estimator form is stronger than other described DR forms when weights are highly variable, which is common in the continuous exposure setting~\citep{naimi2014}.
+Now suppose instead that the propensity score model(s) are correctly specified and let $\hat{\zeta}$ be the MLE for the model parameters. Denote the potentially mis-specified outcome regression for $E(Y | \bm{A} = \bm{a}, \bm{L} = \bm{l})$ as $m(\bm{a}, \bm{l}; \beta)$. First, note that from the second equation in the stack of estimating equations and plugging in SW we have:
+\begin{equation*}
+\sum\limits_{i} \frac{dF(\bm{a})(Y_{i} - m(\bm{a}, \bm{L}_{i}; \beta)}{dF(\bm{A}_{i} = \bm{a} | \bm{L}_{i}; \hat{\zeta})} = 0
+\end{equation*}
+
+Thus the DR-CSM estimator can be rewritten as
+\begin{equation*}
+\hat{E}_{DR-CSM}\{ Y(\bm{a})} \} = n^{-1} \sum\limits_{i} \left \{ m(\bm{a}, \bm{L}_{i}; \beta) + \frac{dF(\bm{a})(Y_{i} - m(\bm{a}, \bm{L}_{i}; \beta))}{dF(\bm{A} = \bm{a} | \bm{L}_{i}; \hat{\zeta})} \right \}
+\end{equation*}
+
+with a corresponding estimating function
+\begin{equation*}
+\psi_{m} = m(\bm{a}, \bm{L}; \beta) - E \{ Y(\bm{a}) \} + \frac{dF(\bm{a})(Y - m(\bm{a}, \bm{L}; \beta))}{dF(\bm{A} = \bm{a} | \bm{L}; \hat{\zeta})}
+\end{equation*}
+
+If the propensity model is correctly specified, then by consistency and conditional exchangeability we have
+\begin{align*}
+E(\psi_{m} | \bm{L}) &= E \{ m(\bm{a}, \bm{L}; \beta) | \bm{L} \} -  E \{ Y(\bm{a}) \} + \frac{E\{ dF(\bm{a}) | \bm{L} \} E \{ Y(a) - m(\bm{a}, \bm{L}; \beta) | \bm{L} \}}{dF(\bm{A} = \bm{a} | \bm{L}; \hat{\zeta})} \\
+&= E \{ Y(\bm{a}) | \bm{L} \} - E \{ Y(\bm{a}) \}
+\end{align*}
+
+Thus, $E(\psi_{m}) = E \{ E(\psi_{m} | \bm{L}) \} = 0$ and the DR-CSM estimator is consistent and asymptotically normal as long as one of the propensity and outcome models is correctly specified. The estimator of the asymptotic variance is given by the usual sandwich variance estimator.
 
 \subsubsection{Relationship to classical causal estimators}
 
-Once again, under no measurement error the CSM equations reduce to the score equations of a GLM. Thus the proposed DR CSM estimator will reduce to the DR estimator described in \citet{hirano2001} where the specified outcome regression is a GLM.
+Once again, under no measurement error the CSM equations reduce to the score equations of a GLM. Thus the proposed DR CSM estimator will reduce to the DR estimator described in \citet{kang2007} where the specified outcome regression is a GLM.
 
 \subsubsection{Alternative DR estimator}
 
@@ -178,27 +201,27 @@ $dF(\bm{a})$ is the numerator of the stabilized weights, $d\mu (\bm{a})$ is a Le
 
 \subsection{Uniqueness of EE solutions}
 
-Each of the proofs above relies on there being a unique solution to each set of estimating equations. Prior work has shown that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice~\citep{stefanski1987}. In the various simulations of this paper, multiple solutions or estimator divergence were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should be aware of rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
+The proofs above showing consistency and asymptotic normality of the proposed estimators require each set of estimating equations to have a unique solution. Prior work has shown that similar conditional score equations do not always have unique solutions, but that multiple solutions are very rare in practice~\citep{stefanski1987}. In the various simulations of this paper, multiple solutions or estimator divergence were encountered with similar rarity, at most 1 or 2 times per 1000 simulations, unless considering extreme data generating mechanisms. Thus, the estimators should have good behavior in general, but practitioners should be aware of rare instances of multiple solutions, unusual estimates, and/or root-solving algorithm divergence errors.
 
 \section{Two-Phase Sampling}
 
 \subsection{Two-phase sampling method}
 
-Many studies (including the HVTN 505 trial) use a two-phase sampling design. Such a design is particularly useful when the primary exposure(s) and outcome are easy to measure, but exposures and covariates of secondary interest are expensive or difficult to measure. Because each of the proposed methods above belongs to the estimating equation framework, it is straightforward to incorporate previously described methods for causal inference from studies with two-phase sampling. In this section, one such approach is demonstrated using a simulation study. In particular, for this simulation and the application section analysis, the simple IPW method described in \citet{wang2009} is implemented, but the DR approaches from the same paper or from \citet{rose2011} could also be explored to account for two-phase sampling within the proposed methods.
+Many studies (including the HVTN 505 trial) use a two-phase sampling design. Such a design is particularly useful when the primary exposure(s) and outcome are easy to measure, but exposures and covariates of secondary interest are expensive or difficult to measure. Because each of the proposed methods above belongs to the estimating equation framework, it is straightforward to incorporate previously described methods for causal inference from studies with two-phase sampling. In this section, one such approach is demonstrated using a simulation study. In particular, for this simulation and the application section analysis, a simple inverse probability of sampling weights method is used~\citep{wang2009}.
 
-The simple IPW method is implemented by weighting each individual's contribution to the estimating equations by the inverse probability of selection for the second-phase of the study (multiplying treatment weights by sampling weights for the IPW-CSM and DR-CSM estimators) and restricting the analysis to those selected. This works well for the subset of the HVTN 505 trial that is the focus of Section 5 of the main paper, but may be inadequate when analyzing exposures measured in a sub-sample in conjunction with exposures measured in the full sample.
+The method is implemented by weighting each individual's contribution to the estimating equations by the inverse probability of selection for the second-phase of the study (multiplying treatment weights by sampling weights for the IPW-CSM and DR-CSM estimators) and restricting the analysis to those selected. This method is a good choice for the subset of the HVTN 505 trial that is the focus of Section 5 of the main paper, particularly because all exposures of interest were measured in the second-phase sub-sample and no exposures were measured in the full sample.
 
 \subsection{Two-phase sampling simulations}
 
 The structure of the first simulation study described in Section 4 of the main paper is replicated, but under a two-phase sampling design. In particular, a case-cohort design is used where the exposure is measured for a random sub-cohort as well as for every case. This is done for a sample size of $n=2000$ under three scenarios, with sub-cohorts of size $5\%$, $10\%$ and $25\%$. The results of 2000 simulation runs are presented in Web Figure 1 and Web Table 1.
 
-The methods seem to perform well as they did in the full-sampling simulation provided in the main paper, although there is some bias and under-coverage when the sub-cohorts are smaller, likely due to a low effective sample size. In addition, the estimators failed to converge in some of the small sub-cohort settings. However, the DR CSM estimator with sampling weights converged in all analyses presented in Section 5 of the main paper.
+The methods perform similar to the full-sampling simulation provided in the main paper, although there is some bias and under-coverage when the sub-cohorts are smaller, likely due to a low effective sample size. In addition, the estimators failed to converge in some of the small sub-cohort settings. However, the DR CSM estimator with sampling weights converged in all analyses presented in Section 5 of the main paper.
 
 \section{Additional Simulations}
 
 In this section, additional simulations are presented under two assumption violations: (i) when positivity doesn't hold and (ii) when measurement error doesn't follow a classical additive model.
 
-\subsection{Under positivity violation}
+\subsection{Positivity violation}
 
 To evaluate the proposed g-formula CSM method under positivity violation, the general structure of the first simulation study from Section 4 of the main paper is replicated almost exactly. A moderate positivity violation is created by changing how the treatment $A_{1}$ is generated from $\mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.6)$ to $\mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.35)$. This breaks the phenomenon of mostly overlapping treatment values experienced by simulated subjects with different covariate values, although in a technical sense is not a structural violation of positivity since the distributions would have the same support given infinite sample size. The results of the simulation study are presented in Web Figure 2 and Web Table 2, following the same format as Table 1 and Figure 2 in the main paper.
 
@@ -206,13 +229,13 @@ The results overall look similar to that in Table 1 of the main paper. There is 
 
 Positivity violations become more likely with more treatment variables and with treatment variables that are continuous or take on many values. In these settings positivity should receive just as much scrutiny as the conditional exchangeability assumption. If positivity is implausible, it may be possible to define an estimator in our setting similar to that described in \citet{neugebauer2005} which was robust to their analogous "experimental treatment assumption".
 
-\subsection{Under non-additive measurement error}
+\subsection{Non-additive measurement error}
 
 Next the proposed methods are evaluated when treatment measurement error does not follow the classical additive model. In particular, the second simulation study from Section 4 of the main paper is replicated, but the simulation of mismeasured treatment $A^{*}_{3}$ is changed such that it follows a multiplicative error model simulated as $A_{3}^{*} = A_{3} \epsilon_{me_{1}}$ where $\epsilon_{me_{1}} \sim \mathcal{N}(1, 0.1)$. The methods are still performed assuming additive measurement error with known measurement error covariance as specified in section 4 of the main paper, and the $A^{*}_{3}$ distribution under this additive ME assumption is similar to the distribution under the true multiplicative ME generative model. The results are presented in Web Table 3. The proposed IPW CSM method continued to perform well for treatments $A_{1}$ and $A_{2}$ for which the assumptions hold, but exhibited strong bias for the $A_{3}$ effect. Practitioners of the proposed methods should be cautious that if classical additive measurement error models do not hold for their exposures, they may get worse results than even standard regression models.
 
 \section{More complex model specifications for the IPW CSM estimator}
 
-The proposed IPW CSM estimator assumes a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it is too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if a transformation of an exposure is assumed to follow a multiplicative measurement error model then that variable cannot be included in the MSM. However, if the variable is strictly positive, then its log transform would follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
+The proposed IPW CSM estimator assumes a linear marginal structural model form. While this is helpful to match the conditional score framework described in Section 3.1, it may be too restrictive for some potential applications. To this end we note that transformations of elements of $\bm{A}$ and interactions thereof can be included in the MSM specification as long as they are either assumed to be correctly measured or assumed to follow a classical additive measurement error model. For example, if an exposure is strictly positive, then its log transform may be assumed to follow an additive measurement error model and can be included in the model. In general, transformations of correctly measured exposures can be included in the MSM specification without restriction.
 
 Finally, while conditional score functions are somewhat limited in scope in terms of model specification, the related method of corrected score functions has been extended to problems of additive but non-normal measurement error~\citep{buzas1996} and to non-additive measurement models in certain cases (\citealp{nakamura1990}; \citealp*{li2004}). Describing how to use such corrected score functions to estimate causal parameters could be the focus of future work in this area.
 
@@ -253,15 +276,23 @@ G-formula CSM & 2.2 & 9.3 & 9.1 & 92\%
 \begin{table}[h]
 \tblcaption{Simulation study under non-additive measurement error. Bias, ASE, ESE, and Cov defined as in Web Table 1.}
 {\tabcolsep=4.25pt
-\begin{tabular}{@{}lrrrrrrrrrrrr@{}}
-\tblhead{ & $\psi_{1}$ &&&& $\psi_{2}$ &&&& $\psi_{3}$ &&& \\
-Estimator & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov}
-Regression & 4.9 & 14.0 & 13.3 & 93\% & 10.3 & 28.0 & 27.7 & 93\% & 1.9 & 15.8 & 15.4 & 94\% \\
-CSM & 21.7 & 20.0 & 19.3 & 82\% & 8.7 & 29.4 & 28.4 & 93\% & -35.0 & 33.5 & 32.7 & 86\% \\
-IPW & -9.9 & 9.1 & 9.0 & 79\% & 0.0 & 20.0 & 19.7 & 94\% & 4.7 & 15.9 & 15.5 & 93\% \\
-IPW CSM & 0.6 & 13.0 & 12.7 & 95\% & -0.9 & 20.4 & 20.1 & 95\% & -29.0 & 33.0 & 32.0 & 88\%
-\lastline
-\end{tabular}}
+\begin{tabular}{@{}clrrrr@{}}
+    %\begin{tabular}{clrrrr}
+       \tblhead{Parameter & Estimator & Bias & ASE & ESE & Cov}
+$\gamma_{1}$ & Regression & 4.9 & 14.0 & 13.3 & 93\% \\
+$\gamma_{1}$ & CSM & 21.7 & 20.0 & 19.3 & 82\% \\
+$\gamma_{1}$ & IPW & -9.9 & 9.1 & 9.0 & 79\% \\
+$\gamma_{1}$ & IPW CSM & 0.6 & 13.0 & 12.7 & 95\% \\[4pt]
+$\gamma_{2}$ & Regression & 10.3 & 28.0 & 27.7 & 93\% \\
+$\gamma_{2}$ & CSM & 8.7 & 29.4 & 28.4 & 93\% \\
+$\gamma_{2}$ & IPW & 0.0 & 20.0 & 19.7 & 94\% \\
+$\gamma_{2}$ & IPW CSM & -0.9 & 20.4 & 20.1 & 95\% \\[4pt]
+$\gamma_{3}$ & Regression & 1.9 & 15.8 & 15.4 & 94\% \\
+$\gamma_{3}$ & CSM & -35.0 & 33.5 & 32.7 & 86\% \\
+$\gamma_{3}$ & IPW & 4.7 & 15.9 & 15.5 & 93\% \\
+$\gamma_{3}$ & IPW CSM & -29.0 & 33.0 & 32.0 & 88\%
+         \lastline
+    \end{tabular}}
 \end{table}
 
 \newpage
@@ -276,7 +307,7 @@ IPW CSM & 0.6 & 13.0 & 12.7 & 95\% & -0.9 & 20.4 & 20.1 & 95\% & -29.0 & 33.0 & 
 
 \begin{figure}
 \centering
-\includegraphics[width=6in]{app_fig2.pdf}
+\includegraphics[width=6in]{app_fig2_updated.pdf}
 \caption{Estimated dose-response curve bias for each of the four methods under positivity violation. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$.}
 \end{figure}
 
