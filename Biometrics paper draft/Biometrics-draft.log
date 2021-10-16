@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  29 AUG 2021 23:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.13)  3 OCT 2021 16:15
 entering extended mode
 **./Biometrics-draft.tex
 (Biometrics-draft.tex
@@ -671,23 +671,6 @@ Overfull \hbox (4.61693pt too wide) has occurred while \output is active
  []
 
 [7]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.337 ..._{DR}) = 0$, where $\Theta_{DR} = ($\zeta
-                                                  $, \Theta_{GF})$ and
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.337 ...0$, where $\Theta_{DR} = ($\zeta$, \Theta
-                                                  _{GF})$ and
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
 Overfull \hbox (4.61693pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 8
  []
@@ -792,7 +775,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [23] (Biometrics-draft.fff
-<DAG2_better.png, id=342, 757.32938pt x 209.28188pt>
+<DAG2_better.png, id=341, 757.32938pt x 209.28188pt>
 File: DAG2_better.png Graphic file (type png)
 <use DAG2_better.png>
 Package pdftex.def Info: DAG2_better.png  used on input line 3.
@@ -808,7 +791,7 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [24 <./DAG2_better.png>]
-<paper1-fig2-grey.pdf, id=348, 469.755pt x 303.1325pt>
+<paper1-fig2-grey.pdf, id=347, 469.755pt x 303.1325pt>
 File: paper1-fig2-grey.pdf Graphic file (type pdf)
 <use paper1-fig2-grey.pdf>
 Package pdftex.def Info: paper1-fig2-grey.pdf  used on input line 11.
@@ -819,24 +802,22 @@ Overfull \hbox (9.23386pt too wide) has occurred while \output is active
  []
 
 [25 <./paper1-fig2-grey.pdf>]
-<fig3-updated2.pdf, id=358, 361.35pt x 505.89pt>
-File: fig3-updated2.pdf Graphic file (type pdf)
-<use fig3-updated2.pdf>
-Package pdftex.def Info: fig3-updated2.pdf  used on input line 19.
-(pdftex.def)             Requested size: 404.71243pt x 566.60065pt.
-
-
-LaTeX Warning: Float too large for page by 1.92851pt on input line 22.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+<fig3-linear2.pdf, id=357, 397.485pt x 505.89pt>
+File: fig3-linear2.pdf Graphic file (type pdf)
+<use fig3-linear2.pdf>
+Package pdftex.def Info: fig3-linear2.pdf  used on input line 19.
+(pdftex.def)             Requested size: 404.71243pt x 515.10553pt.
 )
 Overfull \hbox (9.23386pt too wide) has occurred while \output is active
 \T1/aer/m/n/9 26
  []
 
-[26 <./fig3-updated2.pdf>] (Biometrics-draft.ttt
+[26
+
+
+
+
+ <./fig3-linear2.pdf>] (Biometrics-draft.ttt
 
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 1.
@@ -878,12 +859,12 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 537.
  ) 
 Here is how much of TeX's memory you used:
  8451 strings out of 492902
- 118484 string characters out of 3133541
+ 118479 string characters out of 3133541
  211566 words of memory out of 3000000
  12083 multiletter control sequences out of 15000+200000
  52590 words of font info for 123 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,10n,34p,1858b,483s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 35i,10n,34p,1943b,483s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><C:/P
 rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmbsy7.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program File
@@ -906,9 +887,9 @@ sy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 
 2.9/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on Biometrics-draft.pdf (30 pages, 448939 bytes).
+Output written on Biometrics-draft.pdf (30 pages, 448591 bytes).
 PDF statistics:
- 481 PDF objects out of 1000 (max. 8388607)
+ 480 PDF objects out of 1000 (max. 8388607)
  95 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -146,7 +146,7 @@ This is exactly the score function vector for a GLM weighted by $SW$. Thus, an I
 
 \subsubsection{Large Sample Properties}
 
-Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. Recall from Section 3.4 that this estimator is a solution to the estimating equation \newline $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = ($\zeta$, \Theta_{GF})$ and
+Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. Recall from Section 3.4 that this estimator is a solution to the estimating equation \newline $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = (\zeta, \Theta_{GF})$ and
 \begin{equation*}
     \psi_{DR-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
     \begin{bmatrix}
@@ -160,14 +160,9 @@ Once again, consistency and asymptotic normality of the proposed estimator is pr
 
 First, suppose that the outcome regression is correctly specified. Then $E\{ g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) \} = E \{ E(Y | \bm{A} = \bm{a}, \bm{L}) \} = E[E \{ Y(\bm{a}) | \bm{L} \}] = E \{ Y(\bm{a}) \}$ such that $E[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$.
 
-Now suppose instead that the propensity score model(s) are correctly specified and let $\hat{\zeta}$ be the MLE for the model parameters. Denote the potentially mis-specified outcome regression for $E(Y | \bm{A} = \bm{a}, \bm{L} = \bm{l})$ as $m(\bm{a}, \bm{l}; \beta)$. First, note that from the second equation in the stack of estimating equations and plugging in SW we have:
+Now suppose instead that the propensity score model(s) are correctly specified such that $\hat{\zeta} = \zeta$ for the MLE of the model parameters $\hat{\zeta}$. Leveraging the weighted least squares estimator for the outcome regression parameters, the DR-CSM estimator can be rewritten as
 \begin{equation*}
-\sum\limits_{i} \frac{dF(\bm{a})(Y_{i} - m(\bm{a}, \bm{L}_{i}; \beta)}{dF(\bm{A}_{i} = \bm{a} | \bm{L}_{i}; \hat{\zeta})} = 0
-\end{equation*}
-
-Thus the DR-CSM estimator can be rewritten as
-\begin{equation*}
-\hat{E}_{DR-CSM}\{ Y(\bm{a})} \} = n^{-1} \sum\limits_{i} \left \{ m(\bm{a}, \bm{L}_{i}; \beta) + \frac{dF(\bm{a})(Y_{i} - m(\bm{a}, \bm{L}_{i}; \beta))}{dF(\bm{A} = \bm{a} | \bm{L}_{i}; \hat{\zeta})} \right \}
+\hat{E}_{DR-CSM}\{ Y(\bm{a}) \} = n^{-1} \sum\limits_{i} \left \{ m(\bm{a}, \bm{L}_{i}; \beta) + \frac{dF(\bm{a})(Y_{i} - m(\bm{a}, \bm{L}_{i}; \beta))}{dF(\bm{A} = \bm{a} | \bm{L}_{i}; \hat{\zeta})} \right \}
 \end{equation*}
 
 with a corresponding estimating function

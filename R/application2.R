@@ -482,3 +482,16 @@ ggplot(latdat, aes(x = vals, y = Risk)) +
   xlab("Exposure values") + ylab("HIV risk at study end") +
   ylim(c(0, 0.25)) +
   theme_bw()
+
+# Figure cutting off boundary ests using a range from 7-10 for RII
+latdat2 <- latdat[!(latdat$Exposure == "RII" & latdat$vals > 10), ]
+
+ggplot(latdat2, aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(ME ~ Exposure, scales = "free",
+             labeller = label_bquote(sigma[me]^2 == .(ME) * sigma^2)) +
+  #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(0, 0.25)) +
+  theme_bw()
