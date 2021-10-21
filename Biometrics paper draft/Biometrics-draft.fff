@@ -17,6 +17,6 @@
 \begin{figure}[h!]
 \centering
 \includegraphics[width=5.6in]{fig3-linear2.pdf}
-\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSM estimator, as well as their respective shaded confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}_{me}$ corresponding to proportions of 0, 1/6, 1/4, and 1/3 of $\sigma^{2}$, the estimated total exposure variances among vaccinees with immune responses. Lower confidence limits that were estimated to be negative were truncated at 0.}
+\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSM estimator, as well as their respective shaded 95\% pointwise confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}_{me}$ corresponding to proportions of 0, 1/6, 1/4, and 1/3 of $\sigma^{2}$, the estimated total exposure variances among vaccinees with immune responses. Lower confidence limits that were estimated to be negative were truncated at 0.}
 \label{fig:three}
 \end{figure}
