@@ -34,16 +34,6 @@ Dagalp, R.~E. (2001).
   interaction terms.
 \newblock {\em Doctoral Dissertation, North Carolina State University} .
 
-\bibitem[\protect\citeauthoryear{{Decamp}, Rolland, Edlefsen, Sanders-Buell,
-  Hall, Magaret, Fiore-Gartland, Juraska, Carpp, Karuna,
-  et~al\mbox{.}}{{Decamp} et~al.}{2017}]{decamp2017}
-{Decamp}, A.~C., Rolland, M., Edlefsen, P.~T., Sanders-Buell, E., Hall, B.,
-  Magaret, C.~A., Fiore-Gartland, A.~J., Juraska, M., Carpp, L.~N., Karuna,
-  S.~T., et~al. (2017).
-\newblock Sieve analysis of breakthrough {HIV-1} sequences in {HVTN} 505
-  identifies vaccine pressure targeting the {CD4} binding site of {Env-gp120}.
-\newblock {\em PloS One} {\bf 12,} e0185959.
-
 \bibitem[\protect\citeauthoryear{Edwards, Cole, Westreich, Crane, Eron,
   Mathews, Moore, Boswell, Lesko, Mugavero, et~al\mbox{.}}{Edwards
   et~al.}{2015}]{edwards2015multiple}
@@ -278,5 +268,12 @@ Wu, X., Braun, D., Kioumourtzoglou, M.-A., Choirat, C., Di, Q., and Dominici,
 \newblock Causal inference in the context of an error prone exposure: air
   pollution and mortality.
 \newblock {\em The Annals of Applied Statistics} {\bf 13,} 520--547.
+
+\bibitem[\protect\citeauthoryear{Zhang, Peters, Janzing, and
+  Sch{\"o}lkopf}{Zhang et~al.}{2012}]{zhang2012}
+Zhang, K., Peters, J., Janzing, D., and Sch{\"o}lkopf, B. (2012).
+\newblock Kernel-based conditional independence test and application in causal
+  discovery.
+\newblock {\em arXiv preprint arXiv:1202.3775} .
 
 \end{thebibliography}
