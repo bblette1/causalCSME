@@ -1,6 +1,6 @@
 \begin{figure}
 \centering
-\fbox{\includegraphics[width=\textwidth]{DAG_eps.png}}
+\fbox{\includegraphics[width=\textwidth]{DAG_eps2.png}}
 \caption{An example directed acyclic graph (DAG), with variables defined in Section 2 and $\epsilon_{me_{1}}$ and $\epsilon_{me_{4}}$ corresponding to measurement error. This DAG represents a scenario with $m=4$ exposures, one each of the following: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). In this case, $A_{2} = A^{*}_{2}$ and $A_{3} = A^{*}_{3}$ since they are both measured without error.}
 \label{fig:one}
 \end{figure}

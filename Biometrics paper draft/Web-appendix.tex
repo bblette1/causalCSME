@@ -83,7 +83,7 @@
 
 \section{Large Sample Properties}
 
-In Web Appendix A, the large sample properties of the proposed estimators discussed in Section 3 of the main paper are proven.
+In this appendix, the large sample properties of the proposed estimators discussed in Section 3 of the main paper are proven.
 
 \subsection{G-formula CSM estimator}
 
@@ -94,7 +94,6 @@ Consistency and asymptotic normality of the g-formula estimator are proven using
 The parameter of interest $\text{E} \{ Y(\bm{a}) \}$ appears in the last estimating equation of (3), and the proof of consistency and asymptotic normality of the g-formula CSM estimator relies on (i) the usual g-formula proof based on the causal assumptions made in Section 2 of the main paper and (ii) that the CSM estimating equations were previously shown to be unbiased~\citep{carroll2006}. In particular, (ii) implies that $\text{E}[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) \}] = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \}$ and then from (i) it follows that $\text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$.
 
 Therefore the estimating function for the parameter $\text{E} \{ Y(\bm{a}) \}$ is unbiased. Denote $\hat{\Theta}_{GF}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF}) = 0$. Then under certain regularity conditions $\sqrt{n}(\hat{\Theta}_{GF} - \Theta_{GF}) \rightarrow_{d} N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
-
 \begin{equation*}
 \hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta_{GF}^{T}} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF})
 \end{equation*}
@@ -110,55 +109,50 @@ The CSM estimating equations reduce to the score equations for a generalized lin
 
 \subsubsection{Large sample properties}
 
-To show $\text{E} \bigg[\frac{f(\bm{A}^{*})}{f_{0}(\bm{A}^{*} | \bm{L})} \{ Y - \text{E}(Y | \bm{\Delta})\} \bigg] = 0$, we will show that $\text{E} \bigg( \frac{f(\bm{A}^{*})}{f_{0}(\bm{A}^{*} | \bm{L})} Y \bigg) = \text{E} \left \{ \frac{f(\bm{A}^{*})}{f_{0}(\bm{A}^{*} | \bm{L})} \text{E}(Y | \bm{\Delta}) \right \}$.
-
-First,
-\begin{align*}
-\text{E} \bigg( \frac{f(\bm{A}^{*})}{f_{0}(\bm{A}^{*} | \bm{L})} Y \bigg) &= \text{E} \left \{ \text{E} \middle( \frac{f(\bm{A}^{*})}{f_{0}(\bm{A}^{*} | \bm{L})} Y | L \middle) \right \} \\
-&= \text{E} \left \{ \int_{a^{*}} \frac{f(\bm{a}^{*})}{f_{0}(\bm{a}^{*} | \bm{L})}  \text{E} \middle( Y | \bm{A}^{*} = \bm{a}^{*},  L \middle) f_{0}(\bm{a}^{*} | L) d\bm{a}^{*} \right \} \\
-&= \text{E} \left [ \int_{a^{*}} \text{E} \middle\{ \text{E}(Y | \bm{A}^{*} = \bm{a}^{*}, \bm{A}, L) \middle\} f(\bm{a}^{*}) d\bm{a}^{*} \right ] \\
-&= \text{E} \left [ \int_{a^{*}} \int_{a} E(Y | \bm{A}^{*} = \bm{a}^{*}, \bm{A} = \bm{a}, \bm{L}) dF(\bm{a} | \bm{L}, \bm{A}^{*} = \bm{a}^{*}) f(\bm{a}^{*}) d\bm{a}^{*} \right ] \\
-&= \text{E} \left [ \int_{a^{*}} \int_{a} E\{ Y(\bm{a}) | \bm{L} \} dF(\bm{a} | \bm{L}, \bm{A}^{*} = \bm{a}^{*}) f(\bm{a}^{*}) d\bm{a}^{*} \right ] \\
-&= \text{E} \left [ \text{E} \middle\{ \text{E}(Y | \bm{A} = \bm{a}, L) \middle\} \cdot 1 \right ] \\
-&= \text{E} \{ Y(\bm{a}) \} = \gamma_{0} + \bm{a}\gamma_{a}
-\end{align*}
-where the fourth equality follows from the fact that $Y$ is independent of $\bm{A}^{*}$ given $\bm{A}$ and $\bm{L}$ and the fifth equality follows from causal consistency and conditional exchangeability.
-
-Now the second part reduces to
-\begin{align*}
-\text{E} \left \{ \frac{f(\bm{A}^{*})}{f_{0}(\bm{A}^{*} | \bm{L})} \text{E}(Y | \bm{\Delta}) \right \} &= \text{E} \left[ \int_{\bm{a}^{*}} \text{E} \middle\{ \text{E}(Y | \bm{\Delta}) |  \bm{A}^{*} = \bm{a}^{*}, \bm{A} = \bm{a}, L \middle\} f(\bm{a}^{*}) d\bm{a}^{*} \right ] \\
-&= \text{E} \left [ \text{E} \middle\{ \text{E}(Y | \bm{\Delta}) | \bm{A} = \bm{a}, L \middle\} \cdot 1 \right ] \\
-&= \text{E} \left \{ \frac{\gamma_{0} + \bm{a}\gamma_{a} + \text{E}(\epsilon_{me} | \bm{A} = \bm{a}, \bm{L})\gamma_{a} + \gamma_{a}^{T}\Sigma_{me}\text{E}(Y | \bm{A} = \bm{a}, \bm{L})\gamma_{a} / \sigma^{2}}{1 + \gamma_{a}^{T}\Sigma_{me}\gamma_{a} / \sigma^{2}} \right \} \\
-&= \frac{\gamma_{0} + \bm{a}\gamma_{a} + \gamma_{a}^{T}\Sigma_{me}\text{E} [ \text{E}\{ Y(\bm{a}) | \bm{L}\} ] \gamma_{a} / \sigma^{2}}{1 + \gamma_{a}^{T}\Sigma_{me}\gamma_{a} / \sigma^{2}} \\
-&= \frac{\gamma_{0} + \bm{a}\gamma_{a} + \gamma_{a}^{T}\Sigma_{me}(\gamma_{0} + \bm{a}\gamma_{a}) \gamma_{a} / \sigma^{2}}{1 + \gamma_{a}^{T}\Sigma_{me}\gamma_{a} / \sigma^{2}} \\
-&= \frac{(\gamma_{0} + \bm{a}\gamma_{a})(1 + \gamma_{a}^{T}\Sigma_{me}\gamma_{a} / \sigma^{2})}{1 + \gamma_{a}^{T}\Sigma_{me}\gamma_{a} / \sigma^{2}} \\
-&= \gamma_{0} + \bm{a}\gamma_{a}
-\end{align*}
-where the first equality repeats some steps from the other component. Thus, the proof is complete (for the intercept component).
-
-\vspace{10cm}
-
-Previous:
-
 The estimating equation corresponding to the parameters of interest is
 \begin{equation*}
-\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{IPW}) = \sum_{i=1}^{n} SW_{i}(Y_{i} - \text{E}[Y_{i} | \Delta_{i}])(1, \Delta_{i})^{T} = 0
+\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{IPW}) = \sum_{i=1}^{n} SW_{i}\{ Y_{i} - \text{E}(Y_{i} | \bm{\Delta}_{i}) \}(1, \bm{\Delta}_{i})^{T} = 0
 \end{equation*}
-It suffices to show that the expectation of $\psi(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{IPW})$ is equal to 0. For simplicity in writing integrals, suppose the exposure vector consists of only continuous-valued exposures. First consider a similar but infeasible estimator, with the same form but where it is weighted by the true propensity weights. Let $SW = dF(\bm{A}) / dF_0(\bm{A} | \bm{L})$ where $F(\bm{A})$ is any distribution function and $F_0(\bm{A} | \bm{L})$ is the true conditional distribution function of the exposure $\bm{A}$ given confounders $\bm{L}$. Then
-
+It suffices to show that the expectation of $\psi(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{IPW})$ is equal to 0. For simplicity, suppose the exposure vector consists of a single continuous-valued exposure. Non-bolded scalar notation will be used, the scalar measurement error variance will be denoted $\sigma_e^2$, and the conditional variance of $Y$ given $A$ will be denoted $\sigma^{2}$. The proof for vector $\bm{A}^{*}$ is similar. Assume the structural model $\text{E}\{ Y(a)\} = \gamma_0 + \gamma_1 a$. Recall
+$$
+\text{E}(Y | \Delta) = \frac{\gamma_{0} + \Delta \gamma_{1}}{1 + \gamma_{1}^2 \sigma_{e}^2  / \sigma^{2}}
+$$
+and $\Delta = A^* + \gamma_1 Y \sigma_e^2 / \sigma^2$. Consider the intercept component of the estimating equation. The goal is to show $\text{E} [SW \{Y - \text{E}(Y|\Delta) \} ]= 0$, or equivalently
+\begin{equation}
+\text{E}( SW \, Y )= \text{E}\{ SW \, \text{E}(Y|\Delta) \}
+\end{equation}
+First consider the left side of (1):
 \begin{align*}
-&\text{E} \bigg[\frac{dF(\bm{A})}{dF_{0}(\bm{A} | \bm{L})} \{ Y - \text{E}(Y | \bm{\Delta})\} (1, \bm{\Delta})^{T} \bigg] \\
-&= \text{E} \left( \text{E} \bigg[\frac{dF(\bm{A})}{dF_{0}(\bm{A} | \bm{L})} \{ Y - \text{E}(Y | \bm{\Delta}) \} (1, \bm{\Delta})^{T} \middle| \bm{L} \bigg] \right) \\
-&= \text{E} \left [ \int_{\bm{a}} \frac{dF(\bm{a})}{dF_{0}(\bm{a} | \bm{L})} \text{E} [ \{ Y - \text{E}(Y | \bm{\Delta}) \} (1, \bm{\Delta})^{T} | \bm{A} = \bm{a}, \bm{L} ] dF_{0}(\bm{a} | \bm{L}) \right ] \\
-&= \text{E} \left \{ \int_{\bm{a}} \text{E} [ \{ Y - \text{E}(Y | \bm{\Delta}) \} (1, \bm{\Delta})^{T} | \bm{A} = \bm{a}, \bm{L} ] dF(\bm{a}) \right \} \\
-&= \int_{\bm{a}} \text{E} ( \text{E} [ \{ Y - \text{E}(Y | \bm{\Delta}) \} | \bm{A} = \bm{a}, \bm{L}, \bm{\Delta} ] (1, \bm{\Delta})^{T} ) dF(\bm{a})  \\
-&= \int_{\bm{a}} \text{E} [ \{ \text{E} (Y | \bm{L}, \bm{\Delta}) - \text{E}(Y | \bm{\Delta}) \} (1, \bm{\Delta})^{T} ] dF(\bm{a})  \\
-&= \int_{\bm{a}} \{ \text{E} (Y | \bm{\Delta}) - \text{E}(Y | \bm{\Delta}) \} (1, \bm{\Delta})^{T} dF(\bm{a})  \\
-&= 0
+\text{E}( SW \, Y ) &= \text{E} \left \{ \frac{f(A^*;\xi)}{f(A^*|L;\zeta)} Y \right \} \\
+& = \text{E}_L \left \{ \int_{a^*} \frac{f(a^*;\xi)}{f(a^*|L;\zeta)} \text{E}(Y|A^*=a^*,L) dF(a^*|L) \right \} \\
+& = \text{E}_L \left \{ \int_{a^*}  \text{E}(Y|A^*=a^*,L) f(a^*;\xi) da^* \right \} \\
+& = \int_{a^*}  \text{E}(Y|A^*=a^*) f(a^*;\xi) da^* = \text{E}(Y)
 \end{align*}
-where the 5th equality follows because $Y$ is independent of $\bm{A}$ conditional on $\bm{\Delta}$ and $\bm{L}$. Thus the infeasible estimator is consistent and asymptotically normal by standard M-estimator theory.
+Next consider the right side of (1):
+\begin{align*}
+\text{E} \{ SW \, \text{E}(Y|\Delta) \} &= \text{E} \left \{ \frac{f(A^*;\xi)}{f(A^*|L;\zeta)} \text{E}(Y|\Delta) \right \} \\
+&= \text{E}_L \left [ \int_{a^*} \frac{f(a^*;\xi)}{f(a^*|L;\zeta)} \text{E}\{\text{E}(Y|\Delta)|A^*=a^*,L\} dF(a^*|L) \right ]\\
+&= \text{E}_L \left [ \int_{a^*}  \text{E}\{\text{E}(Y|\Delta)|A^*=a^*,L\} f(a^*;\xi) da^* \right ]\\
+&= \int_{a^*}  \text{E} \bigg(
+\frac{\gamma_{0} + \Delta \gamma_{1}}{1 + \gamma_{1}^2 \sigma_{e}^2  / \sigma^{2}}
+|A^*=a^* \bigg) f(a^*;\xi) da^*\\
+&= (1 + \gamma_{1}^2 \sigma_{e}^2  / \sigma^{2})^{-1} \int_{a^*}  \text{E}[
+\{ \gamma_{0} + (A^* + \gamma_1 Y \sigma_e^2 / \sigma^2) \gamma_{1}\}
+|A^*=a^* ] f(a^*;\xi) da^*\\
+&=
+(1 + \gamma_{1}^2 \sigma_{e}^2  / \sigma^{2})^{-1}\{ \gamma_0 + \gamma_1 \text{E}(A^*) + \gamma_1^2
+\text{E}(Y) \sigma_e^2 / \sigma^2\}
+\end{align*}
+Thus we need to show $\text{E}(Y) = \gamma_0 + \gamma_1 \text{E}(A^*) = \gamma_0 + \gamma_1 \text{E}(A)$ to complete the proof. To see this, note
+\[
+\text{E}(Y) = \text{E} \{ Y(A) \} = \int_a \text{E}\{ Y(a) \} dF(a) = \gamma_0 + \gamma_1 \text{E}(A)
+\]
 
-This estimator is infeasible because $\bm{A}$ is not observed and  $F_0(\bm{A} | \bm{L})$ is not known, so instead a plug-in type estimator is used  for $SW$. Let $F(\bm{a}^{*}; \xi)$ and $F(\bm{a}^{*} | \bm{L}; \zeta)$ be finite-dimensional parametric models of the distributions of $\bm{A}$ and of $\bm{A} | \bm{L}$, let $(\hat \xi,\hat \zeta)$ denote some consistent estimator of $(\xi,\zeta)$, and assume $(\hat \xi, \hat \zeta)$ converges in probability to some constant vector $(\xi_0,\zeta_0)$. Note these parametric models need not be correctly specified, but instead we make the following assumption: $$E\{ dF(\bm{A}^{*}; \xi_0)/dF(\bm{A}^{*} | \bm{L}; \zeta_0) \mid Y,\bm{\Delta},\bm{L}\}= E\{dF(\bm{A})/dF_0(\bm{A} | \bm{L}) \mid Y,\bm{\Delta},\bm{L}\}.$$  Under this assumption, it follows from the infeasible estimator proof above that the IPW CSM estimator computing using $SW= dF(\bm{A}^{*};\hat \xi) / dF(\bm{A}^{*}; \hat \zeta)$ is also the solution to a set unbiased estimating equations and therefore is consistent and asymptotically normal. The estimator of the asymptotic variance of the IPW CSM estimator is given by the usual sandwich estimator as described in the previous section.
+The proof for the other component of the estimating equation,
+\[
+\text{E} \bigg[SW \{ Y - \text{E}(Y | \Delta)\} \Delta \bigg] = 0
+\]
+is similar. Thus, the proposed IPW CSM estimator is consistent and asymptotically normal. The estimator of the asymptotic variance of the IPW CSM estimator is given by the usual sandwich estimator as described in the previous section.
 
 \subsubsection{Relationship to classical causal estimators}
 
@@ -178,76 +172,11 @@ This is exactly the score function vector for a GLM weighted by $SW$. Thus, an I
 
 \subsubsection{Large Sample Properties}
 
-Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. Recall from Section 3.4 that this estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = (\zeta, \Theta_{GF})$ and
-\begin{equation*}
-    \psi_{DR-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
-    \begin{bmatrix}
-        \psi_{PS}(\bm{L}, \bm{A}^{*}, \zeta) \\
-       SW\{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
-        SW[\phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}] \\
-        \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} +
-        \bm{a}\beta_{al}\bm{L}^{T} - \text{E} \{ Y(\bm{a}) \}
-    \end{bmatrix}
-\end{equation*}
-
-First, suppose that the outcome regression is correctly specified. Then $\text{E}( \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$ such that $\text{E}[(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$.
-
-Now suppose instead that the propensity score model(s) are correctly specified and that $dF(\bm{A} | \bm{L}) / d\hat{F}(\bm{A}^{*} | \bm{L})$ does not depend on $\bm{L}$ as described in the IPW proof. For simplicity in writing integrals, suppose all exposures are continuous and that the stabilized weights are given by a ratio of densities. Recall that under the identity link,
-\begin{equation*}
-\bm{\Delta} = \bm{A}^{*} + (\beta_{a} + \bm{L}\beta_{al}) \Sigma_{me}\bm{Y} / \sigma^{2}
-\end{equation*}
-\begin{equation*}
-\text{E}(Y | \bm{L}, \bm{\Delta}) = \frac{\beta_{0} + \bm{L}\beta_{l} + \bm{\Delta} \cdot (\beta_{a} + \bm{L}\beta_{al})}{1 + (\beta_{a} + \bm{L}\beta_{al}) \Sigma_{me} (\beta_{a} + \bm{L}\beta_{al})^{T} / \sigma^{2}}
-\end{equation*}
-
-Temporary note to self: Goal is to do the same as the non-ME proof, i.e., use the fact that the second EE of $\psi_{DR-CSM}$ is equal to 0 to show that the fourth EE is equal to 0. So need to simplify the second EE such that we get an $E\{ Y(a) \}$ and a $E(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T})$ towards the end. Before we utilized $E(Y | \bm{A}, \bm{L}, \bm{\Delta}) = E(Y | \bm{L}, \bm{\Delta})$. Now we utilize $E(Y | \bm{A}, \bm{L}, \bm{\Delta}) = E(Y | \bm{A}, \bm{L})$ instead.
-
-Consider two elements of the second estimating equation of $\psi_{DR-CSM}$, and define $\beta^{*}$ such that
-\begin{align*}
-0 &= \text{E} \bigg[\frac{d\hat{F}(\bm{A}^{*})}{d\hat{F}(\bm{A}^{*} | \bm{L})} \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*})\} (1, \bm{\Delta})^{T} \bigg] \\
-&= \text{E} \left( \text{E} \bigg[\frac{d\hat{F}(\bm{A}^{*})}{d\hat{F}(\bm{A}^{*} | \bm{L})} \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \} (1, \bm{\Delta})^{T} \middle| \bm{L} \bigg] \right) \\
-&= \text{E} \left [ \int_{\bm{a}} \frac{d\hat{F}(\bm{a} + \epsilon_{me})}{d\hat{F}(\bm{a} + \epsilon_{me} | \bm{L})} \text{E} [ \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \} (1, \bm{\Delta})^{T} | \bm{A} = \bm{a}, \bm{L} ] dF_{0}(\bm{a} | \bm{L}) \right ] \\
-&= \text{E} \left \{ \int_{\bm{a}} \frac{dF_{0}(\bm{a} | \bm{L})}{d\hat{F}(\bm{a} + \epsilon_{me} | \bm{L})} \text{E} [ \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \} (1, \bm{\Delta})^{T} | \bm{A} = \bm{a}, \bm{L} ] d\hat{F}(\bm{a} + \epsilon_{me}) \right \} \\
-&= \int_{\bm{a}} \frac{dF_{0}(\bm{a} | \bm{L})}{d\hat{F}(\bm{a} + \epsilon_{me} | \bm{L})} \text{E} ( \text{E} [ \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \} | \bm{A} = \bm{a}, \bm{L}, \bm{\Delta} ] (1, \bm{\Delta})^{T} ) d\hat{F}(\bm{a} + \epsilon_{me})  \\
-&= \int_{\bm{a}} \frac{dF_{0}(\bm{a} | \bm{L})}{d\hat{F}(\bm{a} + \epsilon_{me} | \bm{L})} \text{E} \{ \text{E} (Y | \bm{A} = \bm{a}, \bm{L}) - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \} (1, \bm{\Delta})^{T} d\hat{F}(\bm{a} + \epsilon_{me})  \\
-&= \int_{\bm{a}} \frac{dF_{0}(\bm{a} | \bm{L})}{d\hat{F}(\bm{a} + \epsilon_{me} | \bm{L})} [ \text{E} \{ Y(a) \} - \text{E} \{ \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) | \bm{A} = \bm{a}, \bm{L} \} ] (1, \bm{\Delta})^{T} d\hat{F}(\bm{a} + \epsilon_{me})
-\end{align*}
-
-Now simplify
-\begin{align*}
-&\text{E} \{ \text{E}(Y | \textbf{L}, \Delta; \beta^{*}) | \textbf{A} = \textbf{a}, \textbf{L} \} \\
-&= \frac{\beta_{0}^{*} + \textbf{L}\beta_{l}^{*} + \{ \textbf{a} + E(\epsilon_{me} | \bm{A} = \bm{a}, \bm{L}) + (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*}) \Sigma_{me} E( \textbf{Y} | \bm{A} = \bm{a}, \bm{L}) / \sigma^{2} \} \cdot (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*})}{1 + (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*}) \Sigma_{me} (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*})^{T} / \sigma^{2}} \\
-&= \frac{\beta_{0}^{*} + \textbf{L}\beta_{l}^{*} + \textbf{a}\beta_{a}^{*} + \textbf{a}\beta_{al}^{*}\textbf{L}^{T} + ((\beta_{a}^{*} + \textbf{L}\beta_{al}^{*}) \Sigma_{me} (\beta_{0}^{*} + \textbf{L}\beta_{l}^{*} + \textbf{a}\beta_{a}^{*} + \textbf{a}\beta_{al}^{*}\textbf{L}^{T}) / \sigma^{2}) \cdot (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*})}{1 + (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*}) \Sigma_{me} (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*})^{T} / \sigma^{2}} \\
-&= \frac{(\beta_{0}^{*} + \textbf{L}\beta_{l}^{*} + \textbf{a}\beta_{a}^{*} + \textbf{a}\beta_{al}^{*}\textbf{L}^{T}) \cdot \{ 1 + (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*}) \Sigma_{me} (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*})^{T} / \sigma^{2} \}}{1 + (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*}) \Sigma_{me} (\beta_{a}^{*} + \textbf{L}\beta_{al}^{*})^{T} / \sigma^{2}} \\
-&= \beta_{0}^{*} + \textbf{L}\beta_{l}^{*} + \textbf{a}\beta_{a}^{*} + \textbf{a}\beta_{al}^{*}\textbf{L}^{T}
-\end{align*}
-
-So
-\begin{equation*}
-0 = \int_{\bm{a}} \frac{dF_{0}(\bm{a} | \bm{L})}{d\hat{F}(\bm{a}^{*} + \epsilon_{me} | \bm{L})} [ \text{E} \{ Y(a) \} - (\beta_{0}^{*} + \textbf{L}\beta_{l}^{*} + \textbf{a}\beta_{a}^{*} + \textbf{a}\beta_{al}^{*}\textbf{L}^{T}) ] (1, \bm{\Delta})^{T} d\hat{F}(\bm{a} + \epsilon_{me})
-\end{equation*}
-
-This doesn't seem quite the same as the non-ME setting. Did I lose track of an expectation somewhere?
-
-...Thus, the DR-CSM estimator is consistent and asymptotically normal as long as one of the propensity and outcome models is correctly specified. The estimator of the asymptotic variance is given by the usual sandwich variance estimator.
+The large sample properties of the DR CSM estimator follow directly from the results in A.1 and A.2 and from \citet{kang2007}. In particular, when the outcome regression is correctly specified, the weights will affect the efficiency of the estimator, but it will remain consistent. Likewise, when the propensity model is correctly specified, the weighting will ensure that the model is fit in a pseudo-population where no confounding is present. Thus, the estimated outcome model coefficients will converge to the MSM parameters (as long as the outcome model includes an intercept and main effect for exposure, which should be standard for applying this estimator) and the estimator will again be consistent. Therefore, this estimator is doubly-robust. The estimator of the asymptotic variance is given by the usual sandwich variance estimator.
 
 \subsubsection{Relationship to classical causal estimators}
 
-Once again, under no measurement error the CSM equations reduce to the score equations of a GLM (here a linear model). Thus the proposed DR CSM estimator will reduce to the DR estimator described in \citet{kang2007} where the specified outcome regression is a linear model.
-
-\subsubsection{Alternative DR estimator}
-
-A second DR estimator, similar to those described in \citet{robins2000b} and \citet{neugebauer2005}, is given by the solution to the set of estimating equations \newline $\sum_{i=1}^{n} \psi_{DR-CSM-alt}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta_{DR-alt}) = 0$ where $\Theta_{DR-alt} = \Theta_{IPW}$ and
-\footnotesize
-\begin{equation*}
-    \psi_{DR-CSM-alt}(Y, \bm{L}, \bm{A}^{*}, \Theta_{DR-alt}) =
-    \begin{bmatrix}
-       SW \{ Y - \text{E}(Y | \bm{\Delta}) - Q(\bm{A}^{*}, \bm{L}) \} + \int_{\bm{a}} dF(\bm{a})Q(\bm{a}, \bm{L})d\mu (\bm{a}) \\
-       SW \{ Y - \text{E}(Y | \bm{\Delta}) - Q(\bm{A}^{*}, \bm{L}) \} \bm{\Delta} + \int_{\bm{a}} dF(\bm{a})Q(\bm{a}, \bm{L})d\mu (\bm{a})
-    \end{bmatrix},
-\end{equation*}
-\normalsize
-$dF(\bm{a})$ is the numerator of the stabilized weights, $d\mu (\bm{a})$ is an appropriate measure (Lebesgue if all exposures are continuous), and $Q(\bm{A}, \bm{L}) = \beta_{0} + \bm{A} \beta_{a} + \bm{L} \beta_{l} + \bm{A} \beta_{al}\bm{L}^{T} - \gamma (1, \bm{A})^{T}$ when the outcome regression is specified in a similar way to that used for the DR CSM estimator (main effects for exposures and confounders, as well as relevant interactions). Note the second DR estimator targets the same MSM parameter estimand as the IPW estimator and is consistent if either (i) the MSM and propensity model are correctly specified or (ii) the MSM and outcome model are correctly specified. The MSM and outcome model should be compatible; these compatible scenarios should largely line up with the scenarios where the DR CSM estimator is used, such as when both the MSM and outcome model use an identity link. However, the DR CSM estimator is much easier to calculate in practice.
+Under no measurement error the CSM equations reduce to the score equations of a GLM (here a linear model). Thus the proposed DR CSM estimator will reduce to the DR estimator described in \citet{kang2007} where the specified outcome regression is a linear model.
 
 \subsection{Uniqueness of EE solutions}
 
@@ -259,7 +188,7 @@ The proofs above showing consistency and asymptotic normality of the proposed es
 
 Many studies (including the HVTN 505 trial) use a two-phase sampling design. Such a design is particularly useful when the primary exposure(s) and outcome are easy to measure, but exposures and covariates of secondary interest are expensive or difficult to measure. Because each of the proposed methods above belongs to the estimating equation framework, it is straightforward to incorporate previously described methods for causal inference from studies with two-phase sampling. In this section, one such approach is demonstrated using a simulation study. In particular, for this simulation and the application section analysis, a simple inverse probability of sampling weights method is used~\citep{wang2009}.
 
-The method is implemented by weighting each individual's contribution to the estimating equations by the inverse probability of selection for the second-phase of the study (multiplying treatment weights by sampling weights for the IPW-CSM and DR-CSM estimators) and restricting the analysis to those selected. This method is a good choice for the subset of the HVTN 505 trial that is the focus of Section 5 of the main paper, particularly because all exposures of interest were measured in the second-phase sub-sample and no exposures were measured in the full sample.
+The method is implemented by weighting each individual's contribution to the estimating equations by the inverse probability of selection for the second-phase of the study (multiplying treatment weights by sampling weights for the IPW-CSM and DR-CSM estimators) and restricting the analysis to those selected. This method is well-suited for the subset of the HVTN 505 trial that is the focus of Section 5 of the main paper, particularly because all exposures of interest were measured in the second-phase sub-sample and no exposures were measured in the full sample.
 
 \subsection{Two-phase sampling simulations}
 

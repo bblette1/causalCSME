@@ -505,3 +505,14 @@ ggplot(latdat2, aes(x = vals, y = Risk)) +
   xlab("Exposure values") + ylab("HIV risk at study end") +
   ylim(c(0, 0.25)) +
   theme_bw()
+
+# Shorter
+ggplot(latdat2[latdat2$ME != 0.25, ], aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(ME ~ Exposure, scales = "free",
+             labeller = label_bquote(sigma[me]^2 == .(ME) * sigma^2)) +
+  #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(0, 0.25)) +
+  theme_bw()

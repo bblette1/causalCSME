@@ -34,6 +34,19 @@ Dagalp, R.~E. (2001).
   interaction terms.
 \newblock {\em Doctoral Dissertation, North Carolina State University} .
 
+<<<<<<< HEAD
+=======
+\bibitem[\protect\citeauthoryear{Decamp, Rolland, Edlefsen, Sanders-Buell,
+  Hall, Magaret, Fiore-Gartland, Juraska, Carpp, Karuna, et~al\mbox{.}}{Decamp
+  et~al.}{2017}]{decamp2017}
+Decamp, A.~C., Rolland, M., Edlefsen, P.~T., Sanders-Buell, E., Hall, B.,
+  Magaret, C.~A., Fiore-Gartland, A.~J., Juraska, M., Carpp, L.~N., Karuna,
+  S.~T., et~al. (2017).
+\newblock Sieve analysis of breakthrough {HIV-1} sequences in {HVTN} 505
+  identifies vaccine pressure targeting the cd4 binding site of env-gp120.
+\newblock {\em PloS One} {\bf 12,} e0185959.
+
+>>>>>>> main
 \bibitem[\protect\citeauthoryear{Edwards, Cole, Westreich, Crane, Eron,
   Mathews, Moore, Boswell, Lesko, Mugavero, et~al\mbox{.}}{Edwards
   et~al.}{2015}]{edwards2015multiple}
@@ -59,7 +72,11 @@ Fong, Y., Shen, X., Ashley, V.~C., Deal, A., Seaton, K.~E., Yu, C., Grant,
 Hammer, S.~M., Sobieszczyk, M.~E., Janes, H., Karuna, S.~T., Mulligan, M.~J.,
   Grove, D., Koblin, B.~A., Buchbinder, S.~P., Keefer, M.~C., Tomaras, G.~D.,
   et~al. (2013).
+<<<<<<< HEAD
 \newblock Efficacy trial of a {DNA/rAd5} {HIV-1} preventive vaccine.
+=======
+\newblock Efficacy trial of a dna/rad5 {HIV-1} preventive vaccine.
+>>>>>>> main
 \newblock {\em New England Journal of Medicine} {\bf 369,} 2083--2092.
 
 \bibitem[\protect\citeauthoryear{Hern{\'a}n, Brumback, and Robins}{Hern{\'a}n
@@ -91,7 +108,11 @@ Hong, H., Rudolph, K.~E., and Stuart, E.~A. (2017).
   et~al.}{2017}]{janes2017}
 Janes, H.~E., Cohen, K.~W., Frahm, N., De~Rosa, S.~C., Sanchez, B., Hural, J.,
   Magaret, C.~A., Karuna, S., Bentley, C., Gottardo, R., et~al. (2017).
+<<<<<<< HEAD
 \newblock Higher {T-cell} responses induced by {DNA/rAd5 HIV-1} preventive
+=======
+\newblock Higher t-cell responses induced by dna/rad5 {HIV-1} preventive
+>>>>>>> main
   vaccine are associated with lower {HIV-1} infection risk in an efficacy
   trial.
 \newblock {\em The Journal of Infectious Diseases} {\bf 215,} 1376--1385.
@@ -182,7 +203,11 @@ Nakamura, T. (1990).
   et~al.}{2019}]{neidich2019}
 Neidich, S.~D., Fong, Y., Li, S.~S., Geraghty, D.~E., Williamson, B.~D., Young,
   W.~C., Goodman, D., Seaton, K.~E., Shen, X., Sawant, S., et~al. (2019).
+<<<<<<< HEAD
 \newblock Antibody {Fc} effector functions and {IgG3} associate with decreased
+=======
+\newblock Antibody fc effector functions and igg3 associate with decreased
+>>>>>>> main
   {HIV-1} risk.
 \newblock {\em Journal of Clinical Investigation} {\bf 129,} 4838--4849.
 
@@ -206,7 +231,11 @@ Robins, J.~M., Rotnitzky, A., and Zhao, L.~P. (1994).
   Hudgens}{2020}]{saul2017}
 Saul, B. and Hudgens, M. (2020).
 \newblock The calculus of {M-Estimation in R} with geex.
+<<<<<<< HEAD
 \newblock {\em Journal of Statistical Software} {\bf 92,} 1--15.
+=======
+\newblock {\em Journal of Statistical Software, Articles} {\bf 92,} 1--15.
+>>>>>>> main
 
 \bibitem[\protect\citeauthoryear{Shu and Yi}{Shu and Yi}{2019}]{shu2019}
 Shu, D. and Yi, G.~Y. (2019).
