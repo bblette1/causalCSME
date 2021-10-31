@@ -51,12 +51,13 @@
 
 %packages
 
-\usepackage{amsmath}
+\usepackage{amsmath,amsfonts,amssymb}
 %\usepackage{biblatex}
 \usepackage{bm}
 \usepackage{hyperref}
 \usepackage{graphicx}
 %\usepackage{natbib}
+%\usepackage{subcaption}
 
 %  The rotating package allows you to have tables displayed in landscape
 %  mode.  The rotating package is NOT included in this distribution, but
@@ -194,7 +195,7 @@ $^{2}$Department of Biostatistics, University of Washington and Fred Hutchinson 
 %  put the summary for your paper here
 
 \begin{abstract}
-Confounding and measurement error are common barriers to drawing causal inference. While there are broad methodologies for addressing each phenomenon individually, confounding and measurement biases frequently co-occur and there is a paucity of methods that address them simultaneously. The few existing methods that do so rely on supplemental data or strong distributional and extrapolation assumptions to correct for measurement error. In this paper, methods are derived which instead leverage the likelihood structure under classical additive measurement error to draw inference using only measured variables. Three estimators are proposed based on g-computation, inverse probability weighting, and doubly-robust estimation techniques. The estimators are shown to be consistent and asymptotically normal and the doubly-robust estimator is shown to exhibit its namesake property. The methods perform well in finite samples under both confounding and measurement error as demonstrated by simulation studies. The proposed doubly-robust estimator is applied to study the effects of two biomarkers on HIV-1 infection using data from the HVTN 505 vaccine trial.
+Confounding and measurement error are common barriers to drawing causal inference. While there are broad methodologies for addressing each phenomenon individually, confounding and measurement biases frequently co-occur and there is a paucity of methods that address them simultaneously. The few existing methods that do so rely on supplemental data or strong distributional and extrapolation assumptions to correct for measurement error. In this paper, methods are derived which instead leverage the likelihood structure under classical additive measurement error to draw inference using only measured variables. Three estimators are proposed based on g-computation, inverse probability weighting, and doubly-robust estimation techniques. The estimators are shown to be consistent and asymptotically normal, and the doubly-robust estimator is shown to exhibit its namesake property. The methods perform well in finite samples under both confounding and measurement error as demonstrated by simulation studies. The proposed doubly-robust estimator is applied to study the effects of two biomarkers on HIV-1 infection using data from the HVTN 505 vaccine trial.
 \end{abstract}
 
 %  Please place your key words in alphabetical order, separated
@@ -237,40 +238,42 @@ Confounding bias and measurement error are common barriers to identification, es
 
 The measurement error literature is commonly split into (i) functional methods, which make no or limited assumptions on the distribution of mismeasured variables, and (ii) structural methods, which make explicit distributional assumptions~\citep{carroll2006}. Several causal methods based on structural approaches have been developed (\citealp{kuroki2014,edwards2015multiple,braun2017}; \citealp*{hong2017}). Likewise, three of the four most popular functional methods (regression calibration, SIMEX, and methods based on instrumental variables) have been adapted to a variety of causal problems (\citealp*{vansteelandt2009}; \citealp{cole2010,kendall2015,lockwood2015,kyle2016,wu2019}). These methods all rely on either supplemental data, such as replication, validation, or instrumental data, or on strong distributional and extrapolation assumptions to draw inference.
 
-In contrast, the fourth main functional approach, that of score functions, leverages the likelihood structure under classical additive measurement error to draw inference without supplemental data or such strong assumptions. Despite this advantage, this method has only been adapted to perform causal inference in very limited capacity, perhaps due to its increased complexity over other functional approaches and lack of available software. In particular, \citet*{mccaffrey2013} suggested using weighted conditional score equations to correct for measurement error in confounders and the approach was eventually implemented in \citet{shu2019}. In this paper, we expand this methodology in multiple directions, considering exposure/treatment measurement error and defining g-formula, IPW, and doubly-robust estimators.
+In contrast, the fourth main functional approach, that of score functions, leverages the likelihood structure under classical additive measurement error to draw inference without supplemental data or strong assumptions. Despite this advantage, this method has only been adapted to perform causal inference in very limited capacity. In particular, \citet*{mccaffrey2013} suggested using weighted conditional score equations to correct for measurement error in confounders and the approach was eventually implemented in \citet{shu2019}. In this paper, this methodology is expanded in multiple directions by considering exposure/treatment measurement error and defining g-formula, inverse probability weighted (IPW), and doubly-robust (DR) estimators.
 
-The proposed methods are motivated by the HVTN 505 vaccine trial. This trial evaluated a candidate HIV vaccine and stopped administering immunizations in 2013 after reaching predetermined cutoffs for futility~\citep{hammer2013}. However, follow-up analyses of trial data described several correlates of risk among trial participants~\citep{decamp2017,janes2017,fong2018,neidich2019}. Some of these biomarkers correspond to possible target immune responses for future vaccine trials, but their causal effects on HIV-1 infection have not been described. The methods derived in this paper are motivated by this problem, where the biomarkers are measured with error and their effects are likely subject to confounding, but there is no supplemental data available.
+The proposed methods are motivated by the HVTN 505 vaccine trial. This HIV vaccine efficacy trial stopped administering immunizations early after reaching predetermined cutoffs for efficacy futility~\citep{hammer2013}. However, subsequent analyses of trial data identified several immunologic biomarker correlates of risk among HIV vaccine recipients~\citep{janes2017,fong2018,neidich2019}. Some of these biomarkers correspond to possible target immune responses for future vaccines, but their causal effects on HIV-1 infection have not been described. The methods derived in this paper are motivated by this problem, where the biomarkers are measured with error and their effects are likely subject to confounding, but there are no supplemental data available.
 
 This paper proceeds as follows. In Section 2 notation and the estimand are defined. In Section 3 assumptions are stated and three estimators that adjust for concurrent confounding and exposure measurement error using a conditional score approach are proposed. In Section 4 the proposed estimators are evaluated in a simulation study, and in Section 5 one of the estimators is applied to study two biomarkers collected in the HVTN 505 vaccine trial. Section 6 concludes with a discussion of the advantages and limitations of the proposed methods.
 
 \section{Notation and Estimand}
 \label{s:notation}
 
-Suppose there are $m$ exposures/treatments of interest which may or may not be measured correctly. Let $\bm{A}_{i} = (A_{i1}, A_{i2}, ..., A_{im})$ be a row vector denoting the true exposures for individual $i$ and $\bm{A}^{*}_{i} =  (A^{*}_{i1}, A^{*}_{i2}, ..., A^{*}_{im})$ be the corresponding set of measured exposures. Suppose only the first $j$ exposures are measured with error, such that $A_{ik} = A^{*}_{ik}$ for $k > j$. For example, in the HVTN 505 trial, a biomarker of interest $A$ is antibody-dependent cellular phagocytosis activity. This biomarker was not observed exactly, but an imperfect phagocytic score $A^{*}$ was measured using flow cytometry analysis. Exposures subject to measurement error are assumed to be continuous random variables, while exposures known to be correctly measured may be continuous or discrete. Let $Y_{i}$ be the outcome of interest. Define $Y_{i}(\bm{a})$ to be the potential outcome under treatments $\bm{A} = \bm{a} = (a_{1}, a_{2}, ..., a_{m})$. Since there is at least one continuous exposure, each individual has infinite potential outcomes. Let $\bm{L}_{i} =  (L_{i1}, L_{i2}, ..., L_{ip})$ represent a vector of baseline covariates measured prior to the exposures. Assume that $n$ i.i.d. copies of the random variables $(\bm{L}, \bm{A}^{*}, Y)$ are observed.
+Suppose there are $m$ exposures/treatments of interest which may or may not be measured correctly. Let $\bm{A} = (A_{1}, A_{2}, ..., A_{m})$ be a row vector denoting the true exposures and $\bm{A}^{*} =  (A^{*}_{1}, A^{*}_{2}, ..., A^{*}_{m})$ be the corresponding set of measured exposures. Suppose only the first $j$ exposures are measured with error, such that $A_{k} = A^{*}_{k}$ for $k > j$. For example, in the HVTN 505 trial, a biomarker of interest $A$ is antibody-dependent cellular phagocytosis activity. This biomarker was not observed exactly, but an imperfect phagocytic score $A^{*}$ was measured. Exposures subject to measurement error are assumed to be continuous random variables, while exposures known to be correctly measured may be continuous or discrete. Let $Y$ be the outcome of interest. Define $Y(\bm{a})$ to be the potential outcome under exposure $\bm{A} = \bm{a} = (a_{1}, a_{2}, ..., a_{m})$. Assuming $j \geq 1$, there is at least one continuous exposure and each individual has infinite potential outcomes. Let $\bm{L} =  (L_{1}, L_{2}, ..., L_{p})$ represent a vector of baseline covariates measured prior to exposure. Assume that $n$ i.i.d. copies of the random variables $(\bm{L}, \bm{A}^{*}, Y)$ are observed.
 
-Consider the marginal structural model (MSM)
+The estimand of interest is the mean dose-response surface, namely $\text{E}\{ Y(\bm{a}) \}$ for $\bm{a} \in \bm{\mathcal{A}}$ where $\bm{\mathcal{A}}$ represents the $m$-dimensional space of exposure values of interest. For example, with one exposure, $\text{E}\{ Y(\bm{a}) \}$ may be a dose response curve across a closed interval of exposure values. Each of the proposed estimators described in this paper will make assumptions that explicitly or implicitly impose restrictions on the surface. For example, the proposed IPW estimator will target the parameters of a marginal structural model (MSM) given by
 \begin{equation}
     g(\text{E}[Y(\bm{a})]) = \gamma (1, \bm{a})^{T}
 \end{equation}
-where $g$ is a link function for an exponential family density, e.g., $g(\cdot) = \text{logit}(\cdot)$. The MSM parameter $\gamma = (\gamma_{0}, ..., \gamma_{m})$ is a row vector of length $m+1$ which quantifies the effects of the exposures on the outcome. The parameter $\gamma_{0}$ describes the mean outcome when all exposures are set to 0, which may or may not be of interest depending on the exposures being studied. The linear structure of the MSM is key to employing the conditional score framework described in the next section; more complicated specifications are considered in Web Appendix D.
+where $g$ is a link function for an exponential family density, e.g., $g(\cdot) = \text{logit}(\cdot)$. The MSM parameter $\gamma = (\gamma_{0}, ..., \gamma_{m})$ is a row vector of length $m+1$ which quantifies the effects of the exposures on the outcome. Thus the IPW estimator assumes the dose-response surface is linear on the scale of the link function. The linearity assumption facilitates use of the conditional score method (CSM) described in the next section; estimation procedures for non-linear MSM specifications are considered in Web Appendix D. The g-formula and doubly-robust estimators will not make this linearity assumption, but they will make an outcome regression assumption that implicitly places restrictions on the dose-response surface.
+
+In general, let $F(x)$ denote $P(X \leq x)$ and $F(w | X)$ denote $P(W \leq w | X)$ for any random variables $X$ and $W$. The proposed methods in Section 3 rely on the CSM modeling assumptions described in Section 3.1 as well as a standard set of assumptions used in causal inference: (i) causal consistency, $Y = Y(\bm{a})$ when $\bm{A} = \bm{a}$; (ii) conditional exchangeability, $Y(\bm{a}) \perp \!\!\! \perp \bm{A} | \bm{L}$; and (iii) positivity, $dF(\bm{a} | \bm{l}) > 0$ for all $\bm{l}$ such that $dF(\bm{l}) > 0$. In addition, assume that the outcome and covariates are not measured with error and that there is no model mis-specification unless otherwise stated.
 
 \begin{figure}
 \centering
-\includegraphics[width=6in]{Paper1_Fig1.png}
-\caption{Assumed directed acyclic graph (DAG) structure with variables defined in section 2 and $U$ corresponding to measurement error. (a) A general DAG where $\bm{A}$ is a vector of exposures, some of which may be mismeasured (indicated by the arrow to $\bm{A}^{*}$) and some of which may be subject to confounding bias (indicated by the arrows from $\bm{L}$ to $\bm{A}$ and Y). (b) A DAG for a specific exposure vector with four different types of exposures: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed methods.}
+\fbox{\includegraphics[width=\textwidth]{DAG_eps2.png}}
+\caption{An example directed acyclic graph (DAG), with variables defined in Section 2 and $\epsilon_{me_{1}}$ and $\epsilon_{me_{4}}$ corresponding to measurement error. This DAG represents a scenario with $m=4$ exposures, one each of the following: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). In this case, $A_{2} = A^{*}_{2}$ and $A_{3} = A^{*}_{3}$ since they are both measured without error.}
 \label{fig:one}
 \end{figure}
 
-A compressed version of the directed acyclic graph (DAG) for this setup is presented in Figure~\ref{fig:one}(a). Note that the DAG implies non-differential measurement error with respect to the outcome, i.e., the exposure error and the outcome are independent because $\bm{A}^{*}$ is a collider on all paths between them. In Figure~\ref{fig:one}(b), the DAG is expanded to show the four types of exposures which may belong to $\bm{A}$: unconfounded and correctly measured, unconfounded and mismeasured, confounded and correctly measured, and confounded and mismeasured. Many existing methods focus on only mismeasured exposures or on a set of correctly measured exposures with one additional mismeasured exposure; the methods developed in this paper provide a more broadly usable modeling framework where all four types of exposures can be studied simultaneously.
+The methods proposed in this paper are applicable in settings such as the example directed acyclic graph (DAG) in Figure 1. The methods can accommodate the four types of exposures in the DAG: unconfounded and correctly measured, unconfounded and mismeasured, confounded and correctly measured, and confounded and mismeasured. Here and throughout, exposure measurement error is assumed non-differential with respect to the outcome, e.g., in Figure~\ref{fig:one}, $\epsilon_{me_{1}}, \epsilon_{me_{4}} \perp \!\!\! \perp Y$ because the corresponding measured exposures $A^{*}_{1}$ and $A^{*}_{4}$ are colliders on all paths between the errors and the outcome. Many existing methods that adjust for both confounding and measurement biases focus on only mismeasured exposures or on a set of correctly measured exposures with one additional mismeasured exposure; the methods developed in this paper provide a more broadly usable modeling framework where all four types of exposures represented in Figure~\ref{fig:one} can be analyzed simultaneously.
 
 \section{Methods}
 \label{s:methods}
 
-\subsection{Review of Conditional Score Approach}
+The proposed methods combine existing methods for (i) correcting exposure measurement error using CSM and (ii) adjusting for confounding using g-formula, inverse probability weighting, and doubly-robust techniques. To begin, CSM is briefly reviewed.
 
-The proposed methods combine existing methods for (i) correcting exposure measurement error using conditional score equations (CSME) and (ii) adjusting for confounding using g-formula, inverse probability weighting (IPW), and doubly-robust techniques. To begin, CSME methodology is briefly reviewed.
+\subsection{Review of Conditional Score Method}
 
-Suppose the conditional density of the outcome on exposures and covariates is in the exponential family~\citep{mccullagh1989}, i.e., $f(y | \bm{a}, \bm{l}, \Theta) = \exp [ \{y\eta - \mathcal{D}(\eta)\}/ \phi + c(y, \phi) ]$ where $\eta = \beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l}$, $\mathcal{D}$ and $c$ are functions, $\bm{a}$ and $\bm{l}$ are realizations of the random variables $\bm{A}$ and $\bm{L}$, and $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \phi)$ represents the parameters to be estimated. Assume a classical additive measurement error model $\bm{A}^{*} = \bm{A} + \epsilon_{me}$, where $\epsilon_{me}$ is multivariate normal with mean zero and covariance matrix $\Sigma_{me}$. To account for $A_{j+1}, ...,  A_{m}$ being correctly measured, assume $\Sigma_{me}$ has the block diagonal form
+Suppose the conditional density of the outcome given exposures and covariates is in the exponential family~\citep{mccullagh1989}, i.e., $f(y | \bm{a}, \bm{l}, \Theta) = \exp [ \{y\eta - \mathcal{D}(\eta)\}/ \phi + c(y, \phi) ]$ where $\eta = \beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l}$, $\mathcal{D}$ and $c$ are functions, and $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \phi)$ represents the parameters to be estimated. Assume a classical additive measurement error model $\bm{A}^{*} = \bm{A} + \epsilon_{me}$, where $\epsilon_{me}$ is multivariate normal with mean zero and covariance matrix $\Sigma_{me}$. To account for $A_{j+1}, ...,  A_{m}$ being correctly measured, assume $\Sigma_{me}$ has the block diagonal form
 \begin{equation*}
     \Sigma_{me} =
     \begin{bmatrix}
@@ -280,182 +283,206 @@ Suppose the conditional density of the outcome on exposures and covariates is in
 \end{equation*}
 where $\Sigma_{e}$ is the measurement error covariance matrix for exposures $A_{1},...,A_{j}$ and $0_{a,b}$ denotes an $a \times b$ matrix of zeros.
 
-The CSME approach leverages the fact that $\bm{\Delta}_{i} = \bm{A}^{*}_{i} + Y_{i}(\Sigma_{me}\beta_{a})^{T}/\phi$ is a sufficient statistic for $\bm{A}_{i}$. Furthermore, the conditional density of the outcome on covariates and the sufficient statistic is in the exponential family with parameters $\eta_{*} = \beta_{0} + \bm{\delta}\beta_{a} + \bm{l}\beta_{l}$, $\mathcal{D}_{*}(\eta_{*}, \phi, \beta_{a}^{T}\Sigma_{me}\beta_{a}) = \phi \log \bigg[ \int \exp \{ y\eta_{*}/\phi + c_{*}(y, \phi,  \beta_{a}^{T}\Sigma_{me}\beta_{a}) \} dy \bigg]$, and $c_{*}(y, \phi, \beta_{a}^{T}\Sigma_{me}\beta_{a}) = c(y, \phi) - \frac{1}{2}(y/\phi)^{2}\beta_{a}^{T}\Sigma_{me}\beta_{a}$, where $\bm{\delta}$ is a realization of $\bm{\Delta}$. This implies that the score equations from the likelihood conditional on $\bm{\Delta}_{i}$ yield consistent estimators for $\beta_{a}$ that only depend on the observed data. The form of the score equations depends on the model specification; the general form is given by
+CSM leverages the fact that $\bm{\Delta} = \bm{A}^{*} + Y(\Sigma_{me}\beta_{a})^{T}/\phi$ is a sufficient statistic for $\bm{A}$. Furthermore, the conditional density of the outcome given covariates $\bm{L} = \bm{l}$ and sufficient statistic $\bm{\Delta} = \bm{\delta}$ is in the exponential family with $\eta_{*} = \beta_{0} + \bm{\delta}\beta_{a} + \bm{l}\beta_{l}$, $\mathcal{D}_{*}(\eta_{*}, \phi, \beta_{a}^{*}) = \phi \log \bigg[ \int \exp \{ y\eta_{*}/\phi + c_{*}(y, \phi, \beta_{a}^{*}) \} dy \bigg]$, and $c_{*}(y, \phi, \beta_{a}^{*}) = c(y, \phi) - \frac{1}{2}(y/\phi)^{2}\beta_{a}^{*}$, where $\beta_{a}^{*} = \beta_{a}^{T}\Sigma_{me}\beta_{a}$. This implies that the score equations from the likelihood conditional on $\bm{\Delta}$ yield consistent estimators for $\beta_{a}$ that only depend on the observed data. The form of the score equations depends on the outcome model specification; the general form is
 \begin{equation}
-    \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
+    \psi(Y, \bm{L}, \bm{A}^{*}, \Theta) =
     \begin{bmatrix}
-       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i})^{T} \\
-        \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \}
+       \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta})^{T} \\
+        \phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}
     \end{bmatrix}
 \end{equation}
-where $\text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) = \partial \mathcal{D}_{*} / \partial \eta_{*}$, $\text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) = \phi \partial^{2} \mathcal{D}_{*} / \partial \eta^{2}_{*}$. This procedure can be extended to handle interaction terms~\citep{dagalp2001} where now $\eta = \beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l} + \bm{a}\beta_{al}\bm{l}^{T}$, $\beta_{al}$ is an $m \times p$ matrix of interaction parameters, $\bm{\Delta}_{i} = \bm{A}_{i}^{*} + Y_{i}\{ \Sigma_{me}(\beta_{a} + \beta_{al}\bm{L}_{i}^{T}) \}^{T}/\phi$, and appropriate elements of $\beta_{al}$ can be constrained to zero such that only relevant interactions are included in the model. Then the same procedure as above can be applied to derive estimating equations of the form
-\begin{equation*}
-    \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
-    \begin{bmatrix}
-       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
-        \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \}
-    \end{bmatrix}
-\end{equation*}
-Here $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, \text{vec}(\beta_{al}), \phi)$, where $\text{vec}$ maps the elements of the interaction parameter matrix reading left to right then top to bottom to a row vector, excluding those constrained to zero. Define $\bm{L}_{i} \otimes \Delta_{i}$ as a vector of length $\dim(\text{vec}(\beta_{al}))$ containing the product of the $k^{th}$ element of $L_{i}$ and the $r^{th}$ element of $\bm{\Delta}_{i}$ if and only if the (r, k) element of $\beta_{al}$ is not constrained to be zero.
+where $\text{E}(Y | \bm{L}, \bm{\Delta}) = \partial \mathcal{D}_{*} / \partial \eta_{*}$ and $\text{Var}(Y | \bm{L}, \bm{\Delta}) = \phi \partial^{2} \mathcal{D}_{*} / \partial \eta^{2}_{*}$. This procedure can be extended to handle interaction terms~\citep{dagalp2001} by letting $\eta = \beta_{0} + \bm{a}\beta_{a} + \bm{l}\beta_{l} + \bm{a}\beta_{al}\bm{l}^{T}$, where $\beta_{al}$ is an $m \times p$ matrix of interaction parameters, $\bm{\Delta} = \bm{A}^{*} + Y\{ \Sigma_{me}(\beta_{a} + \beta_{al}\bm{L}^{T}) \}^{T}/\phi$, and the appropriate elements of $\beta_{al}$ are constrained to zero such that only relevant interactions are included in the model. Then one can derive score equations of the same form as (2), but replacing $(1, \bm{L}, \bm{\Delta})^{T}$ with $(1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T}$ where $\bm{L} \otimes \bm{\Delta}$ is a row vector containing the product of the $k^{th}$ element of $\bm{L}$ and the $r^{th}$ element of $\bm{\Delta}$ if and only if the $(r, k)$ element of $\beta_{al}$ is not constrained to be zero.
 
-Next, three methods will be proposed which combine the CSME approach with common causal inference techniques in order to adjust for confounding and measurement error simultaneously. The proposed methods rely on the CSME modeling assumptions stated above as well as a standard set of assumptions used in causal inference: (i) causal consistency, $Y = Y(\bm{a})$ when $\bm{A} = \bm{a}$; (ii) conditional exchangeability, $Y(\bm{a}) \perp \!\!\! \perp \bm{A} | \bm{L}$; and (iii) positivity, $f(\bm{a} | \bm{l}) > 0$ for all $\bm{l}$ such that $dF_{\bm{L}}(\bm{l}) > 0$, where $F_{\bm{L}}$ is the cumulative distribution function of $\bm{L}$. As represented in the DAG in Figure~\ref{fig:one}(a), the exposure measurement error is assumed non-differential with respect to the outcome. Finally, assume that the outcome and covariates are not measured with error and that there is no model mis-specification unless otherwise stated.
+\subsection{G-formula CSM Estimator}
 
-\subsection{G-formula CSME Estimator}
-
-\sloppy The first proposed method combines the g-formula with the CSME method. Let $\bm{A}_{(-j)} = (A_{1}, ..., A_{j-1}, A_{j+1}, ..., A_{m})$ be the vector of treatments excluding $A_{j}$ and let $Y(a_{j}, \bm{a}_{(-j)})$ be the potential outcome under $A_{j} = a_{j}$ and $\bm{A}_{(-j)} = \bm{a}_{(-j)}$. Then the g-formula CSME estimator of $\gamma_{j}$ for $j = 1,...,m$ is
-\begin{align*}
-    \hat{\gamma_{j}} &= \hat{\text{E}}\{ Y(a_{j}, \bm{a}_{(-j)}) \} - \hat{\text{E}}\{ Y(a_{j} - 1, \bm{a}_{(-j)}) \} \\
-    &= \int_{\bm{l} \in \bm{L}} \hat{\text{E}}(Y | A_{j} = a_{j}, \bm{A}_{(-j)} = \bm{a}_{(-j)}, \bm{L}) d\hat{F}_{\bm{L}}(\bm{l}) \\
-    &- \int_{\bm{l} \in \bm{L}} \hat{\text{E}}(Y | A_{j} = a_{j} - 1, \bm{A}_{(-j)} = \bm{a}_{(-j)}, \bm{L}) d\hat{F}_{\bm{L}}(\bm{l})
-\end{align*}
-where the predicted mean outcomes are from a fit CSME model with relevant interaction terms and $a_{j}$ and $\bm{a}_{(-j)}$ are constants. Equivalently, this estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta) = 0$, where $\Theta = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, \gamma_{1}, ..., \gamma_{m})$ and
+\sloppy The first proposed method combines the g-formula with CSM. When there is no measurement error, the g-formula estimator is $\hat{\text{E}}\{ Y(\bm{a}) \} = n^{-1} \sum_{i=1}^{n} \hat{\text{E}}(Y_{i} | \bm{A} = \bm{a}, \bm{L}_{i})$ where the predicted mean outcomes $\hat{\text{E}}(Y_{i} | \bm{A} = \bm{a}, \bm{L}_{i})$ are typically estimated using parametric models. To accommodate exposure measurement error, the proposed g-formula CSM estimator takes the same form, but instead utilizes a CSM outcome model with relevant covariates and interaction terms. The g-formula CSM estimator can be computed by solving the estimating equation $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{GF}) = 0$, where
 \begin{equation}
-    \psi_{GF-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
+    \psi_{GF-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{GF}) =
     \begin{bmatrix}
-       \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \} (1, \bm{L}_{i}, \bm{\Delta}_{i}, \bm{L}_{i} \otimes \bm{\Delta}_{i})^{T} \\
-        \phi - \{ Y_{i} - \text{E}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) \}^{2} / \{ \text{Var}(Y_{i} | \bm{L}_{i}, \bm{\Delta}_{i}) / \phi \} \\
-        \beta_{a_{1}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{1}} - \gamma_{1} \\
-        \vdots \\
-        \beta_{a_{m}\bm{l}}\bm{l}_{i}^{T} + \beta_{a_{m}} - \gamma_{m} \\
+       \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
+        \phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \} \\
+        g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} +
+        \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}
     \end{bmatrix}
 \end{equation}
-where $\beta_{a} = (\beta_{a_{1}},...,\beta_{a_{m}})^{T}$, $\beta_{al} = (\beta_{a_{1}l}, ..., \beta_{a_{m}l})^{T}$, and $\beta_{a_{j}l}$ is the $1 \times p$ vector of parameters corresponding to interactions between $a_{j}$ and covariates in $\textbf{L}$ for $j = 1,...,m$ (with zeroes for interactions not included in the outcome model).
+and $\Theta_{GF} = (\beta_{0}, \beta^{T}_{a}, \beta^{T}_{l}, vec(\beta_{al}), \phi, \text{E} \{ Y(\bm{a}) \})$. To estimate the dose response surface in practice, one can compute $\hat{\text{E}}\{ Y(\bm{a}) \}$ for a large grid of points $\bm{a}$ in the space of interest.
 
-\subsection{IPW CSME Estimator}
+\subsection{IPW CSM Estimator}
 
-Since the CSME estimator is obtained by solving a set of estimating equations, it's relatively straightforward to define an IPW extension. In particular, consider an estimator of the parameters of interest that solves $\sum_{i=1}^{n} \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) = 0$ where:
+Another common causal inference technique is to weight an estimator by the inverse probability/density of exposure(s) conditional on confounders, which effectively blocks the backdoor paths between exposures and the outcome through the confounder set. Methods that use this technique are typically referred to as IPW methods. Since the CSM estimator can be obtained by solving a set of estimating equations, it's straightforward to define an IPW extension. In particular, consider an estimator of the MSM parameters in (1) that solves $\sum_{i=1}^{n} \psi_{IPW-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta_{IPW}) = 0$ where
 \begin{equation}
-    \psi_{IPW-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \Theta) =
+    \psi_{IPW-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{IPW}) =
     \begin{bmatrix}
-       SW_{i} \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i}) \} (1, \bm{\Delta}_{i})^{T} \\
-       SW_{i} \left [ \phi - \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i})\}^{2} / \{ Var(Y_{i} | \bm{\Delta}_{i}) / \phi \} \right ]
-    \end{bmatrix}
-\end{equation}
-\begin{equation}
-SW_{i} = \frac{f(A_{i1}, A_{i2}, ..., A_{in})}{f(A_{i1}, A_{i2}, ..., A_{in}) | \bm{L}_{i})} = \frac{f(A_{i1})f(A_{i2} | A_{i1}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1})}{f(A_{i1} | \bm{L}_{i})f(A_{i2} | A_{i1}, \bm{L}_{i}), ..., f(A_{in} | A_{i1}, ..., A_{i,n-1}, \bm{L}_{i})}
-\end{equation}
-and the new forms of the conditional expectation and variance follow from setting $\eta_{*} = \gamma_{0} + \bm{\delta}\gamma_{a}$ in the equations in Section 3.1 such that $\hat{\gamma}$ is the solution to (4), along with an additional dispersion parameter estimate. Since weighting eliminates confounding, the estimating equations of (4) are actually simpler than (2) because covariates $\bm{L}$ do not need to be included in the outcome model.
-
-Rather than the factorization used in (6), most MSM with multiple treatments use weights of the form $SW_{i} = \prod_{j=1}^{m} f(A_{ij}) / f(A_{ij} | \bm{L}_{i})$ as originally described by \citet{hernan2001}, which assumes that the treatments are independent conditional on $\bm{L}$. For the simulations and application of this paper, this assumption will be made, but note that such a simplification may be dubious in various applications and will not hold if there are direct arrows between treatments in the DAG. For examples of estimating the joint propensity of various dependent exposures using mixed models, see \citet{tchetgen2012}, \citet{perez2014}, or \citet*{liu2016}. In the remainder of this paper, weights for continuous treatments will be estimated using a ratio of normal densities, but other methods~\citep{hirano2004} and more flexible choices for weight models~\citep{naimi2014} can also be used in general.
-
-Estimating the weights provides an additional challenge in that the exposure measurement error has another opportunity to introduce bias. Fortunately, the exposures are now the propensity model(s) outcomes, and measurement error is usually much less serious for a model outcome than for model covariates~\citep{carroll2006}. In Web Appendix A, the proposed IPW CSME estimator is shown to be consistent even when the propensity models are fit using the mismeasured exposures without correction, under certain assumptions.
-
-\subsection{Doubly-Robust CSME Estimator}
-
-In the absence of measurement error, both the g-formula and IPW methods rely on model specifications that may not be correct in practice. The g-formula provides consistent estimation of potential outcome means only when the outcome model with exposures and confounders is correctly specified. Likewise, the IPW estimator is consistent only when the propensity score model is correctly specified. In contrast, doubly-robust (DR) estimators entail specifying both propensity and outcome models, but remain consistent if one is misspecified and the other is not (\citealp*{robins1994}; \citealp{lunceford2004,bang2005}).
-
-A DR estimator for the additive measurement error setting can be written similarly to those described in \citet{robins2000b} and \citet{neugebauer2005} as the solution to the set of estimating equations $\sum_{i=1}^{n} \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) = 0$ where:
-\begin{equation*}
-    \psi_{DR-CSME}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta) =
-    \begin{bmatrix}
-       SW_{i} \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i}) - Q(\bm{A}_{i}, \bm{L}_{i}) \} + \int_{\bm{a}} h(\bm{a})Q(\bm{a}, \bm{L}_{i})d\mu (\bm{a}) \\
-       SW_{i} \{ Y_{i} - E(Y_{i} | \bm{\Delta}_{i}) - Q(\bm{A}_{i}, \bm{L}_{i}) \} \bm{\Delta}_{i} + \int_{\bm{a}} h(\bm{a})Q(\bm{a}, \bm{L}_{i})d\mu (\bm{a})
+        \psi_{PS}(\bm{L}, \bm{A}^{*}, \xi, \zeta) \\
+       SW \{ Y - \text{E}(Y | \bm{\Delta}) \} (1, \bm{\Delta})^{T} \\
+       SW \left [ \phi - \{ Y - \text{E}(Y | \bm{\Delta})\}^{2} / \{ \text{Var}(Y | \bm{\Delta}) / \phi \} \right ]
     \end{bmatrix},
-\end{equation*}
-$h(\bm{a})$ is the numerator of the stabilized weights, $d\mu (\bm{a})$ is a Lebesgue measure, and $Q(\bm{A}, \bm{L})$ is a function of $\bm{A}$ and $\bm{L}$. This estimator is doubly-robust in the sense that it is consistent if either the weights $SW$ are derived from correctly specified propensity models or if the outcome regression is a correctly specified CSME model, given by $Q(\bm{A}, \bm{L}) = \beta_{0} + \beta_{a}\bm{A} + \beta_{l}\bm{L} + \beta_{al}(\bm{A} \otimes \bm{L}^{T}) - \psi^{T}(1, \bm{A}^{T})^{T}$. See Web Appendix A for more details.
+\end{equation}
+\begin{equation}
+SW = \frac{dF(\bm{A}^{*}; \xi)}{dF(\bm{A}^{*} | \bm{L}; \zeta)},
+\end{equation}
+$\Theta_{IPW} = (\xi, \zeta, \gamma_{0}, \gamma^{T}_{a}, \phi)$, $\psi_{PS}(\bm{L}, \bm{A}^{*}, \xi, \zeta)$ is an estimating function corresponding to propensity score models with parameters $\xi$ and $\zeta$, and $\gamma_{0}$ and $\gamma_{a}$ are the MSM parameters from (1). Heuristically, weighting works by creating a pseudo-population where confounding is no longer present. For continuous exposures, this is accomplished by weighting by the inverse of the joint density of exposures conditional on confounders. The unconditional joint density in the numerator of $SW$ is used to stabilize the weights. Since weighting eliminates confounding, the estimating equations of (4) are actually simpler than (2) because covariates $\bm{L}$ do not need to be included in the outcome model. Thus, the conditional expectation and variance nested in (4) are not conditional on $\bm{L}$ as they were in (2) and (3), and the equations are indexed by the MSM parameters of interest $\gamma_{0}$ and $\gamma_{a}$ rather than the $\beta$ parameters from equations (2) and (3). The new forms of the conditional expectation and variance follow from setting $\eta_{*} = \gamma_{0} + \bm{\delta}\gamma_{a}$ in the equations in Section 3.1.
+
+Methods for fitting MSM with multiple treatments often use weights of the form $SW = \prod_{j=1}^{m} dF(A^{*}_{j}) / dF(A^{*}_{j} | \bm{L})$, e.g., as in \citet{hernan2001}; to factorize the denominator in this way, the $m$ exposures $A_{1}, \ldots, A_{m}$ are assumed to be independent conditional on $\bm{L}$. This assumption will be made in the simulation study, but it may be dubious in various applications, such as when a treatment has a direct effect on another treatment or when treatments have an unmeasured common cause. The assumption does have testable implications; see \citet{zhang2012} for a related testing procedure. For examples of instead estimating the joint propensity of dependent binary exposures using mixed models, see \citet{tchetgen2012}, \citet{perez2014}, or \citet*{liu2016}. If a subset of exposure effects are not subject to confounding, then those exposures do not need to be included in the product defining $SW$.
+
+When the weights $SW$ are known, $\psi_{PS}$ can be removed from $\psi_{IPW-CSM}$. In practice, the weights are usually not known and must be estimated. Models used to estimate weights will be referred to as propensity models and weight components corresponding to continuous exposures will be constructed using a ratio of normal densities estimated from linear models~\citep{hirano2004}. To illustrate this, first consider the setting where the true exposures are observed. For continuous exposure $A_{j}$, a model of the form $A_{j} = \zeta (1, \bm{L})^{T} + \epsilon_{ps}$ might be used, where $\epsilon_{ps} \sim \mathcal{N}(0, \sigma^{2}_{ps})$ and in general $\mathcal{N}(\mu, \nu)$ denotes a normal distribution with mean $\mu$ and variance $\nu$. Then based on the fitted model, the estimated conditional density $f(A_{j} | \bm{L}; \hat{\zeta})$ is used to estimate $dF(A_{j} | \bm{L})$. An intercept-only model is used similarly to estimate the weight numerators. Other methods and more flexible choices for weight models~\citep{naimi2014} can also be used for continuous exposures in practice.
+
+Now consider the exposure measurement error setting, where only $\bm{A}^{*}$ is observed. For the IPW CSM estimator, exposure measurement error has an opportunity to introduce additional bias via the estimation of weights. Fortunately, for weight estimation the exposures are now the propensity model(s) outcomes, and measurement error is usually much less problematic for a model outcome than for model covariates~\citep{carroll2006}. The proposed IPW CSM estimator is shown to be consistent when the propensity models are fit using the mismeasured exposures $\bm{A}^{*}$ in Web Appendix A. Finally, weight components corresponding to discrete exposures (which are assumed to be always correctly measured) can be estimated using common practice approaches, such as logistic and multinomial regression.
+
+\subsection{Doubly-Robust CSM Estimator}
+
+Both g-formula and IPW methods rely on model specifications that may not be correct in practice. The g-formula provides consistent estimation of potential outcome means only when the outcome model conditional on exposures and confounders is correctly specified. Likewise, IPW estimators are consistent only when the propensity score models are correctly specified. In contrast, doubly-robust (DR) estimators entail specifying both propensity and outcome models, but remain consistent if one is misspecified and the other is not (\citealp*{robins1994}; \citealp{lunceford2004,bang2005}).
+
+A DR estimator for the additive measurement error setting with an identity link can be derived as an extension of the doubly-robust standardization procedure described in \citet{vansteelandt2011} and \citet{kang2007}. Namely, one can use the standard g-formula estimator, but specify a weighted outcome regression where the weights are the inverse probability weights given in equation (5). This DR estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = (\zeta, \Theta_{GF})$ and
+\begin{equation}
+    \psi_{DR-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
+    \begin{bmatrix}
+        \psi_{PS}(\bm{L}, \bm{A}^{*}, \zeta) \\
+       SW\{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
+        SW[\phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}] \\
+        \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} +
+        \bm{a}\beta_{al}\bm{L}^{T} - \text{E} \{ Y(\bm{a}) \}
+    \end{bmatrix}
+\end{equation}
+This estimator will be referred to as the DR CSM estimator. If the stabilized weights $SW$ are unknown, they are estimated as described for the IPW CSM estimator; if the weights are known, $\psi_{PS}$ can be removed from $\psi_{DR-CSM}$. Like the g-formula CSM estimator, the DR CSM estimator can be evaluated over a grid of values $\bm{a}$ of interest to estimate a dose-response surface.
 
 \subsection{Handling Unknown Measurement Error Variance}
 
-Although the proposed methods require no supplemental data and no distributional assumption on the true exposures $\bm{A}$, they do require a priori knowledge of the measurement error covariance matrix. Sometimes, this will be known from properties of the measurement tools (e.g., some bioassays, certain widely studied survey instruments) or will be available from a prior study. Here, some guidelines are provided for analyses where this matrix is unknown.
+Although the proposed methods require no supplemental data and no distributional assumption on the true exposures $\bm{A}$, a priori knowledge of the measurement error covariance matrix is required. Sometimes this matrix will be known from properties of the measurement devices (e.g., some bioassays, certain widely studied survey instruments) or will be available from a prior study. Here, some guidelines are provided for analyses where this matrix is unknown.
 
-Firstly, there are many types of studies for which the covariance matrix should be diagonal (i.e., the measurement errors should be uncorrelated). For example, biological assays taken on different samples and analyzed by separate machines/researchers should have uncorrelated measurement errors, and different assays taken on the same sample may often have uncorrelated or very weakly correlated measurement errors. For other types of data such as survey responses, analysts should be more cautious, noting that response bias, recall bias, and other forms of measurement error in survey instruments may be correlated within individuals.
+Firstly, there are many types of studies for which the covariance matrix should be diagonal (i.e., the measurement errors should be uncorrelated). For example, biological assays run on different samples and analyzed by separate machines/researchers should have uncorrelated measurement errors, and different assays run on the same sample may often have uncorrelated or very weakly correlated measurement errors. For other types of data such as survey responses, analysts should be more cautious, noting that response bias, recall bias, and other forms of measurement error in survey instruments may be correlated within individuals.
 
-Many studies do have a small amount of supplemental data, namely replicates of the potentially mismeasured variables. These replicates can be used to estimate $\Sigma_{me}$ as described in \citet{carroll2006}. Suppose there are $k_{i}$ replicates of the mismeasured exposures, $\bm{A}^{*}_{i1}, ..., \bm{A}^{*}_{ik_{i}}$ with mean for individual $i$ notated as $\bm{A}^{*}_{i.}$. Then an estimator for the measurement error covariance is given by:
+Some studies may have available supplemental data in the form of replicates of the potentially mismeasured variables. These replicates can be used to estimate $\Sigma_{me}$ as described in \citet{carroll2006}. In particular, suppose for individual $i$ there are $k_{i}$ replicates of the mismeasured exposures, $\bm{A}^{*}_{i1}, ..., \bm{A}^{*}_{ik_{i}}$ with mean $\bm{A}^{*}_{i.}$. Then an estimator for the measurement error covariance is given by:
 \begin{equation*}
-    \hat{\Sigma}_{me} = \frac{\sum_{i=1}^{n} \sum_{j=1}^{k_{i}} (\bm{A}^{*}_{i} - \bm{A}^{*}_{i.})(\bm{A}^{*}_{i} - \bm{A}^{*}_{i.})^{T}}{\sum_{i=1}^{n}(k_{i} - 1)}
+    \hat{\Sigma}_{me} = \frac{\sum_{i=1}^{n} \sum_{j=1}^{k_{i}} (\bm{A}^{*}_{ij} - \bm{A}^{*}_{i.})^{T}(\bm{A}^{*}_{ij} - \bm{A}^{*}_{i.})}{\sum_{i=1}^{n}(k_{i} - 1)}
 \end{equation*}
-noting that when replicates are available, some of the existing methods described in the introduction are applicable and should give similar results to the proposed methods.
+When replicates are available, some of the existing methods described in the Introduction are applicable and should give similar results to the proposed methods.
 
-When no replicates are available and there is no prior knowledge of $\Sigma_{me}$, the proposed methods can still be used in the context of a sensitivity analysis. Often an upper bound for measurement error variance of individual variables can be ascertained - it is atypical for measurement error variance to be higher than the variance of a variable itself, for example. Once upper bounds are identified or chosen, repeating the proposed methods under a few reasonable $\Sigma_{me}$ specifications yields a sensitivity analysis showing how robust the effect sizes and confidence intervals are to increasing additive measurement error; this procedure is more straightforward when the matrix is small and diagonal and becomes difficult to interpret as the number of parameters grows.
+When no replicates are available and there is no prior knowledge of $\Sigma_{me}$, the proposed methods can still be used in conjunction with a sensitivity analysis. In some settings, an upper bound on the exposure measurement error variance may be assumed; for example, the variance of a correctly measured exposure (if estimated in a prior study) can act as a reasonable upper bound on measurement error variance for the corresponding mismeasured exposure. Once upper bounds are determined, inference may be repeated using the proposed methods for a range of $\Sigma_{me}$ specifications to assess robustness of point estimates and confidence intervals to the degree of assumed measurement error; this procedure is more straightforward when the matrix is small and diagonal, and becomes difficult to interpret as the number of non-zero parameters grows.
 
 \subsection{Large-Sample Properties and Variance Estimation}
 
-In Web Appendix A, each of the three proposed estimators are shown to be consistent and asymptotically normal by showing they are M-estimators and that their corresponding estimating functions have expectation 0~\citep{stefanski2002}. In addition, the DR estimator is shown to be consistent when only one of the propensity and outcome models is correctly specified. Finally, the proposed estimators are shown to be generalizations of existing popular estimators used in the no measurement error setting.
+In Web Appendix A, each of the three proposed estimators are shown to be consistent and asymptotically normal by showing that their corresponding estimating functions have expectation 0~\citep{stefanski2002}. In addition, the DR CSM estimator is shown to be consistent when only one of the propensity and outcome models is correctly specified. Finally, the proposed estimators are shown to be generalizations of existing popular estimators used in the no measurement error setting.
 
-Since each proposed estimator is an M-estimator, consistent estimators of their asymptotic variances are given by the empirical sandwich variance technique. Estimating equations corresponding to the estimation of weights (and $\hat{\Sigma}_{me}$ if estimated) should be added to the estimating equation stacks for each method to achieve nominal coverage rates. The geex R package~\citep{saul2017} streamlines variance estimation for M-estimators and is used in the simulation and application sections. Wald $100(1-\alpha)\%$ confidence intervals for the parameters of interest are then given by $\hat{\psi}_{i} \pm z_{1-\alpha/2} SE(\hat{\psi}_{i})$ where $z_q$ is the q-quantile of the standard normal distribution and $SE(\hat{\psi}_{i})$ is the square root of the $i^{th}$ element of the diagonal of the sandwich covariance matrix. Wald hypothesis testing procedures can be defined similarly.
+Since each proposed estimator is an M-estimator, consistent estimators of their asymptotic variances are given by the empirical sandwich variance technique. Estimating equations corresponding to the estimation of weights (and $\hat{\Sigma}_{me}$ if estimated) should be included in the estimating equation vector for each method when computing the sandwich variance estimator. Wald $100(1-\alpha)\%$ confidence intervals for the parameters of interest can then be constructed in the usual fashion. The geex R package~\citep{saul2017} streamlines variance estimation for M-estimators and is used in the simulation and application sections.
 
 \section{Simulation Study}
 
-The performance of the proposed methods was evaluated in two simulation studies. The first simulation compared the proposed g-formula CSME and IPW CSME approaches to standard methods within a scenario where confounding and additive exposure measurement error were present. A total of 2000 data sets of $n = 800$ individuals were simulated, each with the following variables and distributions: a confounder $L_{1} \sim \text{Bern}(0.5)$, a second confounder $L_{2} \sim \text{Bern}(0.35)$, first true exposure $A_{1} \sim \mathcal{N}(4 + L_{1}, 1)$, second true exposure $A_{2} \sim \mathcal{N}(1.25 + 0.5L_{2}, 0.5)$, third true exposure $A_{3} \sim \mathcal{N}(2.5, 0.7)$ and an outcome $Y \sim \mathcal{N}(-0.1 + 0.3A_{1} + 0.2L_{1} - 0.4A_{2} - 0.3L_{2} - 0.05A_{3} - 0.15A_{1}L_{1} - 0.2A_{2}L_{2}, 0.5)$ such that $E \{ Y(a_{1}, a_{2}, a_{3}) \} = \psi_{0} + \psi_{1}a_{1} + \psi_{2}a_{2} + \psi_{3}a_{3} = -0.105 + 0.225a_{1} - 0.47a_{2} - 0.05a_{3}$. The second exposure $A_{2}$ was allowed to be correctly measured, while $A_{1}$ and $A_{3}$ were subject to additive measurement error simulated as $A_{1}^{*} \sim \mathcal{N}(A_{1}, 0.3)$ and $A_{3}^{*} \sim \mathcal{N}(A_{3}, 0.5)$ (such that the measurement error covariance matrix was diagonal).
+The performance of the proposed methods was evaluated in three simulation studies. The first simulation compared the proposed g-formula CSM approach to standard methods in a scenario where confounding and additive exposure measurement error were present. A total of 2000 data sets of $n = 800$ individuals were simulated, each with the following variables: a confounder $L_{1}$ simulated as a Bernoulli random variable with expectation $0.5$, i.e., $L_{1} \sim \text{Bern}(0.5)$, a second confounder $L_{2} \sim \text{Bern}(0.2)$, an exposure $A \sim \mathcal{N}(2 + 0.3L_{1} - 0.5L_{2}, 0.6)$, and an outcome $Y \sim \text{Bern}(\text{logit}^{-1}(-2 + 0.7A - 0.6L_{1} + 0.4L_{2} - 0.4AL_{1} - 0.2AL_{2}))$. The exposure was subject to additive measurement error, simulated as $A^{*} \sim \mathcal{N}(A, 0.25)$.
 
-Six methods were compared in performance estimating $\psi_{1}$, $\psi_{2}$, and $\psi_{3}$ using the observed data $\{ Y, A_{1}^{*}, A_{2}, A^{*}_{3}, L_{1}, L_{2} \}$. These methods were: (i) linear regression specifying Y as a function of $A_{1}^{*}, A_{2}, A^{*}_{3}, L_{1}, L_{2}$ and the interactions between $A_{1}^{*}$ and $L_{1}$ as well as $A_{2}$ and $L_{2}$; (ii) the CSME method with the same outcome specification as the linear regression and correctly specified measurement error variances; (iii) the g-formula with a correctly specified outcome model using the mismeasured exposures; (iv) an IPW estimator where a correctly specified propensity model was fit for each confounded measured exposure and the product of the resulting inverse probability weights were used to weight a linear regression of $Y$ on the three exposures; (v) the proposed g-formula CSME estimator with a correctly specified outcome regression; and (vi) the proposed IPW CSME estimator using weights from a correctly specified propensity model.
+Dose-response curves were estimated using four methods: (i) logistic regression specifying $Y$ as a function of $A^{*}, L_{1}, L_{2}$ and the interactions between $A^{*}$ and each covariate; (ii) CSM with the same outcome specification as the logistic regression and correctly specified measurement error variance; (iii) the g-formula with a correctly specified outcome model using the mismeasured exposures; and (iv) the proposed g-formula CSM estimator with a correctly specified outcome regression. For methods (i) and (ii), dose-response curves were estimated as $\hat{\text{E}}\{ Y(a) \} = \text{logit}^{-1}(\hat{\beta} a)$ where $\hat{\beta}$ is the estimated coefficient for the exposure from each model, in essence assuming that adjusting for $L_{1}$ and $L_{2}$ in the models will appropriately control for confounding. For the point on the true dose response curve $\text{E}\{ Y(a = 3) \}$, the average bias, average estimated standard error, empirical standard error, and percentage of estimated confidence intervals covering the true value were estimated across the 2000 simulation runs.
 
-\begin{table}[]
-    \footnotesize
-    \caption{Results from the first simulation study. Bias: 100 times the average bias across simulated data sets for each method; ASE: 100 times the average of estimated standard errors; ESE: 100 times the standard deviation of parameter estimates; Cov: Empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer.}
-    \begin{center}
-    \begin{tabular}{lrrrrrrrrrrrr}
-    \hline
-        & \multicolumn{4}{c}{$\gamma_{1}$} & \multicolumn{4}{c}{$\gamma_{2}$} & \multicolumn{4}{c}{$\gamma_{3}$} \\
-        Estimator & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov & Bias & ASE & ESE & Cov \\
-         \hline
-Regression & 5.0 & 2.4 & 2.4 & 45\% & 7.1 & 4.3 & 4.4 & 68\% & 1.6 & 2.1 & 2.1 & 89\% \\
-CSME & 7.6 & 2.6 & 2.7 & 17\% & 7.1 & 4.3 & 4.4 & 67\% & -0.2 & 3.1 & 3.2 & 96\% \\
-G-formula & -1.8 & 1.7 & 1.7 & 83\% & 0.0 & 3.7 & 3.6 & 94\% & 1.6 & 2.1 & 2.1 & 89\% \\
-IPW & -1.8 & 2.7 & 3.0 & 92\% & -0.3 & 5.9 & 6.2 & 96\% & 1.6 & 3.2 & 3.2 & 91\% \\
-G-formula CSME & 0.1 & 1.9 & 1.9 & 95\% & 0.0 & 3.7 & 3.6 & 94\% & -0.2 & 3.1 & 3.2 & 96\% \\
-IPW CSME & 0.1 & 3.0 & 3.2 & 96\% & -0.3 & 5.8 & 6.2 & 96\% & -0.2 & 4.9 & 4.8 & 94\% \\
-         \hline
-    \end{tabular}
-    \end{center}
-    \label{tab:one}
-\end{table}
+Biases of the estimated dose-response curves are displayed in Figure~\ref{fig:two}. Only the proposed g-formula CSM estimator was approximately unbiased. In contrast, the other three methods performed poorly with high bias across nearly the entire range of exposure values evaluated. This is expected because these methods do not adjust for both confounding and measurement error. Likewise, only the proposed g-formula CSM estimator was unbiased with corresponding confidence intervals achieving nominal coverage for the potential outcome mean at $a = 3$ on the dose-response curve, as summarized in Table~\ref{tab:one}.
 
-The average bias, average estimated standard error, empirical standard error, and percentage of estimated confidence intervals covering the true values were estimated across the 2000 simulation runs and are presented in Table~\ref{tab:one}. For $\psi_{3}$ ,the parameter corresponding to the mismeasured but unconfounded exposure, methods (ii), (iii), and (vi) achieved near-zero average bias and approximately nominal coverage, while methods (i), (iii) and (iv) were biased and had lower coverage. For $\psi_{2}$, the parameter corresponding to the confounded but correctly measured exposure, methods (iii)-(vi) all achieved low bias and about nominal coverage, while methods (i) and (ii) performed poorly. For $\psi_{1}$, the parameter corresponding to the mismeasured and confounded exposure, only the methods proposed in this paper (v) and (vi) had approximately 0 bias and nominal coverage. While methods (iii) and (iv) outperformed method (ii) for this exposure, this phenomenon could easily be reversed when the magnitude of measurement error bias is greater than that of the confounding bias.
-
-The second simulation study compared the proposed g-formula and IPW CSME approaches to the proposed DR CSME estimator under various model specifications. In particular, 2000 datasets of $n = 2000$ individuals were simulated with the following variables: a confounder $L_{1} \sim \text{Bern}(0.5)$, a second confounder $L_{2} \sim \mathcal{N}(1, 0.5)$, an exposure $A \sim \mathcal{N}(2 + 0.2L_{1} - 0.3L_{2}, 0.6)$, and a binary outcome $Y \sim \text{Bern}\{ \text{logit}^{-1}(-2 + 0.7A - 1.5L_{1} - 0.4AL_{1} -0.4L_{2} + 0.3AL_{2}) \}$ such that $\text{logit}[E \{ Y(a) \} ] = \psi_{0} + \psi_{1}a = -2 + 0.7a - 0.5*0.4a + 1*0.3a = -2 + 0.8a$. The exposure $A$ was subject to additive measurement error simulated as $A^{*} \sim \mathcal{N}(A, 0.3)$. Then the three approaches were compared in the traditional way of studying DR estimators, namely under scenarios where only the propensity model was correctly specified, only the outcome regression was correctly specified, and where both were correctly specified. The propensity model was mis-specified by not including the confounder $L_{1}$ and the outcome regression was mis-specified by leaving out $L_{1}$ and the interaction between $A$ and $L_{1}$. As demonstrated in other applications, the doubly-robust estimator was approximated by performing a version of the g-formula approach weighted by the inverse probability weights~\citep{hirano2001}.
-
-\begin{table}[]
-    \centering
-    \footnotesize
-    \caption{Results from the second simulation study. Bias, ASE, ESE, and Coverage defined as in Table 1; PS: Propensity score model; OR: Outcome regression model.}
-    \begin{tabular}{lcrrrr}
-    \hline
-         Estimator & Correct Specifications & Bias & ASE & ESE & Coverage \\
-         \hline
-         %\hhline{|=|=|=|=|=|=|}
-G-formula CSME & PS & -16.3 & 6.4 & 6.3 & 28\% \\
-IPW CSME & PS & -2.8 & 7.1 & 7.1 & 93\% \\
-DR CSME & PS & -2.4 & 7.1 & 7.2 & 94\% \\[3pt]
-G-formula CSME & OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & OR & -16.4 & 6.7 & 6.7 & 32\% \\
-DR CSME & OR & 0.2 & 7.5 & 7.5 & 95\% \\[3pt]
-G-formula CSME & PS and OR & 0.0 & 7.1 & 7.1 & 95\% \\
-IPW CSME & PS and OR & -2.8 & 7.1 & 7.2 & 93\% \\
-DR CSME & PS and OR & 0.4 & 7.8 & 7.7 & 95\% \\
-         \hline
-    \end{tabular}
-    \label{tab:two}
-\end{table}
-
-The simulation results are presented in Table~\ref{tab:two} and match the theoretical results described in Section 3.5. Namely, when only the propensity score model was specified correctly, the IPW estimator performed well, but the g-formula estimator was subject to substantial bias and undercoverage. Likewise when only the outcome model was specified correctly, the g-formula estimator performed well, but the IPW estimator was biased and had lower than nominal coverage. However, the doubly-robust estimator achieved low bias and approximately nominal coverage when only one of the two models was misspecified, exhibiting its namesake double-robustness property.
-
-\section{Application}
-
-To illustrate the proposed methods, the DR CSME estimator was applied to data from the HVTN 505 vaccine trial. As discussed in the introduction, the candidate HIV vaccine studied in this trial was not effective, but follow-up research described several interesting biomarker correlates of risk. A recent paper, \citet{neidich2019}, investigated potential mechanisms of antibody mediated prevention, finding that antibody-dependent cellular phagocytosis (ADCP) and antigen-specific recruitment of Fc$\gamma$ receptors of several HIV-1 specific Env proteins were associated with reduced HIV-1 risk.
-
-In this section, the primary analysis of \citet{neidich2019} is extended to (i) adjust for measured potential confounders beyond simple inclusion in an outcome regression, and (ii) allow for additive measurement error. In particular, attention is focused on ADCP and recruitment of Fc$\gamma$RIIa of the H131-Con S gp140 protein, which will be referred to as R\RNum{2}. The primary analysis of \citet{neidich2019} focused on the effect of the log transform of each of these exposures individually on HIV-1 acquisition among vaccinees. For each exposure, they fit two logistic regression models and reported (i) odds ratios for the main effect of exposure adjusting for age, BMI, race, and behavior risk, and (ii) odds ratios for the main effect of exposure adjusting for the same covariates as well as CD4 and CD8 polyfunctionality scores (CD4-P and CD8-P).
-
-In this section, the data is analyzed making the same Binomial family distribution assumption for the outcome and using the proposed doubly-robust CSME estimator. To account for the two-phase sampling design used in the HVTN 505 trial, the weights in the doubly-robust estimator are multiplied by inverse probability of sampling weights, following the procedure described in \citet{wang2009}. This version of the proposed estimator is described in more detail and evaluated in a simulation study in Web Appendix B. For the propensity model specification, main effects for baseline covariates age, race, BMI, and behavior risk were included. For the outcome model specification, it's possible that BMI and behavioral risk are colliders on complex and unknown causal pathways connecting the exposures and outcome. Thus, an outcome regression was specified with main effects for the exposure, age, race, CD4-P, and CD8-P and interactions between the exposure of interest with age and race. The same model specifications for both exposures were used separately to match the univariate-style analysis performed in \citet{neidich2019}. Based on the theoretical and empirical results in sections 3 and 4, the model parameter estimates should be consistent if either specification is correct. Finally, each exposure was assumed to follow a classical additive measurement error model where the variances of measurement error were varied from 0 to 0.3 in increments of 0.05 to perform a sensitivity analysis (0.3 is about half of the variance for each variable when restricted to vaccinees with an immune response and acts as a reasonable upper bound for measurement error). Since ADCP and R\RNum{2} are strictly positive random variables, this setup is equivalent to assuming that their corresponding non-log transformed variables follow multiplicative measurement error models.
-
-\begin{figure}[h!]
+\begin{figure}
 \centering
-\includegraphics[width=6.2in]{Figure2.png}
-\caption{HVTN 505 results. Each panel shows the DR estimate and 95$\%$ confidence interval for the main effect of ADCP or R\RNum{2} in their respective models. The horizontal axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed exposure variance within vaccinated individuals.}
+\includegraphics[width=6in]{paper1-fig2-grey.pdf}
+\caption{Estimated dose-response curve bias for each of the four methods compared in the first simulation study. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$. The gray horizontal line corresponds to zero bias.}
 \label{fig:two}
 \end{figure}
 
-The analysis results are plotted in Figure~\ref{fig:two}. For each exposure and each model, the left-most interval in each panel corresponds to the DR estimator under no measurement error. These results are similar to that found in \citet{neidich2019} when using outcome regression to adjust for confounding, but slightly further from the null value in general. The results for the ADCP variable seem robust to measurement error, with significant results even under high measurement error variance. The results for RII are somewhat robust to measurement error, with the confidence intervals in the cellular adjustment model including the null value under moderate measurement error and becoming quite wide under high measurement error. The data for HVTN 505 is publicly available at \href{https://atlas.scharp.org/cpas/project/HVTN\%20Public\%20Data/HVTN\%20505/begin.view?}{https://atlas.scharp.org/} and the R code for the simulations and application are provided at \href{https://github.com/bblette1/causalCSME}{https://github.com/bblette1/causalCSME}.
+The second simulation study compared the proposed IPW CSM approach to standard methods. Let $\text{Exp}(\lambda)$ refer to an exponential random variable with expectation $\lambda$. A total of 2000 data sets of $n = 800$ individuals were simulated, each with the following variables: a confounder $L \sim \text{Exp}(3)$, first true exposure $A_{1} \sim \mathcal{N}(4 + 0.9L, 1.1)$, second true exposure $A_{2} \sim \mathcal{N}(2.5, 0.7)$, third true exposure $A_{3} \sim \mathcal{N}(1.4 + 0.5, 0.6)$ and an outcome $Y \sim \text{Bern}(\exp(-1.7 + 0.4A_{1} - 0.4A_{2} - 0.6A_{3} + 0.7L - 0.6A_{1}L - 0.9A_{3}L - \log(\lambda / (\lambda - 0.7 + 0.6A_{1} + 0.9A_{3}))) / (1 + \exp(-1.7 + 0.4A_{1} - 0.4A_{2} - 0.6A_{3})))$ such that $\text{logit}[\text{E}\{ Y(a_{1}, a_{2}, a_{3})\} ] = \gamma_{0} + \gamma_{1}a_{1} + \gamma_{2}a_{2} + \gamma_{3}a_{3} = -1.7 + 0.4a_{1} - 0.4a_{2} - 0.6a_{3}$. The third exposure $A_{3}$ was allowed to be correctly measured, while $A_{1}$ and $A_{2}$ were subject to additive measurement error simulated as $A_{1}^{*} \sim \mathcal{N}(A_{1}, 0.36)$ and $A_{2}^{*} \sim \mathcal{N}(A_{2}, 0.25)$ (i.e., the measurement error covariance matrix was diagonal).
+
+\begin{table}[]
+    \centering
+    %\footnotesize
+    \caption{Results from the first simulation study. Bias: 100 times the average bias across simulated data sets for each method; ASE: 100 times the average of estimated standard errors; ESE: 100 times the standard deviation of parameter estimates; Cov: Empirical coverage of 95$\%$ confidence intervals for each method, rounded to the nearest integer.}
+    \begin{tabular}{lrrrr}
+    \hline
+         Estimator & Bias & ASE & ESE & Cov \\
+         \hline
+         %\hhline{|=|=|=|=|=|=|}
+Regression & -51.5 & 18.3 & 18.3 & 19\% \\
+CSM & -21.8 & 28.4 & 28.6 & 87\% \\
+G-formula & -3.9 & 2.6 & 2.6 & 67\% \\
+G-formula CSM & 0.5 & 4.0 & 4.1 & 95\% \\
+         \hline
+    \end{tabular}
+    \label{tab:one}
+\end{table}
+
+The MSM parameters of interest $\gamma_{1}$, $\gamma_{2}$, and $\gamma_{3}$ were estimated from the observed data $\{ Y, A_{1}^{*}, A_{2}^{*}, A_{3}, L \}$ using four methods: (i) logistic regression specifying $Y$ as a function of $A_{1}^{*}, A_{2}^{*}, A_{3}, L$ and the interactions between $A_{1}^{*}$ and $L$ as well as $A_{3}$ and $L$; (ii) the CSM method with the same outcome specification as the logistic regression and correctly specified measurement error variances; (iii) an IPW estimator where a correctly specified propensity model was fit for both $A_{1}^{*}$ and $A_{3}$ and the product of the resulting inverse probability weights were used to weight a logistic regression of $Y$ on the three observed exposures; and (iv) the proposed IPW CSM estimator using correctly specified measurement error variances and weights from correctly specified propensity models. Methods (i) and (ii) estimate $\gamma_{1}$, $\gamma_{2}$, and $\gamma_{3}$ by the main effect coefficient estimates of the respective exposures, assuming that adjusting for $L$ in the models will appropriately control for confounding.
+
+\begin{table}[]
+    \caption{Results from the second simulation study. Bias, ASE, ESE, and Cov defined as in Table 1.}
+    \begin{center}
+    \begin{tabular}{clrrrr}
+    \hline
+        Parameter & Estimator & Bias & ASE & ESE & Cov \\
+         \hline
+$\gamma_{1}$ & Regression & 5.8 & 13.6 & 13.3 & 93\% \\
+$\gamma_{1}$ & CSM & 22.0 & 19.2 & 18.7 & 80\% \\
+$\gamma_{1}$ & IPW & -9.7 & 9.1 & 9.0 & 80\% \\
+$\gamma_{1}$ & IPW CSM & 0.3 & 12.5 & 12.3 & 95\% \\[4pt]
+$\gamma_{2}$ & Regression & 11.7 & 13.3 & 13.0 & 84\% \\
+$\gamma_{2}$ & CSM & -3.9 & 21.1 & 20.5 & 95\% \\
+$\gamma_{2}$ & IPW & 13.8 & 13.3 & 12.9 & 80\% \\
+$\gamma_{2}$ & IPW CSM & -0.3 & 20.7 & 20.1 & 95\% \\[4pt]
+$\gamma_{3}$ & Regression & 10.4 & 27.9 & 27.4 & 92\% \\
+$\gamma_{3}$ & CSM & 9.2 & 28.9 & 27.8 & 92\% \\
+$\gamma_{3}$ & IPW & 0.3 & 19.8 & 19.4 & 94\% \\
+$\gamma_{3}$ & IPW CSM & -0.4 & 20.1 & 19.7 & 95\% \\
+         \hline
+    \end{tabular}
+    \end{center}
+    \label{tab:two}
+\end{table}
+
+The average bias, average estimated standard error, empirical standard error, and percentage of confidence intervals covering the true values across the 2000 simulation runs are presented in Table~\ref{tab:two}. For $\gamma_{2}$, the parameter corresponding to the mismeasured but unconfounded exposure, methods (ii) and (iv) achieved near-zero average bias and approximately nominal coverage, while methods (i) and (iii) were biased and had lower coverage. For $\gamma_{3}$, the parameter corresponding to the confounded but correctly measured exposure, methods (iii) and (iv) achieved low bias and about nominal coverage, while methods (i) and (ii) performed poorly. For $\gamma_{1}$, the parameter corresponding to the mismeasured and confounded exposure, only the method proposed in this paper (iv) had approximately 0 bias and nominal coverage.
+
+The third simulation study compared the proposed g-formula and IPW CSM approaches to the proposed DR CSM estimator under various model specifications. In particular, 2000 datasets of $n = 2000$ individuals were simulated with the following variables: a confounder $L_{1} \sim \text{Binom}(0.5)$, a second confounder $L_{2} \sim \mathcal{N}(1, 0.5)$, an exposure $A \sim \mathcal{N}(2 + 0.9L_{1} - 0.6L_{2}, 1.1)$, and a continuous outcome $Y \sim \mathcal{N}(1.5 + 0.7A + 0.9L_{1} - 0.7AL_{1} - 0.6L_{2} + 0.4AL_{2})$ such that the assumptions of all three methods hold given correct model specifications. The methods were compared in performance estimating the coefficient for $a$ in the marginal structural model resulting from these distributional assumptions. The exposure $A$ was subject to additive measurement error simulated as $A^{*} \sim \mathcal{N}(A, 0.16)$. Then the three approaches were compared under scenarios where only the propensity model was correctly specified, only the outcome regression was correctly specified, and where both were correctly specified. The propensity model was mis-specified by not including the confounder $L_{1}$ and the outcome regression was mis-specified by leaving out $L_{1}$ and the interaction between $A$ and $L_{1}$.
+
+\begin{table}[]
+    \centering
+    %\footnotesize
+    \caption{Results from the third simulation study. Bias, ASE, ESE, and Cov defined as in Table 1. PS indicates the propensity score model is correctly specified; OR indicates the outcome regression is correctly specified.}
+    \begin{tabular}{lcrrrr}
+    \hline
+         Estimator & Correct Specifications & Bias & ASE & ESE & Cov \\
+         \hline
+         %\hhline{|=|=|=|=|=|=|}
+G-formula CSM & PS & -6.6 & 1.9 & 1.9 & 8\% \\
+IPW CSM & PS & 0.0 & 3.2 & 3.1 & 95\% \\
+DR CSM & PS & 0.0 & 2.6 & 2.6 & 94\% \\[4pt]
+G-formula CSM & OR & 0.0 & 1.7 & 1.7 & 94\% \\
+IPW CSM & OR & -6.3 & 2.0 & 2.0 & 12\% \\
+DR CSM & OR & 0.1 & 1.7 & 1.7 & 95\% \\[4pt]
+G-formula CSM & PS and OR & 0.0 & 1.7 & 1.7 & 94\% \\
+IPW CSM & PS and OR & 0.0 & 3.2 & 3.1 & 95\% \\
+DR CSM & PS and OR & 0.1 & 1.9 & 1.9 & 94\% \\
+         \hline
+    \end{tabular}
+    \label{tab:three}
+\end{table}
+
+The simulation results are presented in Table~\ref{tab:three} and match the theoretical results described in Section 3.4. Namely, when only the propensity score model was specified correctly, the IPW estimator performed well, but the g-formula estimator was subject to substantial bias and undercoverage. Likewise when only the outcome model was specified correctly, the g-formula estimator performed well, but the IPW estimator was biased and had lower than nominal coverage. However, the doubly-robust estimator achieved low bias and approximately nominal coverage when only one of the two models was misspecified, exhibiting its namesake double-robustness property. While all simulations in this section generated data under positivity and additive measurement error, simulations of the proposed methods under violations of the positivity and additive measurement error assumptions are presented in Web Table 2 and Web Table 3.
+
+\section{Application}
+
+To illustrate the proposed methods, the DR CSM estimator was applied to data from the HVTN 505 vaccine trial. This trial studied a candidate HIV vaccine with a primary endpoint of diagnosis of HIV-1 infection after the Month 7 study visit and through the Month 24 study visit. Immunologic markers were measured from blood samples at the Month 7 study visit. As discussed in the Introduction, the candidate HIV vaccine was not found to be effective, but follow-up research described several interesting immunologic marker correlates of risk. In particular, \citet{neidich2019} found that antibody-dependent cellular phagocytosis and antigen-specific recruitment of Fc$\gamma$ receptors of several HIV-1 specific Env proteins were associated with reduced HIV-1 risk.
+
+In this section, the primary analysis of \citet{neidich2019} is reassessed by (i) adjusting for measured potential confounders beyond simple inclusion in an outcome regression and (ii) allowing for additive measurement error of the exposures. Attention is focused on the log transforms of markers measuring antibody-dependent cellular phagocytosis and recruitment of Fc$\gamma$R\RNum{2}a of the H131-Con S gp140 protein, which will be referred to as ADCP and R\RNum{2}. The primary analysis of \citet{neidich2019} focused on the association of each of these exposures individually with HIV-1 acquisition among vaccine recipients. For each exposure, they fit a logistic regression model and reported odds ratios for the main effect of exposure adjusting for age, BMI, race, and behavior risk, as well as CD4 and CD8 polyfunctionality scores (CD4-P and CD8-P).
+
+In this section, the data is analyzed making a Normal distributional assumption for the outcome such that the proposed doubly-robust CSM estimator can be used. Notably, the immunologic markers were not measured in all participants, but rather were measured in all vaccine recipients who acquired the HIV-1 infection primary endpoint and in a stratified random sample of vaccine recipients who completed 24 months of follow-up without diagnosis of HIV-1 infection. To account for this two-phase sampling design, the weights in the doubly-robust estimator are multiplied by inverse probability of sampling weights, following the procedure described in \citet{wang2009}. This version of the proposed estimator is described in more detail and evaluated in a simulation study in Web Appendix B. ADCP and R\RNum{2} were modeled separately to match the univariate-style analysis performed in \citet{neidich2019}; accordingly, separate propensity models were fit for each exposure. For each propensity model specification, main effects for the baseline covariates age, race, BMI, behavior risk, CD4-P, and CD8-P were included. For the outcome model specification, main effects for the exposure of interest, age, race, BMI, behavior risk, CD4-P, and CD8-P were included, along with interactions of the exposure with age and the exposure with behavior risk. Based on the theoretical and empirical results in Sections 3 and 4, the estimator should be consistent if either specification is correct. Finally, each exposure was assumed to follow a classical additive measurement error model where a sensitivity analysis was performed by varying the measurement error variances from 0 to 1/6, 1/4, and 1/3 of the variance for each exposure variable when restricted to vaccine recipients with an immune response. Since ADCP and R\RNum{2} are log-transformations of strictly positive random variables, this setup is equivalent to assuming that their corresponding non-log transformed variables follow multiplicative measurement error models. Dose response curves were estimated for each exposure and each measurement error level across a range of 0.5 to 3 for ADCP and 7 to 10 for R\RNum{2}; exposure levels above 3 and 10 respectively were associated with no or almost no risk.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=5.6in]{fig3-linear2.pdf}
+\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSM estimator, as well as their respective shaded 95\% pointwise confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}_{me}$ corresponding to proportions of 0, 1/6, 1/4, and 1/3 of $\sigma^{2}$, the estimated total exposure variances among vaccinees with immune responses. Lower confidence limits that were estimated to be negative were truncated at 0.}
+\label{fig:three}
+\end{figure}
+
+The analysis results are plotted in Figure~\ref{fig:three}. For each exposure, lower values corresponded to higher HIV risk among the vaccine recipients, in line with prior results and biological theory. Moving across panels from top to bottom in Figure~\ref{fig:three}, the assumed measurement error variance increases and the confidence regions become wider, as expected. While higher levels of each exposure appear to be protective, there is substantial uncertainty when allowing for higher magnitudes of measurement error and because of the low sample size. Thus, studies measuring these biomarkers in more participants are needed to draw stronger conclusions.
 
 \section{Discussion}
 
-In this paper, estimators were proposed which adjust for both confounding and measurement error and which are consistent without any supplemental data and without specifying strong distributional or extrapolation assumptions. The proposed methods are semi-parametric in that while parametric assumptions for the errors were made, the true exposures were treated as nuisance parameters and no assumptions were made about their distribution. While the proposed methods were shown to have favorable theoretical and empirical properties, they are not without limitation. In particular, the methods only work without supplemental data if the covariance of measurement error is known or has been previously estimated. As demonstrated in Section 5, if the covariance is unknown then sensitivity analysis can be straightforward and highly informative if the covariance matrix is small or restricted such that it has few parameters. In addition, in order to perform inference without making strong assumptions on $\bm{A}$, modeling assumptions on $\bm{A}^{*}$ and $Y$ that may be implausible in some settings were necessary. However, additive measurement error models are realistic for many variables and the GLM outcome framework is an extremely common statistical analysis procedure used in many fields.
+In this paper, estimators are proposed which adjust for both confounding and measurement error and which are consistent without any supplemental data and without specifying strong distributional or extrapolation assumptions. The proposed methods are semi-parametric in that while parametric assumptions for the errors were made, no assumptions were made about the distributions of true exposures. Accompanying this paper, the R package causalCSME has been developed (see Supporting Information) which includes code examples for the conditional score method, which have not previously been provided in even the standard (not causal inference focused) setting.
 
-There are many possible extensions of the methods described in this paper. Methods that accommodate different measurement error model forms and more flexible outcome model specifications would be useful. Generalizations of the conditional score approach to broader semiparametric frameworks such as that described in \citet{tsiatis2004} could be adapted to the causal setting to address this and weaken some of the parametric assumptions made in this paper. A version of this idea is proposed by \citet{liu2017}, but the authors take an outcome regression approach to adjusting for confounding, which is often insufficient for causal inference.
+While the proposed methods were shown to have favorable theoretical and empirical properties, they are not without limitation. In particular, the methods require that the measurement error covariance is known or has been previously estimated. As demonstrated in Section 5, if the covariance is unknown then sensitivity analysis can be straightforward and informative if the covariance matrix is small or restricted such that it has few parameters. In addition, modeling assumptions on $\bm{A}^{*}$ and $Y$ that may be implausible in some settings were necessary. However, both additive measurement error models and the generalized linear model framework are commonly used and realistic in many settings. The DR CSM estimator provides some protection from mis-specification of these models, requiring only one but not necessarily both to be correctly specified.
 
-Another logical extension would be a g-estimation based estimator that builds off the CSME method to estimate parameters of a structural nested model where at least one exposure is measured with error. In addition, while this paper expands on the conditional score estimation procedure described in \citet{stefanski1987}, the corrected score estimation procedure described in \citet{nakamura1990} also belongs to the score equation family of functional methods, can also correct for measurement error without supplemental data, and has advantages and disadvantages compared to the conditional score approach in various settings. A causal extension of the corrected-score approach would be valuable for many applications. Finally, this paper focuses on point-exposure data, but conditional-score based approaches addressing measurement error and data sparsity for longitudinal and survival data have been described and could be extended to define new causal inference methods in those settings.
+There are several possible extensions of the methods described in this paper. Methods that accommodate different measurement error models and more flexible outcome model specifications would be useful. Generalizations of the conditional score approach such as in \citet{tsiatis2004} could be adapted to the causal setting to weaken some of the parametric assumptions made in this paper. A version of this idea is proposed by \citet{liu2017}, which considers adding confounders as additional covariates in the outcome regressions of \citet{tsiatis2004}. In the setting with no measurement error, adding confounders to outcome regressions has been shown to yield consistent estimates of causal parameters under certain assumptions, but those assumptions are more restrictive than that needed for g-methods such as IPW and the g-formula to yield consistent estimates. Assuming similar results hold in the measurement error setting, expanding the \citet{liu2017} approach using IPW, g-formula, and DR techniques could be a useful extension of this work.
 
-This paper adds to a growing literature on addressing measurement error in causal inference problems. No measurement error of any variables is a key assumption in drawing causal inference, but is often left implicit in analyses despite being critical to the identification of causal estimands. Indeed, exposure measurement error is common in observational studies where investigators lack control of the exposure variables - the same conditions in which investigators worry about confounding bias. Methodological contributions at this intersection are needed to facilitate simultaneous adjustment for these prevalent issues.
+Another possible future direction of research would be to combine g-estimation and CSM to estimate parameters of a structural nested model where at least one exposure is measured with error. In addition, while this paper expands on the conditional score estimation procedure described in \citet{stefanski1987}, the corrected score estimation procedure~\citep{nakamura1990} is a related method which could be extended to a causal inference setting in similar ways. This approach also adjusts for measurement error without supplemental data and has advantages and disadvantages compared to CSM in various settings. Finally, this paper focuses on point-exposures, but conditional-score based approaches addressing measurement error for longitudinal and survival data have been described and could be extended to define new causal inference methods in those settings.
 
 %  The \backmatter command formats the subsequent headings so that they
 %  are in the journal style.  Please keep this command in your document
@@ -473,7 +500,11 @@ This paper adds to a growing literature on addressing measurement error in causa
 
 \section*{Acknowledgements}
 
-The authors thank Kayla Kilpatrick, Shaina Mitchell, Sam Rosin, Bonnie Shook-Sa, and Jaffer Zaidi for helpful comments and suggestions, as well as the investigators, staff, and participants of the HVTN 505 trial. This work was supported by NIH grant. \vspace*{-8pt}
+The authors thank Kayla Kilpatrick, Shaina Mitchell, Sam Rosin, Bonnie Shook-Sa, and Jaffer Zaidi for helpful comments and suggestions, as well as the investigators, staff, and participants of the HVTN 505 trial. This work was supported by NIH grant R37 AI054165. \vspace*{-8pt}
+
+\section*{Data Availability Statement}
+
+The data that support the findings of this study are available on Atlas at \href{https://atlas.scharp.org/cpas/project/HVTN\%20Public\%20Data/HVTN\%20505/begin.view}{https://atlas.scharp.org/cpas/project/HVTN\%20Public\%20Data/HVTN\%20505/begin.view}.\vspace*{-8pt}
 
 %  Here, we create the bibliographic entries manually, following the
 %  journal style.  If you use this method or use natbib, PLEASE PAY
@@ -500,9 +531,9 @@ The authors thank Kayla Kilpatrick, Shaina Mitchell, Sam Rosin, Bonnie Shook-Sa,
 %  include this section!!  See Instructions for Authors at the journal
 %  website http://www.biometrics.tibs.org
 
-\section*{Supplementary Materials}
+\section*{Supporting Information}
 
-The Web Appendix is available with this paper at the Biometrics website on Wiley Online Library.\vspace*{-8pt}
+Web Appendices, Tables, and Figures referenced in Sections 3 and 6 are available with this paper at the Biometrics website on Wiley Online Library. All R code used in the simulations and application is publicly available at \href{https://github.com/bblette1/causalCSME}{https://github.com/bblette1/causalCSME}.\vspace*{-8pt}
 
 \label{lastpage}
 

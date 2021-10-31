@@ -1,13 +1,13 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Notation and Estimand}{}% 2
 \BOOKMARK [1][-]{section.3}{Methods}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{Review of Conditional Score Approach}{section.3}% 4
-\BOOKMARK [2][-]{subsection.3.2}{G-formula CSME Estimator}{section.3}% 5
-\BOOKMARK [2][-]{subsection.3.3}{IPW CSME Estimator}{section.3}% 6
-\BOOKMARK [2][-]{subsection.3.4}{Doubly-Robust CSME Estimator}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.1}{Review of Conditional Score Method}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{G-formula CSM Estimator}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{IPW CSM Estimator}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Doubly-Robust CSM Estimator}{section.3}% 7
 \BOOKMARK [2][-]{subsection.3.5}{Handling Unknown Measurement Error Variance}{section.3}% 8
 \BOOKMARK [2][-]{subsection.3.6}{Large-Sample Properties and Variance Estimation}{section.3}% 9
 \BOOKMARK [1][-]{section.4}{Simulation Study}{}% 10
 \BOOKMARK [1][-]{section.5}{Application}{}% 11
 \BOOKMARK [1][-]{section.6}{Discussion}{}% 12
-\BOOKMARK [1][-]{section*.2}{References}{}% 13
+\BOOKMARK [1][-]{section*.3}{References}{}% 13

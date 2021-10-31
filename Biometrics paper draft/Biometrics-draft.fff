@@ -1,14 +1,22 @@
 \begin{figure}
 \centering
-\includegraphics[width=6in]{Paper1_Fig1.png}
-\caption{Assumed directed acyclic graph (DAG) structure with variables defined in section 2 and $U$ corresponding to measurement error. (a) A general DAG where $\bm{A}$ is a vector of exposures, some of which may be mismeasured (indicated by the arrow to $\bm{A}^{*}$) and some of which may be subject to confounding bias (indicated by the arrows from $\bm{L}$ to $\bm{A}$ and Y). (b) A DAG for a specific exposure vector with four different types of exposures: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). Each of these four types of exposures can be handled by the proposed methods.}
+\fbox{\includegraphics[width=\textwidth]{DAG_eps2.png}}
+\caption{An example directed acyclic graph (DAG), with variables defined in Section 2 and $\epsilon_{me_{1}}$ and $\epsilon_{me_{4}}$ corresponding to measurement error. This DAG represents a scenario with $m=4$ exposures, one each of the following: mismeasured and unconfounded ($A_{1}$), correctly measured and unconfounded ($A_{2}$), correctly measured and confounded ($A_{3}$), and mismeasured and confounded ($A_{4}$). In this case, $A_{2} = A^{*}_{2}$ and $A_{3} = A^{*}_{3}$ since they are both measured without error.}
 \label{fig:one}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\centering
+\includegraphics[width=6in]{paper1-fig2-grey.pdf}
+\caption{Estimated dose-response curve bias for each of the four methods compared in the first simulation study. Bias refers to the average bias across 2,000 simulated data sets for each method evaluated at each point on the horizontal axis $a = (0, 0.2, 0.4, ..., 4)$. The gray horizontal line corresponds to zero bias.}
+\label{fig:two}
 \end{figure}
 \efloatseparator
  
 \begin{figure}[h!]
 \centering
-\includegraphics[width=6.2in]{Figure2.png}
-\caption{HVTN 505 results. Each panel shows the DR estimate and 95$\%$ confidence interval for the main effect of ADCP or R\RNum{2} in their respective models. The horizontal axis reflects increasing user-specified variance of measurement error for the exposures as a proportion of the observed exposure variance within vaccinated individuals.}
-\label{fig:two}
+\includegraphics[width=5.6in]{fig3-linear2.pdf}
+\caption{HVTN 505 results. Each panel shows the dose-response curve for ADCP or R\RNum{2} estimated by the DR CSM estimator, as well as their respective shaded 95\% pointwise confidence regions. From top to bottom, each panel reflects increasing user-specified variances of measurement error $\sigma^{2}_{me}$ corresponding to proportions of 0, 1/6, 1/4, and 1/3 of $\sigma^{2}$, the estimated total exposure variances among vaccinees with immune responses. Lower confidence limits that were estimated to be negative were truncated at 0.}
+\label{fig:three}
 \end{figure}
