@@ -172,6 +172,78 @@ This is exactly the score function vector for a GLM weighted by $SW$. Thus, an I
 
 \subsubsection{Large Sample Properties}
 
+Once again, consistency and asymptotic normality of the proposed estimator is proven using M-estimator theory. Recall from Section 3.4 that this estimator is a solution to the estimating equation $\sum_{i=1}^{n} \psi_{DR-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}_{i}^{*}, \Sigma_{me}, \Theta_{DR}) = 0$, where $\Theta_{DR} = (\zeta, \Theta_{GF})$ and
+\begin{equation*}
+    \psi_{DR-CSM}(Y, \bm{L}, \bm{A}^{*}, \Sigma_{me}, \Theta_{DR}) =
+    \begin{bmatrix}
+        \psi_{PS}(\bm{L}, \bm{A}^{*}, \zeta) \\
+       SW\{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \} (1, \bm{L}, \bm{\Delta}, \bm{L} \otimes \bm{\Delta})^{T} \\
+        SW[\phi - \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}) \}^{2} / \{ \text{Var}(Y | \bm{L}, \bm{\Delta}) / \phi \}] \\
+        \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} +
+        \bm{a}\beta_{al}\bm{L}^{T} - \text{E} \{ Y(\bm{a}) \}
+    \end{bmatrix}
+\end{equation*}
+
+First, suppose that the outcome regression is correctly specified. Then $\text{E}( \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$ such that $\text{E}[(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$.
+
+Now suppose instead that the propensity score model(s) are correctly specified. For simplicity in writing integrals, suppose all exposures are continuous and that the stabilized weights are given by a ratio of densities. Recall that under the identity link,
+\begin{equation*}
+\bm{\Delta} = \bm{A}^{*} + (\beta_{a} + \bm{L}\beta_{al}) \Sigma_{me}Y / \sigma^{2}
+\end{equation*}
+\begin{equation*}
+\text{E}(Y | \bm{L}, \bm{\Delta}) = \frac{\beta_{0} + \bm{L}\beta_{l} + \bm{\Delta} \cdot (\beta_{a} + \bm{L}\beta_{al})}{1 + (\beta_{a} + \bm{L}\beta_{al}) \Sigma_{me} (\beta_{a} + \bm{L}\beta_{al})^{T} / \sigma^{2}}
+\end{equation*}
+
+The second equation of the estimating equation stack can be solved following the techniques used in the IPW proof. In particular, consider the intercept component of the second equation (use scalar notation for simplicity as in the IPW proof). Then $\beta_{0}, \beta_{a}, \beta_{l}, \beta_{al}$ will solve
+\begin{equation}
+\text{E}( SW \, Y )= \text{E}\{ SW \, \text{E}(Y|L, \Delta) \}
+\end{equation}
+As before, the left side of (2) simplifies to $E(Y)$. Consider the right side of (2):
+\begin{align*}
+\text{E} \{ SW \, \text{E}(Y|L, \Delta) \} &= \text{E} \left \{ \frac{f(A^*;\xi)}{f(A^*|L;\zeta)} \text{E}(Y|L, \Delta) \right \} \\
+&= \text{E}_L \left [ \int_{a^*} \frac{f(a^*;\xi)}{f(a^*|L;\zeta)} \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} dF(a^*|L) \right ]\\
+&= \text{E}_L \left [ \int_{a^*}  \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} f(a^*;\xi) da^* \right ]\\
+&= \int_{a^*} \text{E} \left \{
+\frac{\beta_{0} + L \beta_{l} + \Delta (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
+\bigg| A^*=a^* \right \} f(a^*;\xi) da^* \\
+&= \int_{a^*} \text{E} \left \{
+\frac{\beta_{0} + L \beta_{l} + \{ A^{*} + (\beta_{a} + L \beta_{al}) \sigma^{2}_{e}Y / \sigma^{2} \} (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
+\bigg| A^*=a^* \right \} f(a^*;\xi) da^* \\
+&= ?
+\end{align*}
+
+The IPW proof had a simple structure for the marginal expectation, but this proof has a random variable in the denominator, which complicates things... thoughts?
+
+Try not putting outer expectation in the integral:
+\begin{align*}
+\text{E} \{ SW \, \text{E}(Y|L, \Delta) \} &= \text{E} \left \{ \frac{f(A^*;\xi)}{f(A^*|L;\zeta)} \text{E}(Y|L, \Delta) \right \} \\
+&= \text{E}_L \left [ \int_{a^*} \frac{f(a^*;\xi)}{f(a^*|L;\zeta)} \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} dF(a^*|L) \right ]\\
+&= \text{E}_L \left [ \int_{a^*}  \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} f(a^*;\xi) da^* \right ] \\
+&= \text{E}_L \left [ \int_{a^*}  \text{E} \left \{
+\frac{\beta_{0} + L \beta_{l} + \Delta (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
+\bigg| A^*=a^*, L \right \} f(a^*;\xi) da^* \right ] \\
+&= \text{E}_L \left [ \int_{a^*}  \text{E} \left \{
+\frac{\beta_{0} + L \beta_{l} + \{ A^{*} + (\beta_{a} + L \beta_{al}) \sigma^{2}_{e}Y / \sigma^{2} \} (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
+\bigg| A^*=a^*, L \right \} f(a^*;\xi) da^* \right ] \\
+&= \text{E}_L \left [ \int_{a^*}
+\frac{\beta_{0} + L \beta_{l} + \{ a^{*} + (\beta_{a} + L \beta_{al}) \sigma^{2}_{e}E(Y | A^{*} = a^{*}, L) / \sigma^{2} \} (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}} f(a^*;\xi) da^* \right ] \\
+&= \text{E}_L \left [ \int_{a^*}
+\frac{(\beta_{0} + L \beta_{l} + a^{*} \beta_{a} + a^{*}\beta_{al}L) \{ 1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2} \}}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}} f(a^*;\xi) da^* \right ] \\
+&= \text{E}_L \left [ \int_{a^*}
+(\beta_{0} + L \beta_{l} + a^{*} \beta_{a} + a^{*}\beta_{al}L) f(a^*;\xi) da^* \right ] \\
+&= ...
+\end{align*}
+
+It doesn't make sense to go down this path either because we want to get an $E(Y)$ somewhere.
+
+Structure / note to self: In the non-ME proof, the estimating equation had a similar structure and the structure was to (i) show the second part of the EE was unbiased, then (ii) show that (i) implies that the fourth EE is unbiased.
+
+Have no-ME proof open
+
+
+
+Old below (what we submitted to Biometrics):
+
 The large sample properties of the DR CSM estimator follow directly from the results in A.1 and A.2 and from \citet{kang2007}. In particular, when the outcome regression is correctly specified, the weights will affect the efficiency of the estimator, but it will remain consistent. Likewise, when the propensity model is correctly specified, the weighting will ensure that the model is fit in a pseudo-population where no confounding is present. Thus, the estimated outcome model coefficients will converge to the MSM parameters (as long as the outcome model includes an intercept and main effect for exposure, which should be standard for applying this estimator) and the estimator will again be consistent. Therefore, this estimator is doubly-robust. The estimator of the asymptotic variance is given by the usual sandwich variance estimator.
 
 \subsubsection{Relationship to classical causal estimators}
