@@ -92,7 +92,7 @@ Consistency and asymptotic normality of the g-formula estimator are proven using
 
 The parameter of interest $\text{E} \{ Y(\bm{a}) \}$ appears in the last estimating equation of (3), and the proof of consistency and asymptotic normality of the g-formula CSM estimator relies on (i) the usual g-formula proof based on the causal assumptions made in Section 2 of the main paper and (ii) that the CSM estimating equations were previously shown to be unbiased~\citep{carroll2006}. In particular, (ii) implies that $\text{E}[g^{-1}(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) \}] = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \}$ and then from (i) it follows that $\text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$.
 
-Therefore the estimating function for the parameter $\text{E} \{ Y(\bm{a}) \}$ is unbiased. Denote $\hat{\Theta}_{GF}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF}) = 0$. Then under certain regularity conditions $\sqrt{n}(\hat{\Theta}_{GF} - \Theta_{GF}) \rightarrow_{d} N(\textbf{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
+Therefore the estimating function for the parameter $\text{E} \{ Y(\bm{a}) \}$ is unbiased. Denote $\hat{\Theta}_{GF}$ as the solution to $\sum_{i=1}^{n} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF}) = 0$. Then under certain regularity conditions $\sqrt{n}(\hat{\Theta}_{GF} - \Theta_{GF}) \rightarrow_{d} N(\bm{0}, A^{-1}B(A^{-1})^{T})$ where $A$ and $B$ are consistently estimated by
 \begin{equation*}
 \hat{A} = \frac{1}{n} \sum_{i=1}^{n} \frac{d}{d\Theta_{GF}^{T}} \psi_{GF-CSM}(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Sigma_{me}, \hat{\Theta}_{GF})
 \end{equation*}
@@ -155,7 +155,7 @@ is similar. Thus, the proposed IPW CSM estimator is consistent and asymptoticall
 
 \subsubsection{Relationship to classical causal estimators}
 
-If the measurement error covariance matrix $\Sigma_{me} = \textbf{0}_{m \times m}$, then $\bm{A}^{*} = \bm{A}$ and the sufficient statistic $\bm{\Delta}$ reduces to the observed exposure vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta_{IPW}) = 0$ where:
+If the measurement error covariance matrix $\Sigma_{me} = \bm{0}_{m \times m}$, then $\bm{A}^{*} = \bm{A}$ and the sufficient statistic $\bm{\Delta}$ reduces to the observed exposure vector. Then the IPW estimator reduces to the form $\sum_{i=1}^{n} \psi(Y_{i}, \bm{L}_{i}, \bm{A}^{*}_{i}, \Theta_{IPW}) = 0$ where:
 
 \begin{equation*}
     \psi(Y, \bm{L}, \bm{A}^{*}, \Theta_{IPW}) =
@@ -183,61 +183,61 @@ Once again, consistency and asymptotic normality of the proposed estimator is pr
     \end{bmatrix}
 \end{equation*}
 
-First, suppose that the outcome regression is correctly specified. Then $\text{E}( \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$ such that $\text{E}[(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$.
+First, suppose that the outcome regression is correctly specified. Then $\text{E}( \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$ such that $\text{E}[(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a) \}] = 0$.
 
-Now suppose instead that the propensity score model(s) are correctly specified. For simplicity in writing integrals, suppose all exposures are continuous and that the stabilized weights are given by a ratio of densities. Recall that under the identity link,
+Now suppose instead that the propensity score model(s) are correctly specified. As in the IPW proof, suppose there is one scalar exposure (the proof for vector $\bm{A}$ is similar) and that the stabilized weights are given by a ratio of densities. The goal is to again show that $\text{E}[(\beta_{0} + a\beta_{a} + \bm{L}\beta_{l} + a\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(a) \}] = 0$. However, the $\beta$ terms are now estimated from a weighted outcome regression model where the outcome regression form may be mis-specified.
+
+In order to show this, consider the intercept element of the second row of the estimating equation and define $\beta^{*}$ such that
+\begin{align*}
+0 &= E \left [ \frac{f(A^{*}) \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \}}{f(A^{*} | \bm{L}; \hat{\zeta})} \right ] \\
+&= \int \int \frac{f(a^{*})\text{E} [ \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \} | A^{*} = a^{*}, \bm{L} = \bm{l} ]}{f(a^{*} | \bm{l}; \hat{\zeta})} dF(\bm{l} | a^{*}) f(a^{*})da^{*} \\
+&= \int f(a^{*}) \int \{\text{E}(Y | A^{*} = a^{*}, \bm{L} = \bm{l}) - \text{E} \{ \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) | A^{*} = a^{*}, \bm{L} = \bm{l} \} dF(\bm{l}) da^{*}
+\end{align*}
+since the propensity score model is correctly specified with estimated parameters $\hat{\zeta}$.
+
+We have already assumed that $Y | A = a, \bm{L} = l \sim N(\beta_{0} + a\beta_{a} + \bm{l}\beta_{l} + a\beta_{al}\bm{L}^{T}, \sigma^{2})$. Thus, $Y | A^{*} = a^{*}, \bm{L} = \bm{l}$ or equivalently, $Y | A + \epsilon = a^{*}, \bm{L} = \bm{l}$ follows a Normal distribution with mean $\beta_{0} + a^{*}\beta_{a} + \bm{l}\beta_{l} + a^{*}\beta_{al}\bm{L}^{T}$ since $\epsilon \sim N(0, \sigma^{2}_{me})$. (I think this should be true because we assume non-differential ME, but how to show more concretely?). Then
+\begin{align*}
+\int \text{E}(Y | A^{*} = a^{*}, \bm{L} = \bm{l})dF(\bm{l}) &= \int \text{E}(Y | A = a^{*}, \bm{L} = \bm{l})dF(\bm{l}) \\
+&= \int \text{E}\{ Y(a^{*}) | A = a^{*}, \bm{L} = \bm{l} \} dF(\bm{l}) \\
+&= \int \text{E}\{ Y(a^{*}) | \bm{L} = \bm{l} \} dF(\bm{l}) \\
+&= \text{E}\{ Y(a^{*}) \}
+\end{align*}
+under causal consistency and conditional exchangeability. Now recall that under the assumed identity link,
 \begin{equation*}
-\bm{\Delta} = \bm{A}^{*} + (\beta_{a} + \bm{L}\beta_{al}) \Sigma_{me}Y / \sigma^{2}
+\Delta = A^{*} + (\beta^{*}_{a} + \bm{L}\beta^{*}_{al}) \Sigma_{me}Y / \sigma^{2}
 \end{equation*}
 \begin{equation*}
-\text{E}(Y | \bm{L}, \bm{\Delta}) = \frac{\beta_{0} + \bm{L}\beta_{l} + \bm{\Delta} \cdot (\beta_{a} + \bm{L}\beta_{al})}{1 + (\beta_{a} + \bm{L}\beta_{al}) \Sigma_{me} (\beta_{a} + \bm{L}\beta_{al})^{T} / \sigma^{2}}
+\text{E}(Y | \bm{L}, \Delta; \beta^{*}) = \frac{\beta^{*}_{0} + \bm{L}\beta^{*}_{l} + \Delta \cdot (\beta^{*}_{a} + \bm{L}\beta^{*}_{al})}{1 + (\beta^{*}_{a} + \bm{L}\beta^{*}_{al}) \Sigma_{me} (\beta^{*}_{a} + \bm{L}\beta^{*}_{al})^{T} / \sigma^{2}}
+\end{equation*}
+where a mis-specified outcome regression could correspond to missing or extraneous covariates, interaction terms mistakenly set to 0, etc.
+
+Consider $\text{E} \{ \text{E}(Y | \bm{L}, \Delta; \beta^{*}) | A^{*} = a^{*}, \bm{L} = \bm{l} \}$ and plug in $\Delta$ such that
+\begin{align*}
+&\text{E} \{ \text{E}(Y | \bm{L}, \Delta; \beta^{*}) | A^{*} = a^{*}, \bm{L} = \bm{l} \} \\
+&= \frac{\beta_{0}^{*} + \bm{l}\beta_{l}^{*} + (a^{*} + (\beta_{a}^{*} + \bm{l}\beta_{al}^{*}) \sigma^{2}_{me} E( Y | A^{*} = a^{*}, \bm{L} = \bm{l}) / \sigma^{2}) \cdot (\beta_{a}^{*} + \bm{l}\beta_{al}^{*})}{1 + \sigma^{2}_{me} (\beta_{a}^{*} + \bm{l}\beta_{al}^{*})^{2} / \sigma^{2}} \\
+&= \frac{\beta_{0}^{*} + \bm{l}\beta_{l}^{*} + a^{*}\beta_{a}^{*} + a^{*}\beta_{al}^{*}\bm{l}^{T} + ((\beta_{a}^{*} + \bm{l}\beta_{al}^{*}) \sigma^{2}_{me} (\beta_{0}^{*} + \bm{l}\beta_{l}^{*} + a^{*}\beta_{a}^{*} + a^{*}\beta_{al}^{*}\bm{l}^{T}) / \sigma^{2}) \cdot (\beta_{a}^{*} + \bm{l}\beta_{al}^{*})}{1 + \sigma^{2}_{me} (\beta_{a}^{*} + \bm{l}\beta_{al}^{*})^{2} / \sigma^{2}} \\
+&= \frac{(\beta_{0}^{*} + \bm{l}\beta_{l}^{*} + a^{*}\beta_{a}^{*} + a^{*}\beta_{al}^{*}\bm{l}^{T}) \cdot \{ 1 + \sigma^{2}_{me} (\beta_{a}^{*} + \bm{l}\beta_{al}^{*})^{2} / \sigma^{2} \}}{1 + \sigma^{2}_{me} (\beta_{a}^{*} + \bm{l}\beta_{al}^{*})^{2} / \sigma^{2}} \\
+&= \beta_{0}^{*} + \bm{l}\beta_{l}^{*} + a^{*}\beta_{a}^{*} + a^{*}\beta_{al}^{*}\bm{l}^{T}
+\end{align*}
+
+This implies that $\int \text{E} \{ \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) | A^{*} = a^{*}, \bm{L} = \bm{l} \} dF(\bm{l}) = E(\beta_{0}^{*} + \bm{L}\beta_{l}^{*} + a^{*}\beta_{a}^{*} + a^{*}\beta_{al}^{*}\bm{L}^{T})$. As stated before, the second row of the estimating equation implies that the following relation holds:
+\begin{equation*}
+\int f(a^{*}) \int \{\text{E}(Y | A^{*} = a^{*}, \bm{L} = \bm{l}) - \text{E} \{ \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) | A^{*} = a^{*}, \bm{L} = \bm{l} \} dF(\bm{l}) da^{*} = 0
 \end{equation*}
 
-The second equation of the estimating equation stack can be solved following the techniques used in the IPW proof. In particular, consider the intercept component of the second equation (use scalar notation for simplicity as in the IPW proof). Then $\beta_{0}, \beta_{a}, \beta_{l}, \beta_{al}$ will solve
-\begin{equation}
-\text{E}( SW \, Y )= \text{E}\{ SW \, \text{E}(Y|L, \Delta) \}
-\end{equation}
-As before, the left side of (2) simplifies to $E(Y)$. Consider the right side of (2):
+The numerator of the weights $f(a^{*})$ was assumed to correspond to a non-degenerate distribution and $a^{*}$ is an arbitrary constant. Thus, the $\beta^{*}$ corresponding to the solution of the weighted outcome regression, even if the regression form is mis-specified, will yield $\text{E}[(\beta^{*}_{0} + \bm{a}\beta^{*}_{a} + \bm{L}\beta^{*}_{l} + \bm{a}\beta^{*}_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$ and the fourth row of the estimating equation is unbiased. Since the estimating equation is unbiased if either the propensity or outcome model is correctly specified, the proposed estimator is doubly-robust.
+
+\vspace{3cm}
+
+(I also tried the route of plugging in $A^{*} = A + \epsilon$ in the beginning and integrating over three random variables, but I wasn't able to cancel the denominator this way)
+
 \begin{align*}
-\text{E} \{ SW \, \text{E}(Y|L, \Delta) \} &= \text{E} \left \{ \frac{f(A^*;\xi)}{f(A^*|L;\zeta)} \text{E}(Y|L, \Delta) \right \} \\
-&= \text{E}_L \left [ \int_{a^*} \frac{f(a^*;\xi)}{f(a^*|L;\zeta)} \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} dF(a^*|L) \right ]\\
-&= \text{E}_L \left [ \int_{a^*}  \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} f(a^*;\xi) da^* \right ]\\
-&= \int_{a^*} \text{E} \left \{
-\frac{\beta_{0} + L \beta_{l} + \Delta (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
-\bigg| A^*=a^* \right \} f(a^*;\xi) da^* \\
-&= \int_{a^*} \text{E} \left \{
-\frac{\beta_{0} + L \beta_{l} + \{ A^{*} + (\beta_{a} + L \beta_{al}) \sigma^{2}_{e}Y / \sigma^{2} \} (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
-\bigg| A^*=a^* \right \} f(a^*;\xi) da^* \\
-&= ?
+0 &= E \left [ \frac{f(A^{*}) \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \}}{f(A^{*} | \bm{L}; \zeta)} \right ] \\
+&= E \left [ \frac{f(A + \epsilon) \{ Y - \text{E}(Y | \bm{L}, \bm{\Delta}; \beta^{*}) \}}{f(A + \epsilon | \bm{L}; \zeta)} \right ] \\
+&= \text{not clear how denominator will ever be cancelled unless we integrate} \\
+& \;\;\;\;\; \text{over something that is equivalent to the above?}
 \end{align*}
 
-The IPW proof had a simple structure for the marginal expectation, but this proof has a random variable in the denominator, which complicates things... thoughts?
-
-Try not putting outer expectation in the integral:
-\begin{align*}
-\text{E} \{ SW \, \text{E}(Y|L, \Delta) \} &= \text{E} \left \{ \frac{f(A^*;\xi)}{f(A^*|L;\zeta)} \text{E}(Y|L, \Delta) \right \} \\
-&= \text{E}_L \left [ \int_{a^*} \frac{f(a^*;\xi)}{f(a^*|L;\zeta)} \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} dF(a^*|L) \right ]\\
-&= \text{E}_L \left [ \int_{a^*}  \text{E}\{\text{E}(Y|L, \Delta)|A^*=a^*,L\} f(a^*;\xi) da^* \right ] \\
-&= \text{E}_L \left [ \int_{a^*}  \text{E} \left \{
-\frac{\beta_{0} + L \beta_{l} + \Delta (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
-\bigg| A^*=a^*, L \right \} f(a^*;\xi) da^* \right ] \\
-&= \text{E}_L \left [ \int_{a^*}  \text{E} \left \{
-\frac{\beta_{0} + L \beta_{l} + \{ A^{*} + (\beta_{a} + L \beta_{al}) \sigma^{2}_{e}Y / \sigma^{2} \} (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}}
-\bigg| A^*=a^*, L \right \} f(a^*;\xi) da^* \right ] \\
-&= \text{E}_L \left [ \int_{a^*}
-\frac{\beta_{0} + L \beta_{l} + \{ a^{*} + (\beta_{a} + L \beta_{al}) \sigma^{2}_{e}E(Y | A^{*} = a^{*}, L) / \sigma^{2} \} (\beta_{a} + L \beta_{al})}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}} f(a^*;\xi) da^* \right ] \\
-&= \text{E}_L \left [ \int_{a^*}
-\frac{(\beta_{0} + L \beta_{l} + a^{*} \beta_{a} + a^{*}\beta_{al}L) \{ 1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2} \}}{1 + (\beta_{a} + L \beta_{al})^2 \sigma_{e}^2  / \sigma^{2}} f(a^*;\xi) da^* \right ] \\
-&= \text{E}_L \left [ \int_{a^*}
-(\beta_{0} + L \beta_{l} + a^{*} \beta_{a} + a^{*}\beta_{al}L) f(a^*;\xi) da^* \right ] \\
-&= ...
-\end{align*}
-
-It doesn't make sense to go down this path either because we want to get an $E(Y)$ somewhere.
-
-Structure / note to self: In the non-ME proof, the estimating equation had a similar structure and the structure was to (i) show the second part of the EE was unbiased, then (ii) show that (i) implies that the fourth EE is unbiased.
-
-Have no-ME proof open
 
 
 
