@@ -183,7 +183,7 @@ Once again, consistency and asymptotic normality of the proposed estimator is pr
     \end{bmatrix}
 \end{equation*}
 
-First, suppose that the outcome regression is correctly specified. Then $\text{E}( \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$ such that $\text{E}[(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a) \}] = 0$.
+First, suppose that the outcome regression is correctly specified. Then $\text{E}( \beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) = \text{E} \{ \text{E}(Y | \bm{A} = \bm{a}, \bm{L}) \} = \text{E}[\text{E} \{ Y(\bm{a}) | \bm{L} \}] = \text{E} \{ Y(\bm{a}) \}$ such that $\text{E}[(\beta_{0} + \bm{a}\beta_{a} + \bm{L}\beta_{l} + \bm{a}\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(\bm{a}) \}] = 0$.
 
 Now suppose instead that the propensity score model(s) are correctly specified. As in the IPW proof, suppose there is one scalar exposure (the proof for vector $\bm{A}$ is similar) and that the stabilized weights are given by a ratio of densities. The goal is to again show that $\text{E}[(\beta_{0} + a\beta_{a} + \bm{L}\beta_{l} + a\beta_{al}\bm{L}^{T}) - \text{E} \{ Y(a) \}] = 0$. However, the $\beta$ terms are now estimated from a weighted outcome regression model where the outcome regression form may be mis-specified.
 
