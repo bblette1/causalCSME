@@ -15,7 +15,7 @@ lambda <- 3
 sigma_me1 <- 0.36
 sigma_me3 <- 0.25
 
-simulator <- function(trial, beta1) {
+simulator <- function(trial, beta1, n) {
 
   L <- rexp(n, lambda)
   # A2 and A3 switch names in the manuscript
@@ -26,6 +26,8 @@ simulator <- function(trial, beta1) {
                   beta5*A1*L + beta6*A2*L -
                   log(lambda / (lambda - beta4 - beta5*A1 - beta6*A2))) /
             (1 + exp(-1.7 + beta1*A1 + beta2*A2 + beta3*A3))
+  # Correct Y_prob for very rare instances > 1
+  Y_prob[Y_prob > 1] <- 0.999
   Y <- rbinom(n, 1, Y_prob)
   A1star <- A1 + rnorm(n, 0, sqrt(sigma_me1))
   A3star <- A3 + rnorm(n, 0, sqrt(sigma_me3))
@@ -515,12 +517,13 @@ simulator <- function(trial, beta1) {
 
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1)),
-                     betas = rep(beta1, each = nsims))
+                     betas = rep(beta1, each = nsims),
+                     ns = rep(n, each = nsims))
 i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 combo_i <- combos[(i), ]
 
 set.seed(i*1000)
-sim <- with(combo_i, mapply(simulator, trials, betas))
+sim <- with(combo_i, mapply(simulator, trials, betas, ns))
 
 # Output
 outfile <- paste("./Results/results_scen2_", i, ".Rdata", sep = "")

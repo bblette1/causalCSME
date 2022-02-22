@@ -14,7 +14,7 @@ true_effect <- beta1_true + beta3_true*L1_prob + beta5_true*L2_mean
 sigma_me <- 0.16
 
 # Simulator function to be sent to computing cluster
-simulator <- function(trial, sigma_me) {
+simulator <- function(trial, sigma_me, n) {
 
   # Generate data
   L1 <- rbinom(n, 1, L1_prob)
@@ -620,12 +620,13 @@ simulator <- function(trial, sigma_me) {
 
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1_true)),
-                     mes = rep(sigma_me, each = nsims))
+                     mes = rep(sigma_me, each = nsims),
+                     ns = rep(n, each = nsims))
 i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
 combo_i <- combos[(i-1000), ]
 
 set.seed(i*1000)
-sim <- with(combo_i, mapply(simulator, trials, mes))
+sim <- with(combo_i, mapply(simulator, trials, mes, ns))
 
 # Output
 outfile <- paste("./Results/results_scen3_", i, ".Rdata", sep = "")
