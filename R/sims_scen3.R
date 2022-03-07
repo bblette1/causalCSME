@@ -617,13 +617,14 @@ simulator <- function(trial, sigma_me, n) {
 
 }
 
-
+n <- 1500
+low_n <- 400
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1_true)),
                      mes = rep(sigma_me, each = nsims),
-                     ns = rep(n, each = nsims))
-i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) + 1000
-combo_i <- combos[(i-1000), ]
+                     ns = rep(low_n, each = nsims))
+i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
+combo_i <- combos[(i), ]
 
 set.seed(i*1000)
 sim <- with(combo_i, mapply(simulator, trials, mes, ns))

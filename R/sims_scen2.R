@@ -514,11 +514,12 @@ simulator <- function(trial, beta1, n) {
 
 }
 
-
+n <- 800
+low_n <- 400
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1)),
                      betas = rep(beta1, each = nsims),
-                     ns = rep(n, each = nsims))
+                     ns = rep(low_n, each = nsims))
 i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 combo_i <- combos[(i), ]
 
