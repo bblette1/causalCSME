@@ -5,11 +5,11 @@ library(geex)
 library(ggplot2)
 
 # Build application data set
-load("C:/Users/bblette1/Downloads/HVTN505_2019-08-08/HVTN505/data/dat.505.rda")
+load("/Users/blette/Downloads/HVTN505/data/dat.505.rda")
 
 assays <- subset(var.505, assay %in% c("fcrR2a", "fcrR3a", "phago"))
 
-primarydat <- read.csv("C:/Users/bblette1/Documents/primary505_for_sharing .csv")
+primarydat <- read.csv("/Users/blette/Documents/primary505_for_sharing.csv")
 primarydat$ptid <- primarydat$pub_id
 
 fulldat <- merge(dat.505, primarydat, by = "ptid", all = T)
@@ -516,3 +516,962 @@ ggplot(latdat2[latdat2$ME != 0.25, ], aes(x = vals, y = Risk)) +
   xlab("Exposure values") + ylab("HIV risk at study end") +
   ylim(c(0, 0.25)) +
   theme_bw()
+
+##############################################################################
+# Diagnostics
+
+# Start with propensity models
+par(mfrow = c(2, 2))
+plot(denom_mod1)
+plot(denom_mod2)
+
+# Just the ME outcome models for diagnostic purposes
+# First consider when we assume no ME, then the glms fit can be used with only
+# cc weights
+
+# Marker 1 outcome model
+glmmod1_check <-
+  lm(HIVwk28preunbl.y ~ marker1 + bhv_bin.y + age.y + race.y + BMI.y +
+       CD8PFS + CD4PFS + marker1*bhv_bin.y + marker1*age.y,
+     data = analysisdat, weights = estweights)
+
+preds1 <- predict(glmmod1_check)
+ccdat <- analysisdat[analysisdat$estweights > 0, ]
+
+# Race
+weighted.mean(preds1[ccdat$race.y == 1], ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 1],
+              ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(preds1[ccdat$race.y == 0], ccdat$estweights[ccdat$race.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 0],
+              ccdat$estweights[ccdat$race.y == 0])
+
+# CD8
+weighted.mean(preds1[ccdat$CD8PFS == 0], ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 0],
+              ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(preds1[ccdat$CD8PFS == 1], ccdat$estweights[ccdat$CD8PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 1],
+              ccdat$estweights[ccdat$CD8PFS == 1])
+
+# CD4
+weighted.mean(preds1[ccdat$CD4PFS == 0], ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 0],
+              ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(preds1[ccdat$CD4PFS == 1], ccdat$estweights[ccdat$CD4PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 1],
+              ccdat$estweights[ccdat$CD4PFS == 1])
+
+# Age
+weighted.mean(preds1[ccdat$age.y > 30], ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y > 30],
+              ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(preds1[ccdat$age.y <= 30], ccdat$estweights[ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$age.y <= 30])
+
+# BMI
+weighted.mean(preds1[ccdat$BMI.y > 25], ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y > 25],
+              ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(preds1[ccdat$BMI.y <= 25], ccdat$estweights[ccdat$BMI.y <= 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y <= 25],
+              ccdat$estweights[ccdat$BMI.y <= 25])
+
+# Behavior Risk
+weighted.mean(preds1[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(preds1[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+
+# Marker 1
+weighted.mean(preds1[ccdat$marker1 > 2], ccdat$estweights[ccdat$marker1 > 2])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2],
+              ccdat$estweights[ccdat$marker1 > 2])
+weighted.mean(preds1[ccdat$marker1 < 2], ccdat$estweights[ccdat$marker1 < 2])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2],
+              ccdat$estweights[ccdat$marker1 < 2])
+
+# Marker 1 by age
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y > 30])
+
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y <= 30])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y > 30])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y <= 30])
+
+# Marker 1 by behavior risk
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 1])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 1])
+
+# Marker 2 outcome model
+glmmod2_check <-
+  lm(HIVwk28preunbl.y ~ marker2 + bhv_bin.y + age.y + race.y + BMI.y +
+       CD8PFS + CD4PFS + marker2*bhv_bin.y + marker2*age.y,
+     data = analysisdat, weights = estweights)
+
+preds2 <- predict(glmmod2_check)
+
+# Race
+weighted.mean(preds2[ccdat$race.y == 1], ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 1],
+              ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(preds2[ccdat$race.y == 0], ccdat$estweights[ccdat$race.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 0],
+              ccdat$estweights[ccdat$race.y == 0])
+
+# CD8
+weighted.mean(preds2[ccdat$CD8PFS == 0], ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 0],
+              ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(preds2[ccdat$CD8PFS == 1], ccdat$estweights[ccdat$CD8PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 1],
+              ccdat$estweights[ccdat$CD8PFS == 1])
+
+# CD4
+weighted.mean(preds2[ccdat$CD4PFS == 0], ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 0],
+              ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(preds2[ccdat$CD4PFS == 1], ccdat$estweights[ccdat$CD4PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 1],
+              ccdat$estweights[ccdat$CD4PFS == 1])
+
+# Age
+weighted.mean(preds2[ccdat$age.y > 30], ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y > 30],
+              ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(preds2[ccdat$age.y <= 30], ccdat$estweights[ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$age.y <= 30])
+
+# BMI
+weighted.mean(preds2[ccdat$BMI.y > 25], ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y > 25],
+              ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(preds2[ccdat$BMI.y <= 25], ccdat$estweights[ccdat$BMI.y <= 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y <= 25],
+              ccdat$estweights[ccdat$BMI.y <= 25])
+
+# Behavior Risk
+weighted.mean(preds2[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(preds2[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+
+# Marker 2
+weighted.mean(preds2[ccdat$marker2 > 9.7],
+              ccdat$estweights[ccdat$marker2 > 9.7])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7],
+              ccdat$estweights[ccdat$marker2 > 9.7])
+weighted.mean(preds2[ccdat$marker2 < 9.7],
+              ccdat$estweights[ccdat$marker2 < 9.7])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7],
+              ccdat$estweights[ccdat$marker2 < 9.7])
+
+# Marker 2 by age
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y > 30])
+
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y <= 30])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y > 30])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y <= 30])
+
+# Marker 2 by behavior risk
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 1])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 1])
+
+# Just outcome ME model
+eefun_outmod1 <- function(data) {
+  Y <- data$HIVwk28preunbl.y
+  A1star <- data$marker1
+  A1star[is.na(A1star)] <- 0
+  L1 <- data$bhv_bin.y
+  L2 <- data$age.y
+  L3 <- data$race.y
+  L4 <- data$BMI.y
+  L5 <- data$CD8PFS
+  L5[is.na(L5)] <- 0
+  L6 <- data$CD4PFS
+  L6[is.na(L6)] <- 0
+  w <- data$estweights
+  delta1 <- function(beta1, beta8, beta9, sigma_ep) {
+    A1star + sigma_me1*(beta1 + beta8*L1 + beta9*L2)*Y / sigma_ep
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7, beta8, beta9, sigma_ep) {
+    (beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+       beta6*L5 + beta7*L6 +
+       (beta1 + beta8*L1 + beta9*L2)*delta1(beta1, beta8, beta9, sigma_ep)) /
+      (1 + ((beta1 + beta8*L1 + beta9*L2)^2)*sigma_me1 / sigma_ep)[[1]]
+  }
+  condvar <- function(beta1, beta8, beta9, sigma_ep) {
+    sigma_ep / (1 + ((beta1 + beta8*L1 + beta9*L2)^2)*sigma_me1 /
+                  sigma_ep)[[1]]
+  }
+  function(theta) {
+    c(w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11])),
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta1(theta[2], theta[9], theta[10], theta[11]),
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L1,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L2,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L3,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L4,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L5,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L6,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta1(theta[2], theta[9], theta[10], theta[11])*L1,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta1(theta[2], theta[9], theta[10], theta[11])*L2,
+      w*(theta[11] - theta[11]*
+            (Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                         theta[6], theta[7], theta[8], theta[9], theta[10],
+                         theta[11]))^2 /
+            condvar(theta[2], theta[9], theta[10], theta[11]))
+    )
+  }
+}
+
+# Cycle through 4 ME vals here
+sigma_me1 <- var(analysisdat$marker1[analysisdat$marker1 > 0.5]) / 3
+results_outmod1 <-
+  m_estimate(estFUN = eefun_outmod1, data = analysisdat,
+             compute_roots = TRUE,
+             root_control = setup_root_control(start = startvec))
+
+preds <-
+  as.matrix(cbind(rep(1, dim(ccdat)[1]), ccdat[, c(3, 8, 7, 5, 6, 11, 10)],
+               ccdat$marker1*ccdat$bhv_bin.y, ccdat$marker1*ccdat$age.y)) %*%
+  as.matrix(coef(results_outmod1)[-length(coef(results_outmod1))])
+
+# Chi square goodness of fit test
+preds[preds < 0] <- 0
+pisum1 <- sum(sort(preds)[1:38]*ccdat$estweights[order(preds)[1:38]])
+pisum2 <- sum(sort(preds)[39:75]*ccdat$estweights[order(preds)[39:75]])
+pisum3 <- sum(sort(preds)[76:112]*ccdat$estweights[order(preds)[76:112]])
+pisum4 <- sum(sort(preds)[113:150]*ccdat$estweights[order(preds)[113:150]])
+
+ysum1 <- sum(ccdat$HIVwk28preunbl.y[order(preds)[1:38]]*
+             ccdat$estweights[order(preds)[1:38]])
+ysum2 <- sum(ccdat$HIVwk28preunbl.y[order(preds)[39:75]]*
+               ccdat$estweights[order(preds)[39:75]])
+ysum3 <- sum(ccdat$HIVwk28preunbl.y[order(preds)[76:112]]*
+               ccdat$estweights[order(preds)[76:112]])
+ysum4 <- sum(ccdat$HIVwk28preunbl.y[order(preds)[113:150]]*
+               ccdat$estweights[order(preds)[113:150]])
+
+ts <- (ysum1 - pisum1)^2 / (pisum1*(1 - pisum1/38)) +
+  (ysum2 - pisum2)^2 / (pisum2*(1 - pisum2/37)) +
+  (ysum3 - pisum3)^2 / (pisum3*(1 - pisum3/37)) +
+  (ysum4 - pisum4)^2 / (pisum4*(1 - pisum4/38))
+
+pchisq(ts, 2)
+
+# Second marker
+eefun_outmod2 <- function(data) {
+  Y <- data$HIVwk28preunbl.y
+  A2star <- data$marker2
+  A2star[is.na(A2star)] <- 0
+  L1 <- data$bhv_bin.y
+  L2 <- data$age.y
+  L3 <- data$race.y
+  L4 <- data$BMI.y
+  L5 <- data$CD8PFS
+  L5[is.na(L5)] <- 0
+  L6 <- data$CD4PFS
+  L6[is.na(L6)] <- 0
+  w <- data$estweights
+  delta2 <- function(beta1, beta8, beta9, sigma_ep) {
+    A2star + sigma_me2*(beta1 + beta8*L1 + beta9*L2)*Y / sigma_ep
+  }
+  condexp <- function(beta0, beta1, beta2, beta3, beta4, beta5, beta6,
+                      beta7, beta8, beta9, sigma_ep) {
+    (beta0 + beta2*L1 + beta3*L2 + beta4*L3 + beta5*L4 +
+       beta6*L5 + beta7*L6 +
+       (beta1 + beta8*L1 + beta9*L2)*delta2(beta1, beta8, beta9, sigma_ep)) /
+      (1 + ((beta1 + beta8*L1 + beta9*L2)^2)*sigma_me2 / sigma_ep)[[1]]
+  }
+  condvar <- function(beta1, beta8, beta9, sigma_ep) {
+    sigma_ep / (1 + ((beta1 + beta8*L1 + beta9*L2)^2)*sigma_me2 /
+                  sigma_ep)[[1]]
+  }
+  function(theta) {
+    c(w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11])),
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta2(theta[2], theta[9], theta[10], theta[11]),
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L1,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L2,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L3,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L4,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L5,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        L6,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta2(theta[2], theta[9], theta[10], theta[11])*L1,
+      w*(Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                      theta[6], theta[7], theta[8], theta[9], theta[10],
+                      theta[11]))*
+        delta2(theta[2], theta[9], theta[10], theta[11])*L2,
+      w*(theta[11] - theta[11]*
+            (Y - condexp(theta[1], theta[2], theta[3], theta[4], theta[5],
+                         theta[6], theta[7], theta[8], theta[9], theta[10],
+                         theta[11]))^2 /
+            condvar(theta[2], theta[9], theta[10], theta[11]))
+    )
+  }
+}
+
+# Cycle through 4 ME vals here
+sigma_me2 <- var(analysisdat$marker2[analysisdat$marker2 > 7]) / 3
+startvec <- c(coef(glmmod2), sigma(glmmod2)^2)
+results_outmod2 <-
+  m_estimate(estFUN = eefun_outmod2, data = analysisdat,
+             compute_roots = TRUE,
+             root_control = setup_root_control(start = startvec))
+
+preds2 <-
+  as.matrix(cbind(rep(1, dim(ccdat)[1]), ccdat[, c(4, 8, 7, 5, 6, 11, 10)],
+              ccdat$marker2*ccdat$bhv_bin.y, ccdat$marker2*ccdat$age.y)) %*%
+  as.matrix(coef(results_outmod2)[-length(coef(results_outmod2))])
+
+# Chi square goodness of fit test
+preds2[preds2 < 0] <- 0
+pisum1 <- sum(sort(preds2)[1:38]*ccdat$estweights[order(preds2)[1:38]])
+pisum2 <- sum(sort(preds2)[39:75]*ccdat$estweights[order(preds2)[39:75]])
+pisum3 <- sum(sort(preds2)[76:112]*ccdat$estweights[order(preds2)[76:112]])
+pisum4 <- sum(sort(preds2)[113:150]*ccdat$estweights[order(preds2)[113:150]])
+
+ysum1 <- sum(ccdat$HIVwk28preunbl.y[order(preds2)[1:38]]*
+               ccdat$estweights[order(preds2)[1:38]])
+ysum2 <- sum(ccdat$HIVwk28preunbl.y[order(preds2)[39:75]]*
+               ccdat$estweights[order(preds2)[39:75]])
+ysum3 <- sum(ccdat$HIVwk28preunbl.y[order(preds2)[76:112]]*
+               ccdat$estweights[order(preds2)[76:112]])
+ysum4 <- sum(ccdat$HIVwk28preunbl.y[order(preds2)[113:150]]*
+               ccdat$estweights[order(preds2)[113:150]])
+
+ts <- (ysum1 - pisum1)^2 / (pisum1*(1 - pisum1/38)) +
+  (ysum2 - pisum2)^2 / (pisum2*(1 - pisum2/37)) +
+  (ysum3 - pisum3)^2 / (pisum3*(1 - pisum3/37)) +
+  (ysum4 - pisum4)^2 / (pisum4*(1 - pisum4/38))
+
+pchisq(ts, 2, lower.tail = FALSE)
+
+
+
+
+
+
+
+#############################################################################
+# Supplemental analysis check
+# Only use data in counterfactual range of interest to fit models
+analysisdat1 <- analysisdat %>%
+  filter(marker1 >= 0.5 & marker1 <= 3)
+
+analysisdat2 <- analysisdat %>%
+  filter(marker2 >= 7)
+
+# Estimate IPTW
+# First marker
+denom_mod1 <- lm(marker1 ~ race.y + BMI.y + age.y + bhv_bin.y +
+                   CD4PFS + CD8PFS,
+                 data = analysisdat1, weights = estweights)
+p_denom1 <- predict(denom_mod1, type='response')
+dens_denom1 <-
+  dnorm(analysisdat1$marker1[analysisdat1$estweights > 0],
+        p_denom1,
+        sd(residuals(denom_mod1)))
+
+num_mod1 <- lm(marker1 ~ 1, data = analysisdat1, weights = estweights)
+p_num1 <- predict(num_mod1, type='response')
+dens_num1 <-
+  dnorm(analysisdat$marker1[analysisdat1$estweights > 0],
+        p_num1[analysisdat1$estweights > 0],
+        sd(residuals(num_mod1)[analysisdat1$estweights > 0]))
+
+analysisdat1$w1 <- rep(0, dim(analysisdat1)[1])
+analysisdat1$w1[analysisdat1$estweights > 0] <- dens_num1 / dens_denom1
+analysisdat1$w1[is.na(analysisdat1$w1)] <- 0
+
+analysisdat1$sw1 <- analysisdat1$w1*analysisdat1$estweights
+
+# Second marker
+denom_mod2 <- lm(marker2 ~ race.y + BMI.y + age.y + bhv_bin.y +
+                   CD4PFS + CD8PFS,
+                 data = analysisdat2, weights = estweights)
+p_denom2 <- predict(denom_mod2, type='response')
+dens_denom2 <-
+  dnorm(analysisdat2$marker2[analysisdat2$estweights > 0],
+        p_denom2,
+        sd(residuals(denom_mod2)))
+
+num_mod2 <- lm(marker2 ~ 1, data = analysisdat2, weights = estweights)
+p_num2 <- predict(num_mod2, type='response')
+dens_num2 <-
+  dnorm(analysisdat2$marker2[analysisdat2$estweights > 0],
+        p_num2[analysisdat2$estweights > 0],
+        sd(residuals(num_mod2)[analysisdat2$estweights > 0]))
+
+analysisdat2$w2 <- rep(0, dim(analysisdat2)[1])
+analysisdat2$w2[analysisdat2$estweights > 0] <- dens_num2 / dens_denom2
+analysisdat2$w2[is.na(analysisdat2$w2)] <- 0
+
+analysisdat2$sw2 <- analysisdat2$w2*analysisdat2$estweights
+
+# Starting values
+glmmod1 <-
+  lm(HIVwk28preunbl.y ~ marker1 + bhv_bin.y + age.y + race.y + BMI.y +
+       CD8PFS + CD4PFS + marker1*bhv_bin.y + marker1*age.y,
+     data = analysisdat1, weights = sw1)
+
+glmmod2 <-
+  lm(HIVwk28preunbl.y ~ marker2 + bhv_bin.y + age.y + race.y + BMI.y +
+       CD8PFS + CD4PFS + marker2*bhv_bin.y + marker2*age.y,
+     data = analysisdat2, weights = sw2)
+
+# Calculate DR estimator for 4 ME and a grid of values
+me_list <- c(0, 1/6, 1/4, 0.32)
+m1vals <- seq(0.5, 3, 0.1)
+m2vals <- seq(7, 10, 0.2)
+
+dr_ests1 <- array(NA, dim = c(4, length(m1vals)))
+dr_ests2 <- array(NA, dim = c(4, length(m2vals)))
+dr_se1 <- array(NA, dim = c(4, length(m1vals)))
+dr_se2 <- array(NA, dim = c(4, length(m2vals)))
+
+for (me in 4:4) {
+
+  sigma_me1 <- var(analysisdat$marker1[analysisdat$marker1 > 0.5])*me_list[me]
+  sigma_me2 <- var(analysisdat$marker2[analysisdat$marker2 > 7])*me_list[me]
+
+  for (i in 1:length(m1vals)) {
+
+    startvec <- c(coef(glmmod1), sigma(glmmod1)^2, 0.05)
+    if (i > 1) {
+      startvec <- coef(results_dr1)
+    }
+
+    results_dr1 <-
+      m_estimate(estFUN = eefun_dr1, data = analysisdat,
+                 outer_args = list(m1vals[i]), compute_roots = TRUE,
+                 root_control =
+                   setup_root_control(start = startvec))
+    dr_ests1[me, i] <- coef(results_dr1)[12]
+    dr_se1[me, i] <- sqrt(vcov(results_dr1)[12, 12])
+
+  }
+
+  for (i in 1:length(m2vals)) {
+
+    startvec <- c(coef(glmmod2), sigma(glmmod2)^2, 0.1)
+    if (i > 1) {
+      startvec <- coef(results_dr2)
+    }
+
+    results_dr2 <-
+      m_estimate(estFUN = eefun_dr2, data = analysisdat,
+                 outer_args = list(m2vals[i]), compute_roots = TRUE,
+                 root_control =
+                   setup_root_control(start = startvec))
+    dr_ests2[me, i] <- coef(results_dr2)[12]
+    dr_se2[me, i] <- sqrt(vcov(results_dr2)[12, 12])
+
+  }
+
+}
+
+# Alternative plot, more of a lattice structure
+melist <- c(expression(paste("No ME: ", sigma^2, "=0")),
+            expression(paste("Low ME: ", sigma[me], "=", sigma^2, "/6")),
+            expression(paste("Moderate ME: ", sigma^2, "=0.2")),
+            expression(paste("High ME: ", sigma^2, "=0.3")))
+
+melist <- c("No ME: sigma^2 = 0", "Low ME: sigma^2 = 0.1",
+            "Moderate ME: sigma^2 = 0.2", "High ME: sigma^2 = 0.3")
+
+latdat <- data.frame(vals = c(rep(seq(0.5, 3, 0.1), 4),
+                              rep(seq(7, 10, 0.2), 4)),
+                     Risk = c(dr_ests1[1, ], dr_ests1[2, ],
+                              dr_ests1[3, ], dr_ests1[4, ],
+                              dr_ests2[1, ], dr_ests2[2, ],
+                              dr_ests2[3, ], dr_ests2[4, ]),
+                     Risk_low = c(dr_ests1[1, ] - 1.96*dr_se1[1, ],
+                                  dr_ests1[2, ] - 1.96*dr_se1[2, ],
+                                  dr_ests1[3, ] - 1.96*dr_se1[3, ],
+                                  dr_ests1[4, ] - 1.96*dr_se1[4, ],
+                                  dr_ests2[1, ] - 1.96*dr_se2[1, ],
+                                  dr_ests2[2, ] - 1.96*dr_se2[2, ],
+                                  dr_ests2[3, ] - 1.96*dr_se2[3, ],
+                                  dr_ests2[4, ] - 1.96*dr_se2[4, ]),
+                     Risk_upp = c(dr_ests1[1, ] + 1.96*dr_se1[1, ],
+                                  dr_ests1[2, ] + 1.96*dr_se1[2, ],
+                                  dr_ests1[3, ] + 1.96*dr_se1[3, ],
+                                  dr_ests1[4, ] + 1.96*dr_se1[4, ],
+                                  dr_ests2[1, ] + 1.96*dr_se2[1, ],
+                                  dr_ests2[2, ] + 1.96*dr_se2[2, ],
+                                  dr_ests2[3, ] + 1.96*dr_se2[3, ],
+                                  dr_ests2[4, ] + 1.96*dr_se2[4, ]),
+                     ME = c(rep(round(me_list, 3), each = 26),
+                            rep(round(me_list, 3), each = 16)),
+                     Exposure = c(rep("ADCP", 104), rep("RII", 64)))
+
+latdat$Risk[latdat$Risk < 0] <- 0
+latdat$Risk_low[latdat$Risk_low < 0] <- 0
+
+# New facet label names for ME variable
+me.labs <- c(expression(paste("No ME: ", sigma^2, "=0")),
+             expression(paste("Low ME: ", sigma^2, "=0.1")),
+             expression(paste("Moderate ME: ", sigma^2, "=0.2")),
+             expression(paste("High ME: ", sigma^2, "=0.3")))
+names(me.labs) <- c("0", "0.1", "0.2", "0.3")
+
+# New facet label names for Exposure variable
+exp.labs <- c("ADCP", expression(paste("R", as.character(as.roman(2)))))
+names(exp.labs) <- c("ADCP", "RII")
+
+ggplot(latdat, aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(ME ~ Exposure, scales = "free",
+             labeller = label_bquote(sigma[me]^2 == .(ME) * sigma^2)) +
+  #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(0, 0.25)) +
+  theme_bw()
+
+latdat2 <- latdat
+
+ggplot(latdat2, aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(ME ~ Exposure, scales = "free",
+             labeller = label_bquote(sigma[me]^2 == .(ME) * sigma^2)) +
+  #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(0, 0.25)) +
+  theme_bw()
+
+# Transpose
+ggplot(latdat2, aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(Exposure ~ ME, scales = "free") +
+  #labeller = labeller(ME = me.labs, Exposure = exp.labs) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(0, 0.25)) +
+  theme_bw()
+
+# Shorter
+ggplot(latdat2[latdat2$ME != 0.25, ], aes(x = vals, y = Risk)) +
+  geom_line() +
+  facet_grid(ME ~ Exposure, scales = "free",
+             labeller = label_bquote(sigma[me]^2 == .(ME) * sigma^2)) +
+  #labeller = labeller(ME = me.labs, Exposure = exp.labs)) +
+  geom_ribbon(aes(ymin = Risk_low, ymax = Risk_upp), alpha = 0.3) +
+  xlab("Exposure values") + ylab("HIV risk at study end") +
+  ylim(c(0, 0.25)) +
+  theme_bw()
+
+
+
+
+##############################################################################
+# Diagnostics
+
+# Start with propensity models
+par(mfrow = c(2, 2))
+plot(denom_mod1)
+plot(denom_mod2)
+
+# Just the ME outcome models for diagnostic purposes
+# First consider when we assume no ME, then the glms fit can be used with only
+# cc weights
+
+# Marker 1 outcome model
+glmmod1_check <-
+  lm(HIVwk28preunbl.y ~ marker1 + bhv_bin.y + age.y + race.y + BMI.y +
+       CD8PFS + CD4PFS + marker1*bhv_bin.y + marker1*age.y,
+     data = analysisdat, weights = estweights)
+
+preds1 <- predict(glmmod1_check)
+ccdat <- analysisdat[analysisdat$estweights > 0, ]
+
+# Race
+weighted.mean(preds1[ccdat$race.y == 1], ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 1],
+              ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(preds1[ccdat$race.y == 0], ccdat$estweights[ccdat$race.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 0],
+              ccdat$estweights[ccdat$race.y == 0])
+
+# CD8
+weighted.mean(preds1[ccdat$CD8PFS == 0], ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 0],
+              ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(preds1[ccdat$CD8PFS == 1], ccdat$estweights[ccdat$CD8PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 1],
+              ccdat$estweights[ccdat$CD8PFS == 1])
+
+# CD4
+weighted.mean(preds1[ccdat$CD4PFS == 0], ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 0],
+              ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(preds1[ccdat$CD4PFS == 1], ccdat$estweights[ccdat$CD4PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 1],
+              ccdat$estweights[ccdat$CD4PFS == 1])
+
+# Age
+weighted.mean(preds1[ccdat$age.y > 30], ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y > 30],
+              ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(preds1[ccdat$age.y <= 30], ccdat$estweights[ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$age.y <= 30])
+
+# BMI
+weighted.mean(preds1[ccdat$BMI.y > 25], ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y > 25],
+              ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(preds1[ccdat$BMI.y <= 25], ccdat$estweights[ccdat$BMI.y <= 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y <= 25],
+              ccdat$estweights[ccdat$BMI.y <= 25])
+
+# Behavior Risk
+weighted.mean(preds1[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(preds1[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+
+# Marker 1
+weighted.mean(preds1[ccdat$marker1 > 2], ccdat$estweights[ccdat$marker1 > 2])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2],
+              ccdat$estweights[ccdat$marker1 > 2])
+weighted.mean(preds1[ccdat$marker1 < 2], ccdat$estweights[ccdat$marker1 < 2])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2],
+              ccdat$estweights[ccdat$marker1 < 2])
+
+# Marker 1 by age
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y > 30])
+
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$age.y <= 30])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y > 30])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$age.y <= 30])
+
+# Marker 1 by behavior risk
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds1[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 > 2 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 > 2 & ccdat$bhv_bin.y == 1])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds1[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker1 < 2 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker1 < 2 & ccdat$bhv_bin.y == 1])
+
+# Marker 2 outcome model
+glmmod2_check <-
+  lm(HIVwk28preunbl.y ~ marker2 + bhv_bin.y + age.y + race.y + BMI.y +
+       CD8PFS + CD4PFS + marker2*bhv_bin.y + marker2*age.y,
+     data = analysisdat, weights = estweights)
+
+preds2 <- predict(glmmod2_check)
+
+# Race
+weighted.mean(preds2[ccdat$race.y == 1], ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 1],
+              ccdat$estweights[ccdat$race.y == 1])
+weighted.mean(preds2[ccdat$race.y == 0], ccdat$estweights[ccdat$race.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$race.y == 0],
+              ccdat$estweights[ccdat$race.y == 0])
+
+# CD8
+weighted.mean(preds2[ccdat$CD8PFS == 0], ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 0],
+              ccdat$estweights[ccdat$CD8PFS == 0])
+weighted.mean(preds2[ccdat$CD8PFS == 1], ccdat$estweights[ccdat$CD8PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD8PFS == 1],
+              ccdat$estweights[ccdat$CD8PFS == 1])
+
+# CD4
+weighted.mean(preds2[ccdat$CD4PFS == 0], ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 0],
+              ccdat$estweights[ccdat$CD4PFS == 0])
+weighted.mean(preds2[ccdat$CD4PFS == 1], ccdat$estweights[ccdat$CD4PFS == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$CD4PFS == 1],
+              ccdat$estweights[ccdat$CD4PFS == 1])
+
+# Age
+weighted.mean(preds2[ccdat$age.y > 30], ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y > 30],
+              ccdat$estweights[ccdat$age.y > 30])
+weighted.mean(preds2[ccdat$age.y <= 30], ccdat$estweights[ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$age.y <= 30])
+
+# BMI
+weighted.mean(preds2[ccdat$BMI.y > 25], ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y > 25],
+              ccdat$estweights[ccdat$BMI.y > 25])
+weighted.mean(preds2[ccdat$BMI.y <= 25], ccdat$estweights[ccdat$BMI.y <= 25])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$BMI.y <= 25],
+              ccdat$estweights[ccdat$BMI.y <= 25])
+
+# Behavior Risk
+weighted.mean(preds2[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$bhv_bin.y == 0])
+weighted.mean(preds2[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$bhv_bin.y == 1])
+
+# Marker 2
+weighted.mean(preds2[ccdat$marker2 > 9.7],
+              ccdat$estweights[ccdat$marker2 > 9.7])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7],
+              ccdat$estweights[ccdat$marker2 > 9.7])
+weighted.mean(preds2[ccdat$marker2 < 9.7],
+              ccdat$estweights[ccdat$marker2 < 9.7])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7],
+              ccdat$estweights[ccdat$marker2 < 9.7])
+
+# Marker 2 by age
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y > 30])
+
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$age.y <= 30])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y > 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 & ccdat$age.y > 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y > 30])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y <= 30])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 & ccdat$age.y <= 30],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$age.y <= 30])
+
+# Marker 2 by behavior risk
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds2[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 > 9.7 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 > 9.7 & ccdat$bhv_bin.y == 1])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 0])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 &
+                                       ccdat$bhv_bin.y == 0],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 0])
+
+weighted.mean(preds2[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 1])
+weighted.mean(ccdat$HIVwk28preunbl.y[ccdat$marker2 < 9.7 &
+                                       ccdat$bhv_bin.y == 1],
+              ccdat$estweights[ccdat$marker2 < 9.7 & ccdat$bhv_bin.y == 1])
+
+# Cycle through 4 ME vals here
+sigma_me2 <- var(analysisdat$marker2[analysisdat$marker2 > 7]) / 3
+startvec <- c(coef(glmmod2), sigma(glmmod2)^2)
+results_outmod2 <-
+  m_estimate(estFUN = eefun_outmod2, data = analysisdat2,
+             compute_roots = TRUE,
+             root_control = setup_root_control(start = startvec))
+ccdat2 <- ccdat[ccdat$marker2 > 7, ]
+preds2 <-
+  as.matrix(cbind(rep(1, dim(ccdat2)[1]), ccdat2[, c(4, 8, 7, 5, 6, 11, 10)],
+                  ccdat2$marker2*ccdat2$bhv_bin.y,
+                  ccdat2$marker2*ccdat2$age.y)) %*%
+  as.matrix(coef(results_outmod2)[-length(coef(results_outmod2))])
+
+# Chi square goodness of fit test
+preds2[preds2 < 0] <- 0
+pisum1 <- sum(sort(preds2)[1:38]*ccdat2$estweights[order(preds2)[1:38]])
+pisum2 <- sum(sort(preds2)[39:75]*ccdat2$estweights[order(preds2)[39:75]])
+pisum3 <- sum(sort(preds2)[76:112]*ccdat2$estweights[order(preds2)[76:112]])
+pisum4 <- sum(sort(preds2)[113:148]*ccdat2$estweights[order(preds2)[113:148]])
+
+ysum1 <- sum(ccdat2$HIVwk28preunbl.y[order(preds2)[1:38]]*
+               ccdat2$estweights[order(preds2)[1:38]])
+ysum2 <- sum(ccdat2$HIVwk28preunbl.y[order(preds2)[39:75]]*
+               ccdat2$estweights[order(preds2)[39:75]])
+ysum3 <- sum(ccdat2$HIVwk28preunbl.y[order(preds2)[76:112]]*
+               ccdat2$estweights[order(preds2)[76:112]])
+ysum4 <- sum(ccdat2$HIVwk28preunbl.y[order(preds2)[113:148]]*
+               ccdat2$estweights[order(preds2)[113:148]])
+
+ts <- (ysum1 - pisum1)^2 / (pisum1*(1 - pisum1/38)) +
+  (ysum2 - pisum2)^2 / (pisum2*(1 - pisum2/37)) +
+  (ysum3 - pisum3)^2 / (pisum3*(1 - pisum3/37)) +
+  (ysum4 - pisum4)^2 / (pisum4*(1 - pisum4/38))
+
+pchisq(ts, 2, lower.tail = FALSE)
