@@ -603,26 +603,139 @@ simulator <- function(trial, sigma_me, n) {
     1*(coef(results_csme_aipw)[14] - 1.96*se_aipw_psor < true_effect &
          coef(results_csme_aipw)[14] + 1.96*se_aipw_psor > true_effect)
 
+  ######################################################################
+  # Both models wrong
+
+  # Fit regression to use for starting values
+  mod <- lm(Y ~ Astar*L2, data = data)
+
+  # Model 1: G-formula-CSME
+  bias_gform_bothwrong <- bias_gform_ps
+  se_gform_bothwrong <- se_gform_ps
+  coverage_gform_bothwrong <- coverage_gform_ps
+
+  # Model 2: IPW-CSME
+  # Estimate weights
+  denom_mod <- lm(Astar ~ L2)
+  p_denom <- predict(denom_mod, type='response')
+  dens_denom <- dnorm(Astar, p_denom, summary(denom_mod)$sigma)
+  num_mod <- lm(Astar ~ 1)
+  p_num <- predict(num_mod, type='response')
+  dens_num <- dnorm(Astar, p_num, summary(denom_mod)$sigma)
+  data$sw <- dens_num / dens_denom
+
+  # Fit weighted regression for starting values
+  bias_ipw_bothwrong <- bias_ipw_or
+  se_ipw_bothwrong <- se_ipw_or
+  coverage_ipw_bothwrong <- coverage_ipw_or
+
+  # Model 3: DR-CSME
+  eefun_csme_aipw <- function(data, model) {
+    Y <- data$Y
+    Astar <- data$Astar
+    L2 <- data$L2
+    Lmat <- model.matrix(model, data = data)
+    sw <- data$sw
+    delta <- function(beta1, beta3, sigma_ep) {
+      Astar + sigma_me*(beta1 + beta3*L2)*Y / sigma_ep
+    }
+    condexp <- function(beta0, beta1, beta2, beta3, sigma_ep) {
+      (beta0 + (beta1 + beta3*L2)*delta(beta1, beta3, sigma_ep) +
+         beta2*L2) /
+        (1 + ((beta1 + beta3*L2)^2)*sigma_me / sigma_ep)[[1]]
+    }
+    condvar <- function(beta1, beta3, sigma_ep) {
+      sigma_ep / (1 + ((beta1 + beta3*L2)^2)*sigma_me / sigma_ep)[[1]]
+    }
+    function(theta) {
+      p  <- length(theta)
+      p1 <- length(coef(model))
+      rho <- Lmat %*% theta[1:p1]
+
+      score_eqns <- apply(Lmat, 2, function(x) sum((Astar - rho) * x))
+
+      c(score_eqns,
+        Astar - theta[p-7],
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2])),
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2]))*L2,
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2]))*
+          delta(theta[p-5], theta[p-3], theta[p-2]),
+        sw*(Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                        theta[p-2]))*
+          L2*delta(theta[p-5], theta[p-3], theta[p-2]),
+        sw*(theta[p-2] - theta[p-2]*
+              (Y - condexp(theta[p-6], theta[p-5], theta[p-4], theta[p-3],
+                           theta[p-2]))^2 /
+              condvar(theta[p-5], theta[p-3], theta[p-2])),
+        L2 - theta[p-1],
+        theta[p-5] + theta[p-3]*theta[p-1] - theta[p]
+      )
+    }
+  }
+
+  failed <- TRUE
+  j <- 1
+
+  while(failed == TRUE & j < 6) {
+
+    failed <- FALSE
+    startvec <- c(coef(denom_mod), mean(Astar), coef(mod), sigma(mod)^2,
+                  mean(L2), guess)*(j == 1) +
+      c(coef(denom_mod), mean(Astar), rnorm(4, 0, j/5), sigma(mod)^2,
+        mean(L2), guess)*(j > 1)
+    results_csme_aipw <-
+      tryCatch(m_estimate(estFUN = eefun_csme_aipw, data = data,
+                          outer_args = list(denom_mod),
+                          root_control =
+                            setup_root_control(start = startvec)),
+               error = function(e) { failed <<- TRUE})
+    if (failed == FALSE) {
+      if (abs(coef(results_csme_aipw)[10]) > 3) { failed <- TRUE }
+    }
+    j <- j + 1
+
+  }
+
+  bias_aipw_bothwrong <- coef(results_csme_aipw)[10] - true_effect
+  se_aipw_bothwrong <- sqrt(vcov(results_csme_aipw)[10, 10])
+  coverage_aipw_bothwrong <-
+    1*(coef(results_csme_aipw)[10] -
+         1.96*se_aipw_bothwrong < true_effect &
+       coef(results_csme_aipw)[10] +
+         1.96*se_aipw_bothwrong > true_effect)
+
+  if(failed == TRUE) {
+    bias_aipw_bothwrong <- NA
+    se_aipw_bothwrong <- NA
+    coverage_aipw_bothwrong <- NA
+  }
+
 
   return(c(bias_gform_ps, bias_ipw_ps, bias_aipw_ps,
            bias_gform_or, bias_ipw_or, bias_aipw_or,
            bias_gform_psor, bias_ipw_psor, bias_aipw_psor,
+           bias_gform_bothwrong, bias_ipw_bothwrong, bias_aipw_bothwrong,
            se_gform_ps, se_ipw_ps, se_aipw_ps,
            se_gform_or, se_ipw_or, se_aipw_or,
            se_gform_psor, se_ipw_psor, se_aipw_psor,
+           se_gform_bothwrong, se_ipw_bothwrong, se_aipw_bothwrong,
            coverage_gform_ps, coverage_ipw_ps, coverage_aipw_ps,
            coverage_gform_or, coverage_ipw_or, coverage_aipw_or,
-           coverage_gform_psor, coverage_ipw_psor, coverage_aipw_psor))
-
+           coverage_gform_psor, coverage_ipw_psor, coverage_aipw_psor,
+           coverage_gform_bothwrong, coverage_ipw_bothwrong,
+           coverage_aipw_bothwrong))
 
 }
 
-n <- 1500
+n <- 2000
 low_n <- 400
 trials <- seq(1, nsims)
 combos <- data.frame(trials = rep(trials, length(beta1_true)),
                      mes = rep(sigma_me, each = nsims),
-                     ns = rep(low_n, each = nsims))
+                     ns = rep(n, each = nsims))
 i <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 combo_i <- combos[(i), ]
 
